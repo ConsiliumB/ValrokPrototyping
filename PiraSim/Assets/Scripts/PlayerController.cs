@@ -23,14 +23,15 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate()
     {
         float vmov = Input.GetAxis("Vertical");
-        Vector2 movement = new Vector2(0, vmov);
-        rb2d.AddForce(movement * speed);
+        float hmov = Input.GetAxis("Horizontal");
+        rb2d.MoveRotation(rb2d.rotation - hmov * speed * 5 * Time.fixedDeltaTime);
+        rb2d.velocity = transform.up * vmov * speed / 2;
     }
 
     private void Shoot()
     {
         var bullet = (GameObject)Instantiate(projectile, transform.position, transform.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = Vector2.left * 10;
+        bullet.GetComponent<Rigidbody2D>().velocity = transform.right * -1 * 10;
 
         Destroy(bullet, 2.0f);
     }
