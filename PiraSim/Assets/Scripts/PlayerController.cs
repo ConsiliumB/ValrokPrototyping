@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Start()
     {
+        currentHealth = 5;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -48,8 +49,8 @@ public class PlayerController : MonoBehaviour {
         }
         float vmov = Input.GetAxis("Vertical");
         float hmov = Input.GetAxis("Horizontal");
-        rb2d.MoveRotation(rb2d.rotation - hmov * speed * 5 * Time.fixedDeltaTime);
-        rb2d.velocity = transform.up * vmov * speed / 2;
+        rb2d.MoveRotation(rb2d.rotation - hmov * speed);
+        rb2d.velocity = transform.up * vmov * speed;
     }
 
     private void ShootLeft()

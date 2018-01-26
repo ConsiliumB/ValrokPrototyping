@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PirateController : MonoBehaviour {
+    [Range(0,1)]
     public float rotationSpeed;
     public float speed;
     public float chaseThreshold;
@@ -19,6 +20,9 @@ public class PirateController : MonoBehaviour {
     private int currentHealth;
     private bool isDead;
     private State state;
+    private Vector3 heading;
+
+    private float debugTimer;
 
     private enum State
     {
@@ -40,25 +44,31 @@ public class PirateController : MonoBehaviour {
             Destroy(gameObject, 1.0f);
             return;
         }
-
-        var distance = Vector2.Distance(transform.position, player.transform.position);
-        if (distance < fightThreshold)
+        heading = player.transform.position - transform.position;
+        if (heading.sqrMagnitude < fightThreshold * fightThreshold)
         {
             if (state != State.Fight)
             {
                 state = State.Fight;
-                InvokeRepeating("ShootLeft", 0.1f, 0.5f);
+                InvokeRepeating("ShootLeft", 0.3f, 0.5f);
                 //InvokeRepeating("ShootRight", 0.1f, 0.5f);
             }
      
         }
-        else if (distance < chaseThreshold)
+        else if (heading.sqrMagnitude < chaseThreshold * chaseThreshold)
         {
             if (state != State.Chase)
             {
                 state = State.Chase;
                 CancelInvoke();
             }
+        }
+
+        if (Time.time > debugTimer + 0.2f)
+        {
+            debugTimer = Time.time;
+            Debug.Log(Vector2.SignedAngle(transform.position, player.transform.position));
+            Debug.Log(rb2d.rotation);
         }
     }
 
@@ -69,7 +79,7 @@ public class PirateController : MonoBehaviour {
                 CirclePatrol();
                 break;
             case State.Chase:
-                Chase();
+                Fight();
                 break;
             case State.Flee:
                 Flee();
@@ -87,16 +97,47 @@ public class PirateController : MonoBehaviour {
 	}
     private void CirclePatrol()
     {
-        rb2d.MoveRotation(rb2d.rotation + rotationSpeed * Time.fixedDeltaTime);
-        rb2d.velocity = transform.up * speed * -1;
+        transform.Rotate(Vector3.forward * speed);
+        rb2d.velocity = transform.up * speed;
     }
 
     private void Chase()
     {
+        //if (rb2d.rotation > -1 * Vector3.SignedAngle(player.transform.position - transform.position, Vector3.down, Vector3.forward))
+        //{
 
-        //rb2d.MoveRotation(-1 * Vector3.SignedAngle(player.transform.position - transform.position, Vector3.down, Vector3.forward));
-        rb2d.MoveRotation(-1 * Vector3.SignedAngle(player.transform.position - transform.position, Vector3.down, Vector3.forward));
-        rb2d.velocity = transform.up * speed * -1;
+        //}
+        //else if (rb2d.rotation < -1 * Vector3.SignedAngle(player.transform.position - transform.position, Vector3.down, Vector3.forward))
+        //{
+
+        //}
+        //else
+        //{
+
+        //}
+        //rb2d.MoveRotation(Vector3.SignedAngle(player.transform.position - transform.position, Vector3.down, Vector3.forward));
+        RotateTowardsPlayer();
+        rb2d.velocity = transform.up * speed;
+    }
+
+    private void RotateTowardsPlayer()
+    {
+        rb2d.MoveRotation(Vector3.SignedAngle(player.transform.position - transform.position, Vector3.up, Vector3.back));
+        //var angle = Vector2.SignedAngle(transform.position, player.transform.position);
+        //angle = rb2d.rotation - angle;
+        //if (angle < -5.0f)
+        //{
+        //    rb2d.MoveRotation(rb2d.rotation + 5.0f);
+        //}
+        //else if (angle > 5.0f)
+        //{
+        //    rb2d.MoveRotation(rb2d.rotation - 5.0f);
+        //}
+        //else
+        //{
+        //    rb2d.MoveRotation(rb2d.rotation + angle);
+        //}
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationSpeed);
     }
 
     private void Flee()
@@ -106,7 +147,7 @@ public class PirateController : MonoBehaviour {
 
     private void Fight()
     {
-        rb2d.MoveRotation(-1 * Vector3.SignedAngle(player.transform.position - transform.position, Vector3.left, Vector3.forward));
+        RotateTowardsPlayer();
         rb2d.velocity *= 0;
     }
 
