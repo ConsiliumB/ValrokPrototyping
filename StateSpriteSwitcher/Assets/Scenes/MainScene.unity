@@ -185,7 +185,7 @@ Animator:
   m_GameObject: {fileID: 795739429}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f19bcbdfd422c7c4f99861365984ae8b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 96e2959666d562b44b0406b7a5c7f713, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb0986f182856440999c6990ca21c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1.02
+  moveSpeed: 2
 --- !u!114 &795739434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHurt: {fileID: 22100000, guid: 47923ff775b8df649992f8e957bed441, type: 2}
+  bear: {fileID: 22100000, guid: c44979d31f88d9148a6cf254a7ea9575, type: 2}
 --- !u!1 &1276745211
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +272,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -293,7 +294,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

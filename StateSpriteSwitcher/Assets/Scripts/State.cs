@@ -5,6 +5,7 @@ using UnityEngine;
 public class State : MonoBehaviour {
 
     public AnimatorOverrideController playerHurt;
+    public AnimatorOverrideController bear;
 
     private Animator animator;
     private RuntimeAnimatorController playerHealthy;
@@ -17,14 +18,6 @@ public class State : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown("1"))
-        {
-            animator.runtimeAnimatorController = playerHurt;
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            animator.runtimeAnimatorController = playerHealthy;
-        }
     }
 
     void OnGUI()
@@ -33,6 +26,7 @@ public class State : MonoBehaviour {
             animator.runtimeAnimatorController = playerHealthy;
         if (GUI.Button(new Rect(10, 60, 150, 50), "Without robe"))
             animator.runtimeAnimatorController = playerHurt;
-
+        if (GUI.Button(new Rect(10, 110, 150, 50), "Bear"))
+            animator.runtimeAnimatorController = bear;
     }
 }

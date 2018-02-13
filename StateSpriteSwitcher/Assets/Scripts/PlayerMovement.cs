@@ -34,7 +34,14 @@ public class PlayerMovement : MonoBehaviour {
 
         transform.position += x;
         transform.position += y;
-
+        if (x.x > 0)
+        {
+            transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+        }
+        else if (x.x < 0)
+        {
+            transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+        }
         UpdateAnimation(heading);
     }
 
