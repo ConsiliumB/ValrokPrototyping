@@ -7,8 +7,8 @@ public class Chunk {
     public int yPos;
     public int chunkWidth;
     public int chunkHeight;
-    public Location entry;
-    public Location exit;
+    public Coordinate entry;
+    public Coordinate exit;
 
     public enum Direction
     {

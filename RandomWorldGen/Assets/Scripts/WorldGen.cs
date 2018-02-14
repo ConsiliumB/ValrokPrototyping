@@ -61,8 +61,8 @@ public class WorldGen : MonoBehaviour {
 
         UnityEngine.Random.InitState(1337);
 
-        GenerateChunks();
         GenerateMap();
+        GenerateChunks();
         GenerateRoads();
 
         AddWorldChunksToMap();
@@ -77,7 +77,7 @@ public class WorldGen : MonoBehaviour {
     private void GenerateChunks()
     {
         chunks = new Chunk[20];
-        Chunk currentChunk = new Chunk(50, 50, 10, 10);
+        Chunk currentChunk = new Chunk(45, 45, 10, 10);
         
 
         chunks[0] = currentChunk;
@@ -106,7 +106,7 @@ public class WorldGen : MonoBehaviour {
         {
             for (int map_x = chunk.xPos; map_x < chunk.xPos + chunk.chunkWidth; map_x++)
             {
-                worldMap[map_y, map_x] = 1;
+                worldMap[map_x, map_y] = 1;
             }
         }
     }
@@ -116,7 +116,7 @@ public class WorldGen : MonoBehaviour {
         Vector2 position;
         for (int y = 0; y < worldMap.GetLength(0); y++)
         {
-            position = MapToPixel(5, y);
+            position = MapToPixel(50, y);
             roads.Add(new Util(position.x, position.y, Tiles.road_tile));
         }
     }
@@ -136,16 +136,16 @@ public class WorldGen : MonoBehaviour {
         Vector2 position;
         GameObject tileObject;
 
-        for (int map_y = 0; map_y < worldMap.GetLength(0); map_y++)
+        for (int x = 0; x < worldMap.GetLength(0); x++)
         {
-            for (int map_x = 0; map_x < worldMap.GetLength(1); map_x++)
+            for (int y = 0; y < worldMap.GetLength(1); y++)
             {
                 //tileVariation = CalculateTileSum(map_x, map_y);
-                tileType = worldMap[map_y, map_x];
+                tileType = worldMap[x, y];
                 if (tileType >= 0)
                 {
                     tileObject = GetMapTile(tileType);
-                    position = MapToPixel(map_x, map_y);
+                    position = MapToPixel(x, y);
 
                     SpawnObject(tileObject, position, floorContainer.transform);
                 }
@@ -237,12 +237,14 @@ public class WorldGen : MonoBehaviour {
 
     private void PrintMap()
     {
+        string[] symbols = { "_", "x" };
         StringBuilder mapAsString = new StringBuilder();
-        for (int i = worldMap.GetLength(1) - 1; i >= 0; i--)
+
+        for (int y = worldMap.GetLength(1) - 1; y >= 0; y--)
         {
-            for (int j = 0; j < worldMap.GetLength(0); j++)
+            for (int x = 0; x < worldMap.GetLength(0); x++)
             {
-                mapAsString.Append(worldMap[i, j]);
+                mapAsString.Append(symbols[worldMap[x, y]]);
             }
             mapAsString.Append("\n");
         }
