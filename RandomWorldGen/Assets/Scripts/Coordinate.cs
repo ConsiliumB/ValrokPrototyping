@@ -24,7 +24,7 @@
 
     public int Y
     {
-        get { return x; }
+        get { return y; }
     }
 
     public static int Distance(Coordinate c1, Coordinate c2)

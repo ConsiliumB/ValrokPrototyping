@@ -1,5 +1,11 @@
 ﻿using System;
 
+/**
+ * Map
+ * 0 = Empty
+ * 1 >= Not empty
+ * */
+
 public class Map
 {
     private int[,] grid;

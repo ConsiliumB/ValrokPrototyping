@@ -53,8 +53,7 @@ public class WorldGen : MonoBehaviour {
         tree_tile_dead = 6,
     }
 
-    // Use this for initialization
-    void Start()
+    private void Awake()
     {
         tileWidth = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.x;
         tileHeight = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.y;
@@ -67,8 +66,14 @@ public class WorldGen : MonoBehaviour {
 
         AddWorldChunksToMap();
 
+        //debug
         PrintMap();
+    }
 
+    // Use this for initialization
+    void Start()
+    {
+        //Create gamobjects etc.
         InstantiateMap();
         PopulateUtils(roads, roadContainer.transform);
         PopulateUtils(foilage, foilageContainer.transform);
@@ -220,12 +225,12 @@ public class WorldGen : MonoBehaviour {
         return tileSum;
     }
 
-    private void PixelToMap()
+    public void PixelToMap()
     {
         throw new NotImplementedException();
     }
 
-    private Vector2 MapToPixel(int x, int y)
+    public Vector2 MapToPixel(int x, int y)
     {
         return new Vector2((x - y) * tileWidth, (x + y) * tileHeight - (worldHeight * tileHeight));
     }
@@ -251,4 +256,11 @@ public class WorldGen : MonoBehaviour {
 
         Debug.Log(mapAsString.ToString());
     }
+
+    public Map GetMap()
+    {
+        Map tmp = new Map(worldMap);
+        return tmp;
+    }
+
 }

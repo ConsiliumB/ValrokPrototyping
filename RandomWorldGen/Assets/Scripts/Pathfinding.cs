@@ -15,7 +15,7 @@ public class Pathfinding
         }
 
         Coordinate next;
-        Node current;
+        Node current = null;
         foreach (Coordinate direction in Coordinate.directions)
         {
             next = start + direction;
@@ -31,6 +31,8 @@ public class Pathfinding
             }
         }
 
+        promiseList.Add(current);
+
         while (promiseList.Count > 0)
         {
             current = promiseList.PopLowestPromise();
@@ -45,7 +47,7 @@ public class Pathfinding
             if (current.position == destination)
             {
                 List<Coordinate> path = new List<Coordinate>();
-                while(current.parent != null)
+                while (current.parent != null)
                 {
                     path.Add(current.position);
                     current = current.parent;
@@ -59,21 +61,24 @@ public class Pathfinding
             foreach (Coordinate direction in Coordinate.directions)
             {
                 next = current.position + direction;
-                if (map.WithinBounds(next) || checkedCoordinates.ContainsKey(next) || map.IsBlocked(next))
+                if (!map.WithinBounds(next) || checkedCoordinates.ContainsKey(next) || map.IsBlocked(next))
                 {
                     continue;
                 }
 
                 //Dont cut corners
-                if (map.IsBlocked(next + new Coordinate(next.X, 0)) || map.IsBlocked(next + new Coordinate(0, next.Y)))
+                /*if (map.IsBlocked(next + new Coordinate(direction.X, 0)) || map.IsBlocked(next + new Coordinate(0, direction.Y)))
                 {
                     continue;
-                }
+                }*/
 
-                current = new Node(current, next, current.cost + 1, current.cost + 1 + Coordinate.Distance(next, destination));
+                Node newNode = new Node(current, next, current.cost + 1, current.cost + 1 + Coordinate.Distance(next, destination));
+                promiseList.Add(newNode);
+                //current = newNode;
             }
         }
 
+        Debug.Log("No path");
         return null;
     }
 }
