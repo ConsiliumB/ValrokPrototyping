@@ -11,27 +11,14 @@ public class Pathfinding
 
         if (start == destination || map.IsBlocked(start) || map.IsBlocked(destination))
         {
+            Debug.Log("No path");
             return null;
         }
 
+        promiseList.Add(new Node(null, start, 0, Coordinate.Distance(start, destination)));
+
         Coordinate next;
         Node current = null;
-        foreach (Coordinate direction in Coordinate.directions)
-        {
-            next = start + direction;
-            if (!(map.WithinBounds(next)))
-            {
-                continue;
-            }
-
-            if (map.IsOpen(next))
-            {
-                current = new Node(null, next, 0, Coordinate.Distance(start, destination));
-                checkedCoordinates[start] = current;
-            }
-        }
-
-        promiseList.Add(current);
 
         while (promiseList.Count > 0)
         {
@@ -66,20 +53,24 @@ public class Pathfinding
                     continue;
                 }
 
-                //Dont cut corners
-                /*if (map.IsBlocked(next + new Coordinate(direction.X, 0)) || map.IsBlocked(next + new Coordinate(0, direction.Y)))
+                //Dont cross non-traversable corners when going diagonally
+                if (IsDiagonalDirection(direction) && (map.IsBlocked(current.position + new Coordinate(direction.X, 0)) || map.IsBlocked(current.position + new Coordinate(0, direction.Y))))
                 {
                     continue;
-                }*/
+                }
 
                 Node newNode = new Node(current, next, current.cost + 1, current.cost + 1 + Coordinate.Distance(next, destination));
                 promiseList.Add(newNode);
-                //current = newNode;
             }
         }
 
         Debug.Log("No path");
         return null;
+    }
+
+    public static bool IsDiagonalDirection(Coordinate direction)
+    {
+        return (Math.Abs(direction.X) + Math.Abs(direction.Y) == 2);
     }
 }
 

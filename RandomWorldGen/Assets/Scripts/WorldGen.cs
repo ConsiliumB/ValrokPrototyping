@@ -67,7 +67,6 @@ public class WorldGen : MonoBehaviour {
         AddWorldChunksToMap();
 
         //debug
-        PrintMap();
     }
 
     // Use this for initialization
@@ -77,6 +76,9 @@ public class WorldGen : MonoBehaviour {
         InstantiateMap();
         PopulateUtils(roads, roadContainer.transform);
         PopulateUtils(foilage, foilageContainer.transform);
+
+        PrintMap();
+
     }
 
     private void GenerateChunks()
@@ -89,7 +91,7 @@ public class WorldGen : MonoBehaviour {
 
         for (int i = 1; i < chunks.Length; i++)
         {
-            currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(2, 10), UnityEngine.Random.Range(2, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
+            currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(4, 10), UnityEngine.Random.Range(4, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
             chunks[i] = currentChunk;
         }
     }
@@ -100,6 +102,7 @@ public class WorldGen : MonoBehaviour {
         foreach (Chunk chunk in chunks)
         {
             AddWorldChunk(chunk);
+            AddWorldChunkBorder(chunk);
         }
     }
 
@@ -112,6 +115,38 @@ public class WorldGen : MonoBehaviour {
             for (int map_x = chunk.xPos; map_x < chunk.xPos + chunk.chunkWidth; map_x++)
             {
                 worldMap[map_x, map_y] = 1;
+            }
+        }
+    }
+
+    private void AddWorldChunkBorder(Chunk chunk)
+    {
+        int y_max = chunk.yPos + chunk.chunkHeight;
+        int x_max = chunk.xPos + chunk.chunkWidth;
+
+        for (int y = chunk.yPos - 1; y <= y_max; y++)
+        {
+            if (worldMap[x_max, y] == 0)
+            {
+                worldMap[x_max, y] = 2; 
+            }
+
+            if (worldMap[chunk.xPos - 1, y] == 0)
+            {
+                worldMap[chunk.xPos - 1, y] = 2; 
+            }
+        }
+
+        for (int x = chunk.xPos - 1; x <= x_max; x++)
+        {
+            if (worldMap[x, y_max] == 0)
+            {
+                worldMap[x, y_max] = 2;
+            }
+
+            if (worldMap[x, chunk.yPos - 1] == 0)
+            {
+                worldMap[x, chunk.yPos - 1] = 2;
             }
         }
     }
@@ -242,12 +277,15 @@ public class WorldGen : MonoBehaviour {
 
     private void PrintMap()
     {
-        string[] symbols = { "_", "x" };
+        List<char> symbols = new List<char>()
+        {
+            '_','x','o'
+        };
         StringBuilder mapAsString = new StringBuilder();
 
         for (int y = worldMap.GetLength(1) - 1; y >= 0; y--)
         {
-            for (int x = 0; x < worldMap.GetLength(0); x++)
+            for (int x = 0; x < worldMap.GetLength(0) - 1; x++)
             {
                 mapAsString.Append(symbols[worldMap[x, y]]);
             }

@@ -28,14 +28,11 @@ public class TestPathfinding : MonoBehaviour
         {
             throw new MissingComponentException();
         }
-
-        start = new Coordinate(48, 48);
-        end = new Coordinate(64, 49);
-        path = pathfinder.GetPath(globalMap, start, end);
-        if (path == null)
-        {
-            throw new MissingComponentException();
-        }
+        
+        //if (path == null)
+        //{
+        //    throw new MissingComponentException();
+        //}
 
         //print the path
         /*foreach (Coordinate t in path)
@@ -47,18 +44,35 @@ public class TestPathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (counter < path.Count)
+        if (path != null)
         {
-            moveTimer += Time.deltaTime;
-        }
+            if (counter < path.Count)
+            {
+                moveTimer += Time.deltaTime;
+            }
         
-        if (moveTimer >= moveDelay)
-        {
-            Coordinate t = path[counter];
-            Vector2 nextCoordinate = worldGenScript.MapToPixel(t.X, t.Y);
-            transform.position = nextCoordinate;
-            counter++;
-            moveTimer = 0;
+            if (moveTimer >= moveDelay)
+            {
+                Coordinate t = path[counter];
+                Vector2 nextCoordinate = worldGenScript.MapToPixel(t.X, t.Y);
+                transform.position = nextCoordinate;
+                counter++;
+                moveTimer = 0;
+            }
         }
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 150, 50), "Reset path"))
+            ResetPath();
+    }
+
+    public void ResetPath()
+    {
+        start = new Coordinate(45, 45);
+        end = new Coordinate(50, 70);
+        path = pathfinder.GetPath(globalMap, start, end);
+        counter = 0;
     }
 }
