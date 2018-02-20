@@ -38,6 +38,7 @@ public class WorldGen : MonoBehaviour {
     public GameObject floorContainer;
 
     private int[,] worldMap;
+    private NodeMap nodeMap;
     private Chunk[] chunks;
 
 
@@ -65,7 +66,13 @@ public class WorldGen : MonoBehaviour {
         GenerateRoads();
 
         AddWorldChunksToMap();
+        nodeMap.GenerateNodeMap();
 
+        Debug.Log(MapToPixel(66, 77));
+        Debug.Log(PixelToMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
+        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
+        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f));
+        Debug.Log(NodeMapToMap(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f)));
         //debug
     }
 
@@ -83,7 +90,7 @@ public class WorldGen : MonoBehaviour {
 
     private void GenerateChunks()
     {
-        chunks = new Chunk[20];
+        chunks = new Chunk[100];
         Chunk currentChunk = new Chunk(45, 45, 10, 10);
         
 
@@ -114,7 +121,22 @@ public class WorldGen : MonoBehaviour {
         {
             for (int map_x = chunk.xPos; map_x < chunk.xPos + chunk.chunkWidth; map_x++)
             {
-                worldMap[map_x, map_y] = 1;
+                if (worldMap[map_x, map_y] != 1)
+                {
+                    worldMap[map_x, map_y] = 1;
+                    AddNodeGrid(new Coordinate(map_x, map_y));
+                }
+            }
+        }
+    }
+
+    private void AddNodeGrid(Coordinate coordinate)
+    {
+        for (int x = 0; x < 5; x++)
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                nodeMap.AddNode(coordinate * 4 + new Coordinate(x, y));
             }
         }
     }
@@ -182,7 +204,7 @@ public class WorldGen : MonoBehaviour {
             {
                 //tileVariation = CalculateTileSum(map_x, map_y);
                 tileType = worldMap[x, y];
-                if (tileType >= 0)
+                if (tileType > 0)
                 {
                     tileObject = GetMapTile(tileType);
                     position = MapToPixel(x, y);
@@ -260,9 +282,22 @@ public class WorldGen : MonoBehaviour {
         return tileSum;
     }
 
-    public void PixelToMap()
+    /*
+     * Convert a screen position to a map coordinate.
+     * Note: int casting should be replaced
+     */
+    public Coordinate PixelToMap(float sx, float sy)
     {
-        throw new NotImplementedException();
+        int y = (int)((sy + worldHeight * tileHeight) / tileHeight - sx / tileWidth) / 2;
+        int x = (int)(sx / tileWidth + (sy + worldHeight * tileHeight) / tileHeight) / 2;
+        return new Coordinate(x, y);
+    }
+
+    public Coordinate PixelToNodeMap(float sx, float sy)
+    {
+        int y = (int)(((sy + worldHeight * tileHeight) / tileHeight - sx / tileWidth) * 2);
+        int x = (int)((sx / tileWidth + (sy + worldHeight * tileHeight) / tileHeight) * 2);
+        return new Coordinate(x, y);
     }
 
     public Vector2 MapToPixel(int x, int y)
@@ -270,9 +305,15 @@ public class WorldGen : MonoBehaviour {
         return new Vector2((x - y) * tileWidth, (x + y) * tileHeight - (worldHeight * tileHeight));
     }
 
+    public Coordinate NodeMapToMap(Coordinate position)
+    {
+        return new Coordinate(Mathf.FloorToInt(position.X / 4), Mathf.FloorToInt(position.Y / 4));
+    }
+
     private void GenerateMap()
     {
         worldMap = new int[worldWidth, worldHeight];
+        nodeMap = new NodeMap();
     }
 
     private void PrintMap()
@@ -297,7 +338,7 @@ public class WorldGen : MonoBehaviour {
 
     public Map GetMap()
     {
-        Map tmp = new Map(worldMap);
+        Map tmp = new GridMap(worldMap);
         return tmp;
     }
 

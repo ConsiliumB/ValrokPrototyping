@@ -1,6 +1,7 @@
 ﻿public class Coordinate
 {
-    private readonly int x, y;
+    public int Y { get; private set; }
+    public int X { get; private set; }
 
     public static readonly Coordinate North = new Coordinate(0, 1);
     public static readonly Coordinate East = new Coordinate(1, 0);
@@ -13,29 +14,19 @@
 
     public Coordinate(int x, int y)
     {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int X
-    {
-        get { return x; }
-    }
-
-    public int Y
-    {
-        get { return y; }
+        X = x;
+        Y = y;
     }
 
     public static int Distance(Coordinate c1, Coordinate c2)
     {
         //NB! This distance calculation doesnt reflect the shorter distance of diagonal movement
-        return System.Math.Abs(c1.x - c2.x) + System.Math.Abs(c1.y - c2.y);
+        return System.Math.Abs(c1.X - c2.X) + System.Math.Abs(c1.Y - c2.Y);
     }
 
     public bool Equals(Coordinate other)
     {
-        return x == other.x && y == other.y;
+        return X == other.X && Y == other.Y;
     }
 
     public override bool Equals(object other)
@@ -45,7 +36,7 @@
 
     public override string ToString()
     {
-        return string.Format("{0},{1}", x, y);
+        return string.Format("{0},{1}", X, Y);
     }
 
     public override int GetHashCode()
@@ -58,17 +49,22 @@
 
     public static Coordinate operator +(Coordinate c1, Coordinate c2)
     {
-        return new Coordinate(c1.x + c2.x, c1.y + c2.y);
+        return new Coordinate(c1.X + c2.X, c1.Y + c2.Y);
     }
 
     public static Coordinate operator -(Coordinate c1, Coordinate c2)
     {
-        return new Coordinate(c1.x - c2.x, c1.y - c2.y);
+        return new Coordinate(c1.X - c2.X, c1.Y - c2.Y);
+    }
+
+    public static Coordinate operator *(Coordinate c1, int i1)
+    {
+        return new Coordinate(c1.X * i1, c1.Y * i1);
     }
 
     public static bool operator ==(Coordinate c1, Coordinate c2)
     {
-        return c1.x == c2.x && c1.y == c2.y;
+        return c1.X == c2.X && c1.Y == c2.Y;
     }
 
     public static bool operator !=(Coordinate c1, Coordinate c2)

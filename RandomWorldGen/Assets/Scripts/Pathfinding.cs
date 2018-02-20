@@ -81,7 +81,7 @@ public class Node
     public int cost;
     public int promise;
 
-    public Node(Node parent, Coordinate position, int cost, int promise)
+    public Node(Node parent, Coordinate position, int cost = 0, int promise = 0)
     {
         this.parent = parent;
         this.position = position;
