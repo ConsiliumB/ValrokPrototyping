@@ -53,38 +53,45 @@ public class WorldGen : MonoBehaviour {
         tree_tile_dead = 6,
     }
 
-    // Use this for initialization
-    void Start()
+    private void Awake()
     {
         tileWidth = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.x;
         tileHeight = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.y;
 
         UnityEngine.Random.InitState(1337);
 
-        GenerateChunks();
         GenerateMap();
+        GenerateChunks();
         GenerateRoads();
 
         AddWorldChunksToMap();
 
-        PrintMap();
+        //debug
+    }
 
+    // Use this for initialization
+    void Start()
+    {
+        //Create gamobjects etc.
         InstantiateMap();
         PopulateUtils(roads, roadContainer.transform);
         PopulateUtils(foilage, foilageContainer.transform);
+
+        PrintMap();
+
     }
 
     private void GenerateChunks()
     {
         chunks = new Chunk[20];
-        Chunk currentChunk = new Chunk(50, 50, 10, 10);
+        Chunk currentChunk = new Chunk(45, 45, 10, 10);
         
 
         chunks[0] = currentChunk;
 
         for (int i = 1; i < chunks.Length; i++)
         {
-            currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(2, 10), UnityEngine.Random.Range(2, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
+            currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(4, 10), UnityEngine.Random.Range(4, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
             chunks[i] = currentChunk;
         }
     }
@@ -95,6 +102,7 @@ public class WorldGen : MonoBehaviour {
         foreach (Chunk chunk in chunks)
         {
             AddWorldChunk(chunk);
+            AddWorldChunkBorder(chunk);
         }
     }
 
@@ -106,7 +114,39 @@ public class WorldGen : MonoBehaviour {
         {
             for (int map_x = chunk.xPos; map_x < chunk.xPos + chunk.chunkWidth; map_x++)
             {
-                worldMap[map_y, map_x] = 1;
+                worldMap[map_x, map_y] = 1;
+            }
+        }
+    }
+
+    private void AddWorldChunkBorder(Chunk chunk)
+    {
+        int y_max = chunk.yPos + chunk.chunkHeight;
+        int x_max = chunk.xPos + chunk.chunkWidth;
+
+        for (int y = chunk.yPos - 1; y <= y_max; y++)
+        {
+            if (worldMap[x_max, y] == 0)
+            {
+                worldMap[x_max, y] = 2; 
+            }
+
+            if (worldMap[chunk.xPos - 1, y] == 0)
+            {
+                worldMap[chunk.xPos - 1, y] = 2; 
+            }
+        }
+
+        for (int x = chunk.xPos - 1; x <= x_max; x++)
+        {
+            if (worldMap[x, y_max] == 0)
+            {
+                worldMap[x, y_max] = 2;
+            }
+
+            if (worldMap[x, chunk.yPos - 1] == 0)
+            {
+                worldMap[x, chunk.yPos - 1] = 2;
             }
         }
     }
@@ -116,7 +156,7 @@ public class WorldGen : MonoBehaviour {
         Vector2 position;
         for (int y = 0; y < worldMap.GetLength(0); y++)
         {
-            position = MapToPixel(5, y);
+            position = MapToPixel(50, y);
             roads.Add(new Util(position.x, position.y, Tiles.road_tile));
         }
     }
@@ -136,16 +176,16 @@ public class WorldGen : MonoBehaviour {
         Vector2 position;
         GameObject tileObject;
 
-        for (int map_y = 0; map_y < worldMap.GetLength(0); map_y++)
+        for (int x = 0; x < worldMap.GetLength(0); x++)
         {
-            for (int map_x = 0; map_x < worldMap.GetLength(1); map_x++)
+            for (int y = 0; y < worldMap.GetLength(1); y++)
             {
                 //tileVariation = CalculateTileSum(map_x, map_y);
-                tileType = worldMap[map_y, map_x];
+                tileType = worldMap[x, y];
                 if (tileType >= 0)
                 {
                     tileObject = GetMapTile(tileType);
-                    position = MapToPixel(map_x, map_y);
+                    position = MapToPixel(x, y);
 
                     SpawnObject(tileObject, position, floorContainer.transform);
                 }
@@ -220,12 +260,12 @@ public class WorldGen : MonoBehaviour {
         return tileSum;
     }
 
-    private void PixelToMap()
+    public void PixelToMap()
     {
         throw new NotImplementedException();
     }
 
-    private Vector2 MapToPixel(int x, int y)
+    public Vector2 MapToPixel(int x, int y)
     {
         return new Vector2((x - y) * tileWidth, (x + y) * tileHeight - (worldHeight * tileHeight));
     }
@@ -237,16 +277,28 @@ public class WorldGen : MonoBehaviour {
 
     private void PrintMap()
     {
-        StringBuilder mapAsString = new StringBuilder();
-        for (int i = worldMap.GetLength(1) - 1; i >= 0; i--)
+        List<char> symbols = new List<char>()
         {
-            for (int j = 0; j < worldMap.GetLength(0); j++)
+            '_','x','o'
+        };
+        StringBuilder mapAsString = new StringBuilder();
+
+        for (int y = worldMap.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < worldMap.GetLength(0) - 1; x++)
             {
-                mapAsString.Append(worldMap[i, j]);
+                mapAsString.Append(symbols[worldMap[x, y]]);
             }
             mapAsString.Append("\n");
         }
 
         Debug.Log(mapAsString.ToString());
     }
+
+    public Map GetMap()
+    {
+        Map tmp = new Map(worldMap);
+        return tmp;
+    }
+
 }
