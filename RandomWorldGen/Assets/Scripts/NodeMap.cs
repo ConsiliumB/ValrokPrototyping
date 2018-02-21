@@ -12,7 +12,7 @@ public class NodeMap : Map
 
     public MapNode GetNode(Coordinate position)
     {
-        return map[position];
+        return map.ContainsKey(position) ? map[position] : null;
     }
 
     //Adds node at given position
@@ -60,7 +60,7 @@ public class NodeMap : Map
     //Returns true if the node exists and has a walkable tile(tile > 0)
     public bool IsOpen(Coordinate coordinate)
     {
-        return map[coordinate] != null && map[coordinate].Tile > 0;
+        return map.ContainsKey(coordinate) && map[coordinate].Tile > 0;
     }
     
     public bool IsBlocked(int x, int y)
@@ -75,7 +75,7 @@ public class NodeMap : Map
 
     public bool WithinBounds(Coordinate coordinate)
     {
-        return map[coordinate] != null;
+        return map.ContainsKey(coordinate);
     }
 }
 

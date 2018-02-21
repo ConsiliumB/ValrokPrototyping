@@ -38,7 +38,7 @@ public class WorldGen : MonoBehaviour {
     public GameObject floorContainer;
 
     private int[,] worldMap;
-    private NodeMap nodeMap;
+    public NodeMap nodeMap;
     private Chunk[] chunks;
 
 
@@ -67,13 +67,6 @@ public class WorldGen : MonoBehaviour {
 
         AddWorldChunksToMap();
         nodeMap.GenerateNodeMap();
-
-        Debug.Log(MapToPixel(66, 77));
-        Debug.Log(PixelToMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
-        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
-        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f));
-        Debug.Log(NodeMapToMap(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f)));
-        //debug
     }
 
     // Use this for initialization
@@ -150,12 +143,14 @@ public class WorldGen : MonoBehaviour {
         {
             if (worldMap[x_max, y] == 0)
             {
-                worldMap[x_max, y] = 2; 
+                worldMap[x_max, y] = 2;
+                //AddNodeGrid(new Coordinate(x_max, y));
             }
 
             if (worldMap[chunk.xPos - 1, y] == 0)
             {
-                worldMap[chunk.xPos - 1, y] = 2; 
+                worldMap[chunk.xPos - 1, y] = 2;
+                //AddNodeGrid(new Coordinate(chunk.xPos - 1, y));
             }
         }
 
@@ -164,11 +159,13 @@ public class WorldGen : MonoBehaviour {
             if (worldMap[x, y_max] == 0)
             {
                 worldMap[x, y_max] = 2;
+                //AddNodeGrid(new Coordinate(x, y_max));
             }
 
             if (worldMap[x, chunk.yPos - 1] == 0)
             {
                 worldMap[x, chunk.yPos - 1] = 2;
+                //AddNodeGrid(new Coordinate(x, chunk.yPos - 1));
             }
         }
     }
@@ -308,6 +305,11 @@ public class WorldGen : MonoBehaviour {
     public Coordinate NodeMapToMap(Coordinate position)
     {
         return new Coordinate(Mathf.FloorToInt(position.X / 4), Mathf.FloorToInt(position.Y / 4));
+    }
+
+    public Vector2 NodeMapToPixel(Coordinate position)
+    {
+        return new Vector2((position.X - position.Y) * tileWidth / 4, (position.X + position.Y) * tileHeight / 4 - (worldHeight * tileHeight));
     }
 
     private void GenerateMap()
