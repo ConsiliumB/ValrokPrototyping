@@ -78,26 +78,22 @@ public class TestPathfinding : MonoBehaviour
             FindPathUsingNode();
     }
 
+    private void GetPathStartAndEnd()
+    {
+        start = worldGenScript.PixelToNodeMap(from.position.x, from.position.y);
+        end = worldGenScript.PixelToNodeMap(to.position.x, to.position.y);
+    }
+
     public void FindPath()
     {
         GetPathStartAndEnd();
 
         path = pathfinder.GetPath(nodeMap, start, end);
 
-        
-        foreach (var item in path)
-        {
-            var pos = worldGenScript.NodeMapToPixel(item);
-            Instantiate(road, pos, Quaternion.identity).transform.parent = pathContainer.transform;
-        }
-        
-        counter = 0;
-    }
 
-    private void GetPathStartAndEnd()
-    {
-        start = worldGenScript.PixelToNodeMap(from.position.x, from.position.y);
-        end = worldGenScript.PixelToNodeMap(to.position.x, to.position.y);
+        ShowPath();
+
+        counter = 0;
     }
 
     public void FindPathUsingNode()
@@ -106,12 +102,18 @@ public class TestPathfinding : MonoBehaviour
 
         path = pathfinder.GetNodePath((NodeMap)nodeMap, start, end);
 
+        ShowPath();
+
+        counter = 0;
+    }
+
+    private void ShowPath()
+    {
+        if (path == null) return;
         foreach (var item in path)
         {
             var pos = worldGenScript.NodeMapToPixel(item);
             Instantiate(road, pos, Quaternion.identity).transform.parent = pathContainer.transform;
         }
-
-        counter = 0;
     }
 }

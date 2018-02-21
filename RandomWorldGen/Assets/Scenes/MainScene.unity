@@ -122,7 +122,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_LocalPosition.y
@@ -367,8 +367,7 @@ MonoBehaviour:
   - xpos: 0
     ypos: 6
     tile: 3
-  worldWidth: 200
-  worldHeight: 200
+  numberOfRooms: 1000
   foilageContainer: {fileID: 968060698}
   roadContainer: {fileID: 1186591652}
   floorContainer: {fileID: 1727967148}
@@ -425,11 +424,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -50
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -100
+      value: 280
       objectReference: {fileID: 0}
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_LocalPosition.z
