@@ -305,6 +305,11 @@ public class WorldGen : MonoBehaviour {
         return new Vector2((x - y) * tileWidth, (x + y) * tileHeight - (worldHeight * tileHeight));
     }
 
+    public Vector2 MapToPixel(Coordinate t)
+    {
+        return MapToPixel(t.X, t.Y);
+    }
+
     public Coordinate NodeMapToMap(Coordinate position)
     {
         return new Coordinate(Mathf.FloorToInt(position.X / 4), Mathf.FloorToInt(position.Y / 4));
