@@ -3,24 +3,32 @@ using System.Collections.Generic;
 
 public class NodeMap : Map
 {
-    private Dictionary<Coordinate, MapNode> map;
+    public Dictionary<Coordinate, MapNode> Map { get; private set; }
 
     public NodeMap()
     {
-        this.map = new Dictionary<Coordinate, MapNode>();
+        this.Map = new Dictionary<Coordinate, MapNode>();
     }
 
     public MapNode GetNode(Coordinate position)
     {
-        return map[position];
+        return Map.ContainsKey(position) ? Map[position] : null;
     }
 
     //Adds node at given position
     public void AddNode(Coordinate position)
     {
-        if (!map.ContainsKey(position))
+        if (!Map.ContainsKey(position))
         {
-            map[position] = new MapNode(position);
+            Map[position] = new MapNode(position);
+        }
+    }
+
+    public void AddNode(Coordinate position, int tile)
+    {
+        if (!Map.ContainsKey(position))
+        {
+            Map[position] = new MapNode(position, tile);
         }
     }
 
@@ -29,7 +37,7 @@ public class NodeMap : Map
     public void GenerateNodeMap()
     {
         //Loop through every node in the map
-        foreach (MapNode node in map.Values)
+        foreach (MapNode node in Map.Values)
         {
             LinkWithNeighbours(node);
         }
@@ -45,7 +53,7 @@ public class NodeMap : Map
             //Check if node has a neighbour in given direction
             neighbourCoordinate = node.Position + direction;
 
-            if (map.ContainsKey(neighbourCoordinate))
+            if (Map.ContainsKey(neighbourCoordinate))
             {
                 node.AddNeighbour(GetNode(neighbourCoordinate));
             }
@@ -60,7 +68,7 @@ public class NodeMap : Map
     //Returns true if the node exists and has a walkable tile(tile > 0)
     public bool IsOpen(Coordinate coordinate)
     {
-        return map[coordinate] != null && map[coordinate].Tile > 0;
+        return Map.ContainsKey(coordinate) && Map[coordinate].Tile > 0;
     }
     
     public bool IsBlocked(int x, int y)
@@ -75,7 +83,7 @@ public class NodeMap : Map
 
     public bool WithinBounds(Coordinate coordinate)
     {
-        return map[coordinate] != null;
+        return Map.ContainsKey(coordinate);
     }
 }
 

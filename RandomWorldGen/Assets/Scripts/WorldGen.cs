@@ -27,8 +27,7 @@ public class WorldGen : MonoBehaviour {
     public List<Util> roads;
 
     [Space]
-    public int worldWidth;
-    public int worldHeight;
+    public int numberOfRooms;
 
     private float tileWidth;
     private float tileHeight;
@@ -38,7 +37,8 @@ public class WorldGen : MonoBehaviour {
     public GameObject floorContainer;
 
     private int[,] worldMap;
-    private NodeMap nodeMap;
+    private NodeMap world;
+    public NodeMap nodeMap;
     private Chunk[] chunks;
 
 
@@ -59,21 +59,14 @@ public class WorldGen : MonoBehaviour {
         tileWidth = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.x;
         tileHeight = tiles[0].GetComponent<SpriteRenderer>().sprite.bounds.extents.y;
 
-        UnityEngine.Random.InitState(1337);
+        UnityEngine.Random.InitState(42);
 
         GenerateMap();
         GenerateChunks();
-        GenerateRoads();
+        //GenerateRoads();
 
         AddWorldChunksToMap();
         nodeMap.GenerateNodeMap();
-
-        Debug.Log(MapToPixel(66, 77));
-        Debug.Log(PixelToMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
-        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y));
-        Debug.Log(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f));
-        Debug.Log(NodeMapToMap(PixelToNodeMap(MapToPixel(66, 77).x, MapToPixel(66, 77).y - 0.75f)));
-        //debug
     }
 
     // Use this for initialization
@@ -83,15 +76,12 @@ public class WorldGen : MonoBehaviour {
         InstantiateMap();
         PopulateUtils(roads, roadContainer.transform);
         PopulateUtils(foilage, foilageContainer.transform);
-
-        PrintMap();
-
     }
 
     private void GenerateChunks()
     {
-        chunks = new Chunk[100];
-        Chunk currentChunk = new Chunk(45, 45, 10, 10);
+        chunks = new Chunk[numberOfRooms];
+        Chunk currentChunk = new Chunk(-5, -5, 10, 10);
         
 
         chunks[0] = currentChunk;
@@ -105,10 +95,14 @@ public class WorldGen : MonoBehaviour {
 
     private void AddWorldChunksToMap()
     {
-        //Seed should determine locations/types/shapes
         foreach (Chunk chunk in chunks)
         {
             AddWorldChunk(chunk);
+        }
+
+        //Add border to each room without overwriting. Add within previous loop to see room edges
+        foreach (Chunk chunk in chunks)
+        {
             AddWorldChunkBorder(chunk);
         }
     }
@@ -116,15 +110,16 @@ public class WorldGen : MonoBehaviour {
     private void AddWorldChunk(Chunk chunk)
     {
         //Also need to add metadata/mob spawns/foilage etc from the patch
-
+        Coordinate position;
         for (int map_y = chunk.yPos; map_y < chunk.yPos + chunk.chunkHeight; map_y++)
         {
             for (int map_x = chunk.xPos; map_x < chunk.xPos + chunk.chunkWidth; map_x++)
             {
-                if (worldMap[map_x, map_y] != 1)
+                position = new Coordinate(map_x, map_y);
+                if (world.IsBlocked(position))
                 {
-                    worldMap[map_x, map_y] = 1;
-                    AddNodeGrid(new Coordinate(map_x, map_y));
+                    world.AddNode(position);
+                    AddNodeGrid(position);
                 }
             }
         }
@@ -146,30 +141,26 @@ public class WorldGen : MonoBehaviour {
         int y_max = chunk.yPos + chunk.chunkHeight;
         int x_max = chunk.xPos + chunk.chunkWidth;
 
+        //Run AddNodeGrid(position) on all 4 directions if border is traversable
+
+
+        Coordinate position;
         for (int y = chunk.yPos - 1; y <= y_max; y++)
         {
-            if (worldMap[x_max, y] == 0)
-            {
-                worldMap[x_max, y] = 2; 
-            }
+            position = new Coordinate(x_max, y);
+            world.AddNode(position, 2);
 
-            if (worldMap[chunk.xPos - 1, y] == 0)
-            {
-                worldMap[chunk.xPos - 1, y] = 2; 
-            }
+            position = new Coordinate(chunk.xPos - 1, y);
+            world.AddNode(position, 2);
         }
 
         for (int x = chunk.xPos - 1; x <= x_max; x++)
         {
-            if (worldMap[x, y_max] == 0)
-            {
-                worldMap[x, y_max] = 2;
-            }
+            position = new Coordinate(x, y_max);
+            world.AddNode(position, 2);
 
-            if (worldMap[x, chunk.yPos - 1] == 0)
-            {
-                worldMap[x, chunk.yPos - 1] = 2;
-            }
+            position = new Coordinate(x, chunk.yPos - 1);
+            world.AddNode(position, 2);
         }
     }
 
@@ -193,24 +184,17 @@ public class WorldGen : MonoBehaviour {
 
     private void InstantiateMap()
     {
-        int tileType;
-        //int tileVariation;
         Vector2 position;
         GameObject tileObject;
 
-        for (int x = 0; x < worldMap.GetLength(0); x++)
+        foreach (var node in world.Map.Values)
         {
-            for (int y = 0; y < worldMap.GetLength(1); y++)
+            if (node.Tile > 0)
             {
-                //tileVariation = CalculateTileSum(map_x, map_y);
-                tileType = worldMap[x, y];
-                if (tileType > 0)
-                {
-                    tileObject = GetMapTile(tileType);
-                    position = MapToPixel(x, y);
+                tileObject = GetMapTile(node.Tile);
+                position = MapToPixel(node.Position.X, node.Position.Y);
 
-                    SpawnObject(tileObject, position, floorContainer.transform);
-                }
+                SpawnObject(tileObject, position, floorContainer.transform);
             }
         }
     }
@@ -288,21 +272,21 @@ public class WorldGen : MonoBehaviour {
      */
     public Coordinate PixelToMap(float sx, float sy)
     {
-        int y = (int)((sy + worldHeight * tileHeight) / tileHeight - sx / tileWidth) / 2;
-        int x = (int)(sx / tileWidth + (sy + worldHeight * tileHeight) / tileHeight) / 2;
+        int y = (int)((sy ) / tileHeight - sx / tileWidth) / 2;
+        int x = (int)(sx / tileWidth + (sy ) / tileHeight) / 2;
         return new Coordinate(x, y);
     }
 
     public Coordinate PixelToNodeMap(float sx, float sy)
     {
-        int y = (int)(((sy + worldHeight * tileHeight) / tileHeight - sx / tileWidth) * 2);
-        int x = (int)((sx / tileWidth + (sy + worldHeight * tileHeight) / tileHeight) * 2);
+        int y = (int)((sy / tileHeight - sx / tileWidth) * 2);
+        int x = (int)((sx / tileWidth + sy / tileHeight) * 2);
         return new Coordinate(x, y);
     }
 
     public Vector2 MapToPixel(int x, int y)
     {
-        return new Vector2((x - y) * tileWidth, (x + y) * tileHeight - (worldHeight * tileHeight));
+        return new Vector2((x - y) * tileWidth, (x + y) * tileHeight);
     }
 
     public Vector2 MapToPixel(Coordinate t)
@@ -315,30 +299,15 @@ public class WorldGen : MonoBehaviour {
         return new Coordinate(Mathf.FloorToInt(position.X / 4), Mathf.FloorToInt(position.Y / 4));
     }
 
-    private void GenerateMap()
+    public Vector2 NodeMapToPixel(Coordinate position)
     {
-        worldMap = new int[worldWidth, worldHeight];
-        nodeMap = new NodeMap();
+        return new Vector2((position.X - position.Y) * tileWidth / 4, (position.X + position.Y) * tileHeight / 4);
     }
 
-    private void PrintMap()
+    private void GenerateMap()
     {
-        List<char> symbols = new List<char>()
-        {
-            '_','x','o'
-        };
-        StringBuilder mapAsString = new StringBuilder();
-
-        for (int y = worldMap.GetLength(1) - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < worldMap.GetLength(0) - 1; x++)
-            {
-                mapAsString.Append(symbols[worldMap[x, y]]);
-            }
-            mapAsString.Append("\n");
-        }
-
-        Debug.Log(mapAsString.ToString());
+        world = new NodeMap();
+        nodeMap = new NodeMap();
     }
 
     public Map GetMap()
