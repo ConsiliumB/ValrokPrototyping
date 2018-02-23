@@ -291,7 +291,7 @@ public class WorldGen : MonoBehaviour {
 
     public Vector2 MapToPixel(Coordinate t)
     {
-        return MapToPixel(t.X, t.Y);
+        return new Vector2((t.X - t.Y) * tileWidth, (t.X + t.Y) * tileHeight);
     }
 
     public Coordinate NodeMapToMap(Coordinate position)
@@ -311,9 +311,8 @@ public class WorldGen : MonoBehaviour {
     }
 
     public Map GetMap()
-    {
-        Map tmp = new GridMap(worldMap);
-        return tmp;
+    { 
+        return new GridMap(worldMap);
     }
 
 }

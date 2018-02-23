@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1069809117658104, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_Name
@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 1276745214}
   - component: {fileID: 1276745213}
   - component: {fileID: 1276745212}
+  - component: {fileID: 1276745216}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -300,6 +301,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1276745216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1276745211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c70c8f29ba1751646963c2a01f1ddf17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smooth: 0.039
 --- !u!1 &1647013279
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +380,7 @@ MonoBehaviour:
   - xpos: 0
     ypos: 6
     tile: 3
-  numberOfRooms: 1000
+  numberOfRooms: 100
   foilageContainer: {fileID: 968060698}
   roadContainer: {fileID: 1186591652}
   floorContainer: {fileID: 1727967148}
@@ -385,7 +398,7 @@ Transform:
   - {fileID: 1727967149}
   - {fileID: 1186591653}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1727967148
 GameObject:
@@ -452,7 +465,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4130854255432134, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1069809117658104, guid: 993cfa50ebf0962448f147b1dc822273, type: 2}
       propertyPath: m_Name
@@ -515,7 +528,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 417188187
-  m_SortingLayer: 4
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 645267e42632af447a14fd058f0ce2c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -538,7 +551,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1987622058
 MonoBehaviour:
@@ -555,3 +568,48 @@ MonoBehaviour:
   from: {fileID: 585715042}
   to: {fileID: 1956307730}
   road: {fileID: 1410375877444096, guid: e993c781064ceaa44adaa02ede69641b, type: 2}
+--- !u!1 &2046992009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2046992011}
+  - component: {fileID: 2046992010}
+  m_Layer: 0
+  m_Name: Snake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2046992010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046992009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326b67495c1602d46b714ea97d0d0a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayMove: 0.3
+  snakeHead: {fileID: 1656957170374734, guid: 1d7a6a19ac22ecf4da1c26117735f620, type: 2}
+  snakeBody: {fileID: 1585633854534058, guid: f1097d05013fe93469ddff6cc8a26019, type: 2}
+  worldgenerator: {fileID: 1647013280}
+  body: []
+--- !u!4 &2046992011
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046992009}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.250348, y: 10.743799, z: -0.453125}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
