@@ -17,10 +17,15 @@ public class CompanionController : MonoBehaviour {
     private Vector2 directionToPlayer;
     private List<Coordinate> path;
     private bool moving;
+    private Animator animator;
     private new Rigidbody2D rigidbody;
+
+    private float prevDirX;
+    private float prevDirY;
 
     // Use this for initialization
     void Start () {
+        animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
         worldMap = world.GetComponent<WorldGen>().nodeMap;
     }
@@ -85,11 +90,43 @@ public class CompanionController : MonoBehaviour {
             {
                 interpolation += Time.smoothDeltaTime / 0.1f;
                 interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, interpolation);
+                UpdateAnimation(interpolatedMovement - (Vector2)transform.position);
                 rigidbody.MovePosition(interpolatedMovement);
                 yield return null;
             }
-            yield return null;
         }
+        UpdateAnimation(Vector2.zero);
+
         moving = false;
+    }
+
+    private void UpdateAnimation(Vector2 heading)
+    {
+        if (heading.x == 0f && heading.y == 0f)
+        {
+            animator.SetFloat("LastDirX", prevDirX);
+            animator.SetFloat("LastDirY", prevDirY);
+
+            animator.SetBool("Moving", false);
+        }
+        else
+        {
+            prevDirX = heading.x;
+            prevDirY = heading.y;
+
+            animator.SetBool("Moving", true);
+        }
+
+        if (heading.x > 0)
+        {
+            transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+        }
+        else if (heading.x < 0)
+        {
+            transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+        }
+
+        animator.SetFloat("DirX", heading.x);
+        animator.SetFloat("DirY", heading.y);
     }
 }
