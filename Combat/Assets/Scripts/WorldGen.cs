@@ -58,6 +58,8 @@ public class WorldGen : MonoBehaviour {
 
         AddWorldChunksToMap();
         nodeMap.GenerateNodeMap();
+        Pathfinding.Graph = nodeMap;
+
     }
 
     // Use this for initialization
@@ -249,5 +251,6 @@ public class WorldGen : MonoBehaviour {
     {
         World = new NodeMap();
         nodeMap = new NodeMap();
+
     }
 }

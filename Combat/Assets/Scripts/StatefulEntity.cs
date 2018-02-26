@@ -4,13 +4,9 @@ using UnityEngine;
 
 public abstract class StatefulEntity : MonoBehaviour {
 
-    public State currentState;
+    public IState currentState;
 
-	private void Update () {
-        currentState.Execute();
-	}
-
-    public void ChangeState(State newState)
+    public void ChangeState(IState newState)
     {
         if (currentState != null)
         {

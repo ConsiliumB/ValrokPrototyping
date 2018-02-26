@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompanionController : MonoBehaviour {
+public class CompanionController : StatefulEntity {
 
     public GameObject player;
 
@@ -13,10 +13,10 @@ public class CompanionController : MonoBehaviour {
     public GameObject world;
     public Map worldMap;
 
-    private Vector2 headingToPlayer;
+    public Vector2 headingToPlayer;
     private Vector2 directionToPlayer;
     private List<Coordinate> path;
-    private bool moving;
+    public bool moving;
     private Animator animator;
     private new Rigidbody2D rigidbody;
 
@@ -28,29 +28,15 @@ public class CompanionController : MonoBehaviour {
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
         worldMap = world.GetComponent<WorldGen>().nodeMap;
+        ChangeState(new BearCompanionFollowState(this));
     }
 	
 	// Update is called once per frame
 	void Update () {
-        headingToPlayer = player.transform.position - gameObject.transform.position;
-        //directionToPlayer = headingToPlayer / headingToPlayer.magnitude;
-
-        if (headingToPlayer.sqrMagnitude > proximityLimit * proximityLimit)
-        {
-            if (headingToPlayer.sqrMagnitude > distanceLimit * distanceLimit)
-            {
-                TeleportToPlayer();
-                StopCoroutine("MoveTowardsPlayer");
-                moving = false;
-            }
-            else
-            {
-                StartCoroutine("MoveTowardsPlayer");
-            }
-        }
+        currentState.Execute();
     }
 
-    private void TeleportToPlayer()
+    public void TeleportToPlayer()
     {
         rigidbody.MovePosition(player.transform.position);
     }
@@ -66,7 +52,7 @@ public class CompanionController : MonoBehaviour {
         Debug.Log(playerposition);
         Debug.Log(position);
 
-        path = Pathfinding.GetNodePath((NodeMap)worldMap, position, playerposition);
+        path = Pathfinding.GetPath(position, playerposition);
 
         if (path == null) yield break;
         path.Remove(path[path.Count - 1]);
