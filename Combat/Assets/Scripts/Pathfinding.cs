@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Pathfinding
 {
+    public static NodeMap Graph { get; internal set; }
+
     public static List<Coordinate> GetPath(Map map, Coordinate start, Coordinate destination)
     {
         var checkedCoordinates = new Dictionary<Coordinate, Node>();
@@ -136,6 +138,11 @@ public static class Pathfinding
 
         Debug.Log("No path");
         return null;
+    }
+
+    public static List<Coordinate> GetPath(Coordinate start, Coordinate destination)
+    {
+        return GetNodePath(Graph, start, destination);
     }
 
     public static bool IsDiagonalDirection(Coordinate direction)
