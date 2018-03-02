@@ -1,4 +1,6 @@
-﻿public class Coordinate
+﻿using UnityEngine;
+
+public class Coordinate
 {
     public int Y { get; private set; }
     public int X { get; private set; }
@@ -22,6 +24,11 @@
     {
         //NB! This distance calculation doesnt reflect the shorter distance of diagonal movement
         return System.Math.Abs(c1.X - c2.X) + System.Math.Abs(c1.Y - c2.Y);
+    }
+
+    public static int DistanceSquared(Coordinate c1, Coordinate c2)
+    {
+        return (int)(Mathf.Pow(Mathf.Abs(c1.X - c2.X),2) + Mathf.Pow(Mathf.Abs(c1.Y - c2.Y),2));
     }
 
     public bool Equals(Coordinate other)
@@ -64,6 +71,15 @@
 
     public static bool operator ==(Coordinate c1, Coordinate c2)
     {
+        //Null-comparisons.
+        if (ReferenceEquals(c1, c2))
+        {
+            return true;
+        }
+        if (ReferenceEquals(c1, null) || ReferenceEquals(c2, null))
+        {
+            return false;
+        }
         return c1.X == c2.X && c1.Y == c2.Y;
     }
 

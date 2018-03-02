@@ -15,78 +15,34 @@ public class CompanionController : StatefulEntity {
 
     public Vector2 headingToPlayer;
     private Vector2 directionToPlayer;
-    private List<Coordinate> path;
-    public bool moving;
+    public bool Moving { get; set; }
     private Animator animator;
-    private new Rigidbody2D rigidbody;
+    public new Rigidbody2D rigidbody;
+    public CompanionMovement Movement;
 
     private float prevDirX;
     private float prevDirY;
 
-    // Use this for initialization
-    void Start () {
+    public void Awake()
+    {
         animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        worldMap = world.GetComponent<WorldGen>().nodeMap;
-        ChangeState(new BearCompanionFollowState(this));
+        Pathfinding.Companion = this;
+    }
+
+    void Start () {
     }
 	
 	// Update is called once per frame
 	void Update () {
+        if (currentState == null)
+        {
+            ChangeState(new CompanionFollowState(this));
+        }
         currentState.Execute();
     }
+    
 
-    public void TeleportToPlayer()
-    {
-        rigidbody.MovePosition(player.transform.position);
-    }
-
-    IEnumerator MoveTowardsPlayer()
-    {
-        if (moving)
-        {
-            yield break;
-        }
-        var playerposition = WorldGen.PixelToNodeMap(player.transform.position.x, player.transform.position.y);
-        var position = WorldGen.PixelToNodeMap(transform.position.x, transform.position.y);
-        Debug.Log(playerposition);
-        Debug.Log(position);
-
-        path = Pathfinding.GetPath(position, playerposition);
-
-        if (path == null) yield break;
-        path.Remove(path[path.Count - 1]);
-
-        moving = true;
-        Coordinate pathNode;
-        Vector2 targetPosition;
-        Vector2 initialPosition;
-        Vector2 interpolatedMovement;
-
-        float interpolation;
-        while(path.Count > 0)
-        {
-            pathNode = path[0];
-            path.Remove(pathNode);
-            targetPosition = WorldGen.NodeMapToPixel(pathNode);
-            initialPosition = transform.position;
-
-            interpolation = 0;
-            while (!(interpolation > 1 || (transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)))
-            {
-                interpolation += Time.smoothDeltaTime / 0.1f;
-                interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, interpolation);
-                UpdateAnimation(interpolatedMovement - (Vector2)transform.position);
-                rigidbody.MovePosition(interpolatedMovement);
-                yield return null;
-            }
-        }
-        UpdateAnimation(Vector2.zero);
-
-        moving = false;
-    }
-
-    private void UpdateAnimation(Vector2 heading)
+    public void UpdateAnimation(Vector2 heading)
     {
         if (heading.x == 0f && heading.y == 0f)
         {
