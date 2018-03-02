@@ -4,6 +4,11 @@ using UnityEngine;
 
 public static class Pathfinding
 {
+    public static NodeMap Graph { get; internal set; }
+    public static PlayerController Player { get; internal set; }
+    public static CompanionController Companion { get; internal set; }
+
+
     public static List<Coordinate> GetPath(Map map, Coordinate start, Coordinate destination)
     {
         var checkedCoordinates = new Dictionary<Coordinate, Node>();
@@ -68,6 +73,7 @@ public static class Pathfinding
         return null;
     }
 
+
     public static List<Coordinate> GetNodePath(NodeMap map, Coordinate start, Coordinate destination)
     {
         var checkedCoordinates = new Dictionary<Coordinate, Node>();
@@ -76,7 +82,7 @@ public static class Pathfinding
         if (start == destination || map.IsBlocked(start) || map.IsBlocked(destination))
         {
             Debug.Log("No path");
-            return null;
+            return new List<Coordinate>();
         }
 
         promiseList.AddSorted(new Node(null, start, 0, Coordinate.Distance(start, destination)));
@@ -135,7 +141,12 @@ public static class Pathfinding
         }
 
         Debug.Log("No path");
-        return null;
+        return new List<Coordinate>();
+    }
+
+    public static List<Coordinate> GetPath(Coordinate start, Coordinate destination)
+    {
+        return GetNodePath(Graph, start, destination);
     }
 
     public static bool IsDiagonalDirection(Coordinate direction)
