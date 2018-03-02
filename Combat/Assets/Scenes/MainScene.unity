@@ -399,6 +399,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114491129946049222, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4,
+        type: 2}
+      propertyPath: World
+      value: 
+      objectReference: {fileID: 1647013279}
     - target: {fileID: 114430279244489504, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4,
         type: 2}
       propertyPath: player

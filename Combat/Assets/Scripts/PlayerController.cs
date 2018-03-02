@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : StatefulEntity {
     public int speed;
     public GameObject projectile;
 
@@ -17,10 +17,11 @@ public class PlayerController : MonoBehaviour {
     private float prevDirX;
     private float prevDirY;
 
-    private void Start()
+    private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        Pathfinding.Player = this;
     }
 
     private void Update()

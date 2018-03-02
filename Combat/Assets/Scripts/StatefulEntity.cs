@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StatefulEntity : MonoBehaviour {
+public abstract class StatefulEntity : MonoBehaviour
+{
+    public State currentState;
+    public Coordinate Position
+    {
+        get {
+            return WorldGen.PixelToNodeMap(gameObject.transform.position.x, gameObject.transform.position.y);
+        }
+    }
 
-    public IState currentState;
-
-    public void ChangeState(IState newState)
+    public void ChangeState(State newState)
     {
         if (currentState != null)
         {
