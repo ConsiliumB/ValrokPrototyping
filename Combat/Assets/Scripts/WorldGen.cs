@@ -45,6 +45,8 @@ public class WorldGen : MonoBehaviour {
         flower_tile = 4,
         tree_tile = 5,
         tree_tile_dead = 6,
+        corruption_spawn = 7,
+
     }
 
     private void Awake()
@@ -90,13 +92,26 @@ public class WorldGen : MonoBehaviour {
     {
         chunks = new Chunk[numberOfRooms];
         Chunk currentChunk = new Chunk(-5, -5, 10, 10);
-        
+
+        Chunk lastCorruptionSpawned = currentChunk;
 
         chunks[0] = currentChunk;
 
         for (int i = 1; i < chunks.Length; i++)
         {
             currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(4, 10), UnityEngine.Random.Range(4, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
+
+            if (currentChunk.chunkWidth > 8 && currentChunk.chunkWidth > 8)
+            {
+                if (Mathf.Abs(currentChunk.xPos - lastCorruptionSpawned.xPos) > 20 && Mathf.Abs(currentChunk.yPos - lastCorruptionSpawned.yPos) > 20)
+                {
+                    var node = MapToNodeMap(new Coordinate(currentChunk.xPos, currentChunk.yPos)) + new Coordinate(4, 4);
+                    SpawnObject(GetMapTile((int)Tiles.corruption_spawn), NodeMapToPixel(node), gameObject.transform);
+                    lastCorruptionSpawned = currentChunk;
+                }
+
+            }
+
             chunks[i] = currentChunk;
         }
     }
@@ -245,6 +260,11 @@ public class WorldGen : MonoBehaviour {
     public static Vector2 NodeMapToPixel(Coordinate position)
     {
         return new Vector2((position.X - position.Y) * tileWidth / 4, (position.X + position.Y) * tileHeight / 4);
+    }
+
+    public static Coordinate MapToNodeMap(Coordinate position)
+    {
+        return new Coordinate(Mathf.FloorToInt(position.X * 4), Mathf.FloorToInt(position.Y * 4));
     }
 
     private void GenerateMap()

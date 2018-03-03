@@ -12,7 +12,6 @@ public class CompanionMovement : MonoBehaviour {
     Vector2 initialPosition;
     Vector2 interpolatedMovement;
     float Interpolation { get; set; }
-    public GameObject World;
     public NodeMap WorldMap { get; set; }
     public bool Moving { get; private set; }
     public Coordinate Destination {
@@ -37,7 +36,7 @@ public class CompanionMovement : MonoBehaviour {
     public void Start()
     {
         Companion = GetComponent<CompanionController>();
-        WorldMap = World.GetComponent<WorldGen>().nodeMap;
+        WorldMap = Pathfinding.Graph;
     }
 
     //Add waypoint to path. If overwrite is true, will clear the current path
@@ -133,7 +132,7 @@ public class CompanionMovement : MonoBehaviour {
         Interpolation += Time.smoothDeltaTime / 0.1f;
 
         //Find next destination
-        interpolatedMovement = Vector2.LerpUnclamped(initialPosition, targetPosition, Interpolation);
+        interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, Interpolation);
         //Debug.Log("Moving to " + interpolatedMovement);
 
         //Move to the next destination
