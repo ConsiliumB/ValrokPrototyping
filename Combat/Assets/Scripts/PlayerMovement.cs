@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	private Rigidbody2D rigidbody;
 	private Animator animator;
 
     float prevDirX;
@@ -16,13 +15,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rigidbody = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Move();
+        Move(); //REALLY...
 	}
 
     private void Move()

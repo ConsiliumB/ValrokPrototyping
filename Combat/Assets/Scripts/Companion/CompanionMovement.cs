@@ -99,6 +99,13 @@ public class CompanionMovement : MonoBehaviour {
         Moving = false;
     }
 
+    /***
+     * //TODO @Benjamin
+     * TOO MANY COMMENTS! 
+     * Add them above the method
+     * MAYBE one inside if you use black magic!
+    */
+
     //Move towards next point in current path
     public void MoveAlongPath()
     {
@@ -137,7 +144,8 @@ public class CompanionMovement : MonoBehaviour {
         //Debug.Log("Moving to " + interpolatedMovement);
 
         //Move to the next destination
-        Companion.rigidbody.MovePosition(interpolatedMovement);
+        //Companion.rigidbody.MovePosition(interpolatedMovement);
+        transform.position = interpolatedMovement;
 
         //If we've reached our destination, reset interpolation and remove the path we just reached
         if (Interpolation >= 1)

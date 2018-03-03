@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompanionController : StatefulEntity {
+public class CompanionController : StatefulEntity
+{
 
     public GameObject player;
 
@@ -12,14 +13,18 @@ public class CompanionController : StatefulEntity {
 
     public GameObject world;
     public Map worldMap;
-
+    [Space]
     public Vector2 headingToPlayer;
     private Vector2 directionToPlayer;
-    public bool Moving { get; set; }
-    private Animator animator;
+    //public bool Moving { get; set; }
+
+    [Header("TakeOver Controll of the Companion")]
+    public bool takeOver = false;
+    [Space]
     public new Rigidbody2D rigidbody;
     public CompanionMovement Movement;
 
+    private Animator animator;
     private float prevDirX;
     private float prevDirY;
 
@@ -29,18 +34,26 @@ public class CompanionController : StatefulEntity {
         Pathfinding.Companion = this;
     }
 
-    void Start () {
+    void Start()
+    {
+
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (currentState == null)
         {
             ChangeState(new CompanionFollowState(this));
         }
+        if (takeOver)
+        {
+            ChangeState(new CompanionTakeOverState(gameObject));
+        }
+
         currentState.Execute();
     }
-    
+
 
     public void UpdateAnimation(Vector2 heading)
     {
@@ -59,13 +72,21 @@ public class CompanionController : StatefulEntity {
             animator.SetBool("Moving", true);
         }
 
+        var companionRenderer = GetComponent<SpriteRenderer>();
+
+        ///NOOOOOO!!!!!
         if (heading.x > 0)
         {
-            transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+            //transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+            companionRenderer.flipX = false;
         }
         else if (heading.x < 0)
         {
-            transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+            //transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+            companionRenderer.flipX = true;
+        } else if (companionRenderer.flipX)
+        {
+            companionRenderer.flipX = false;
         }
 
         animator.SetFloat("DirX", heading.x);
