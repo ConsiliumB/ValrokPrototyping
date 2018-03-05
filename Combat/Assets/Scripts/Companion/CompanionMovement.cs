@@ -99,10 +99,8 @@ public class CompanionMovement : MonoBehaviour {
     }
 
     /***
-     * //TODO @Benjamin
-     * TOO MANY COMMENTS! 
-     * Add comments above the method
-     * Inside only if you use black magic!
+     * A lot of comments
+     * Just comment inside a method if you use black magic
     */
 
     //Move towards next point in current path

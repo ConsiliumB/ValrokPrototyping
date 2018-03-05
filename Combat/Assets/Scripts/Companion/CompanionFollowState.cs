@@ -44,13 +44,13 @@ internal class CompanionFollowState : State
 internal class CompanionTakeOverState : State
 {
     //private PlayerController Player;
-    private CompanionController compController;
+    //private CompanionController compController;
     private GameObject companion;
 
     public CompanionTakeOverState(GameObject from)
     {
         companion = from;
-        compController = companion.GetComponent<CompanionController>();
+        //compController = companion.GetComponent<CompanionController>();
     }
 
 

@@ -49,6 +49,9 @@ TagManager:
   - name: Floor
     uniqueID: 708945693
     locked: 0
+  - name: Player & Enemies
+    uniqueID: 1471235441
+    locked: 0
   - name: Road
     uniqueID: 2470756063
     locked: 0

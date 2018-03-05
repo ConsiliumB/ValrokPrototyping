@@ -129,6 +129,7 @@ public class PlayerController : StatefulEntity
         Destroy(bullet, 2.0f);
     }
 
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("EnemyProjectile"))
@@ -136,4 +137,5 @@ public class PlayerController : StatefulEntity
             currentHealth -= 1;
         }
     }
+    */
 }

@@ -20,8 +20,8 @@ public class CompanionController : StatefulEntity
 
     [Header("TakeOver Controll of the Companion")]
     public bool takeOver = false;
-    [Space]
-    public new Rigidbody2D rigidbody;
+    //[Space]
+    //public new Rigidbody2D rigidbody;
     public CompanionMovement Movement;
 
     private Animator animator;
@@ -74,15 +74,12 @@ public class CompanionController : StatefulEntity
 
         var companionRenderer = GetComponent<SpriteRenderer>();
 
-        ///NOOOOOO!!!!!
         if (heading.x > 0)
         {
-            //transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
             companionRenderer.flipX = false;
         }
         else if (heading.x < 0)
         {
-            //transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
             companionRenderer.flipX = true;
         } else if (companionRenderer.flipX)
         {

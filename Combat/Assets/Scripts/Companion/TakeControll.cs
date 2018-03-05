@@ -6,10 +6,10 @@ public class TakeControll : MonoBehaviour
 {
     private GameObject clawGameObject;
 
-    public float moveSpeed;
+    public float moveSpeed = 5f;
     public float clawDistance = 2.5f;
     public float clawAttackTime = 0.2f;
-    public bool clawAttack = false;
+    private bool clawAttack = false;
     private float attackTimeHolde = 0;
 
     private CompanionController companionController;
@@ -31,8 +31,7 @@ public class TakeControll : MonoBehaviour
 
     /***
      * This seems so redundant
-     * Update() -> CompanionTakeOverState() -> Execute() -> InputMovement().
-     * Why not: Update() -> InputMovement() ?
+     * Update() -> CompanionTakeOverState() -> Execute() -> InputMovement()
     */
     public void MoveByAxis()
     {
