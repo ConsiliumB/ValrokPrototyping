@@ -2,8 +2,10 @@
 
 public class Coordinate
 {
-    public int Y { get; private set; }
-    public int X { get; private set; }
+    public float X { get { return Vector.x; } }
+    public float Y { get { return Vector.y; } }
+
+    public Vector2 Vector { get; private set; }
 
     public static readonly Coordinate North = new Coordinate(0, 1);
     public static readonly Coordinate East = new Coordinate(1, 0);
@@ -16,24 +18,33 @@ public class Coordinate
 
     public Coordinate(int x, int y)
     {
-        X = x;
-        Y = y;
+        Vector = new Vector2(x, y);
     }
 
-    public static int Distance(Coordinate c1, Coordinate c2)
+    public Coordinate(float x, float y)
+    {
+        Vector = new Vector2(x, y);
+    }
+
+    public Coordinate(Vector2 vector)
+    {
+        Vector = vector;
+    }
+
+    public static float Distance(Coordinate c1, Coordinate c2)
     {
         //NB! This distance calculation doesnt reflect the shorter distance of diagonal movement
-        return System.Math.Abs(c1.X - c2.X) + System.Math.Abs(c1.Y - c2.Y);
+        return Mathf.Abs(c1.X - c2.X) + Mathf.Abs(c1.Y - c2.Y);
     }
 
-    public static int DistanceSquared(Coordinate c1, Coordinate c2)
+    public static float DistanceSquared(Coordinate c1, Coordinate c2)
     {
-        return (int)(Mathf.Pow(Mathf.Abs(c1.X - c2.X),2) + Mathf.Pow(Mathf.Abs(c1.Y - c2.Y),2));
+        return Mathf.Pow(Mathf.Abs(c1.X - c2.X),2) + Mathf.Pow(Mathf.Abs(c1.Y - c2.Y),2);
     }
 
     public bool Equals(Coordinate other)
     {
-        return X == other.X && Y == other.Y;
+        return Vector == other.Vector;
     }
 
     public override bool Equals(object other)
@@ -48,43 +59,45 @@ public class Coordinate
 
     public override int GetHashCode()
     {
-        var hashCode = 1861411795;
-        hashCode = hashCode * -1521134295 + X.GetHashCode();
-        hashCode = hashCode * -1521134295 + Y.GetHashCode();
-        return hashCode;
+        return Vector.GetHashCode();
     }
 
-    public static Coordinate operator +(Coordinate c1, Coordinate c2)
+    public static Coordinate operator +(Coordinate lhs, Coordinate rhs)
     {
-        return new Coordinate(c1.X + c2.X, c1.Y + c2.Y);
+        return new Coordinate(lhs.Vector + rhs.Vector);
     }
 
-    public static Coordinate operator -(Coordinate c1, Coordinate c2)
+    public static Coordinate operator -(Coordinate lhs, Coordinate rhs)
     {
-        return new Coordinate(c1.X - c2.X, c1.Y - c2.Y);
+        return new Coordinate(lhs.Vector - rhs.Vector);
     }
 
-    public static Coordinate operator *(Coordinate c1, int i1)
+    public static Coordinate operator *(Coordinate lhs, int i1)
     {
-        return new Coordinate(c1.X * i1, c1.Y * i1);
+        return new Coordinate(lhs.Vector * i1);
     }
 
-    public static bool operator ==(Coordinate c1, Coordinate c2)
+    public static bool operator ==(Coordinate lhs, Coordinate rhs)
     {
         //Null-comparisons.
-        if (ReferenceEquals(c1, c2))
+        if (ReferenceEquals(lhs, rhs))
         {
             return true;
         }
-        if (ReferenceEquals(c1, null) || ReferenceEquals(c2, null))
+        if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
         {
             return false;
         }
-        return c1.X == c2.X && c1.Y == c2.Y;
+        return lhs.Vector == rhs.Vector;
     }
 
-    public static bool operator !=(Coordinate c1, Coordinate c2)
+    public static bool operator !=(Coordinate lhs, Coordinate rhs)
     {
-        return !(c1 == c2);
+        return !(lhs == rhs);
+    }
+
+    public static implicit operator Vector2(Coordinate c)
+    {
+        return c.Vector;
     }
 }

@@ -242,7 +242,7 @@ public class WorldGen : MonoBehaviour {
         return new Coordinate(x, y);
     }
 
-    public static Vector2 MapToPixel(int x, int y)
+    public static Vector2 MapToPixel(float x, float y)
     {
         return new Vector2((x - y) * tileWidth, (x + y) * tileHeight);
     }
