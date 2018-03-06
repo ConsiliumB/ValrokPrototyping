@@ -76,6 +76,18 @@ public class NodeMap : Map
         return !(IsOpen(x, y));
     }
 
+    /* Removes the node at a given position.
+     * Note: this has to be used before the nodes are linked using GenerateNodeMap.
+     * Can be fixed by adding a removeNeighbour method on MapNode and calling that before you remove the node.
+     */
+    public void RemoveNode(Coordinate position)
+    {
+        if (Map.ContainsKey(position))
+        {
+            Map.Remove(position);
+        }
+    }
+
     public bool IsBlocked(Coordinate coordinate)
     {
         return !(IsOpen(coordinate));

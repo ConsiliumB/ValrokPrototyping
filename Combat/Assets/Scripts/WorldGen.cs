@@ -33,6 +33,7 @@ public class WorldGen : MonoBehaviour {
     public NodeMap World { get; private set; }
     public NodeMap nodeMap;
     private Chunk[] chunks;
+    private List<Coordinate> FoilagePositions = new List<Coordinate>();
 
 
     public enum Tiles
@@ -56,12 +57,13 @@ public class WorldGen : MonoBehaviour {
 
         GenerateMap();
         GenerateChunks();
-        //GenerateRoads();
 
         AddWorldChunksToMap();
+
+        GenerateFoilage();
+
         nodeMap.GenerateNodeMap();
         Pathfinding.Graph = nodeMap;
-
     }
 
     // Use this for initialization
@@ -72,19 +74,33 @@ public class WorldGen : MonoBehaviour {
         SpawnFoilage();
     }
 
-    private void SpawnFoilage()
+    public void GenerateFoilage()
     {
         int random;
-        var foilageContainer = new GameObject("Foilage");
-        foilageContainer.transform.parent = this.gameObject.transform;
 
-        foreach (var node in nodeMap.Map.Values)
+        foreach (Coordinate position in nodeMap.Map.Keys)
         {
             random = UnityEngine.Random.Range(0, 100);
             if (random > 98)
             {
-                SpawnObject(GetMapTile((int)Tiles.tree_tile_dead), NodeMapToPixel(node.Position), foilageContainer.transform);
+                FoilagePositions.Add(position);
             }
+        }
+
+        foreach (Coordinate position in FoilagePositions)
+        {
+            nodeMap.RemoveNode(position);
+        }
+    }
+
+    private void SpawnFoilage()
+    {
+        var foilageContainer = new GameObject("Foilage");
+        foilageContainer.transform.parent = this.gameObject.transform;
+
+        foreach (Coordinate position in FoilagePositions)
+        {
+            SpawnObject(GetMapTile((int)Tiles.tree_tile), NodeMapToPixel(position), foilageContainer.transform);
         }
     }
 
@@ -214,9 +230,11 @@ public class WorldGen : MonoBehaviour {
         }
     }
 
-    private void SpawnObject(GameObject tileShape, Vector2 position, Transform parent = null)
+    private GameObject SpawnObject(GameObject tileShape, Vector2 position, Transform parent = null)
     {
-        Instantiate(tileShape, position, Quaternion.identity).transform.parent = parent;
+        GameObject createdObject = Instantiate(tileShape, position, Quaternion.identity);
+        createdObject.transform.parent = parent;
+        return createdObject;
     }
 
     private GameObject GetMapTile(int tile, int tileSum = 0)
