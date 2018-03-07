@@ -58,8 +58,13 @@ public class PlayerController : StatefulEntity
             {
                 spriteRend.flipX = false;
             }
+            UpdateAnimation(rigidbody.velocity.normalized);
         }
-        UpdateAnimation(rigidbody.velocity.normalized);
+        else
+        {
+            UpdateAnimation(Vector2.zero);
+        }
+        
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -105,6 +110,17 @@ public class PlayerController : StatefulEntity
 
         animator.SetFloat("DirX", heading.x);
         animator.SetFloat("DirY", heading.y);
+    }
+
+    //
+    public void StopMoving()
+    {
+        lockMovement = true;
+        rigidbody.velocity *= 0;
+        hmov = 0;
+        vmov = 0;
+        //Walk down one frame to make it idle down next frame
+        UpdateAnimation(Vector2.down + Vector2.left);
     }
 
     private void CastSpell(string v)
