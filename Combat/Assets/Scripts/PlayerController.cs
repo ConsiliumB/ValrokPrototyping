@@ -13,6 +13,7 @@ public class PlayerController : StatefulEntity
     public bool lockMovement = false;
 
     private new Rigidbody2D rigidbody;
+    private SpriteRenderer spriteRend;
     private Animator animator;
     private bool isDead;
     private float vmov;
@@ -25,6 +26,7 @@ public class PlayerController : StatefulEntity
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRend = GetComponent<SpriteRenderer>();
         Pathfinding.Player = this;
     }
 
@@ -45,11 +47,16 @@ public class PlayerController : StatefulEntity
 
             if (rigidbody.velocity.x > 0)
             {
-                transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+                spriteRend.flipX = false;
+                //transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
             }
             else if (rigidbody.velocity.x < 0)
             {
-                transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+                spriteRend.flipX = true;
+                //transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+            } else
+            {
+                spriteRend.flipX = false;
             }
         }
         UpdateAnimation(rigidbody.velocity.normalized);

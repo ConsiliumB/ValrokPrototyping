@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompanionMovement : MonoBehaviour {
+public class CompanionMovement : MonoBehaviour
+{
     private CompanionController Companion { get; set; }
-    public List<Coordinate> Path { get; private set; }
+    public List<Coordinate> Path { get; set; }
 
     Coordinate pathNode;
     Vector2 targetPosition;
@@ -14,8 +15,11 @@ public class CompanionMovement : MonoBehaviour {
     float Interpolation { get; set; }
     public NodeMap WorldMap { get; set; }
     public bool Moving { get; private set; }
-    public Coordinate Destination {
-        get {
+
+    public Coordinate Destination
+    {
+        get
+        {
             if (Path.Count < 1)
             {
                 return Companion.Position;
@@ -94,7 +98,10 @@ public class CompanionMovement : MonoBehaviour {
     //Disables movement
     public void StopMoving()
     {
-        Companion.UpdateAnimation(Vector2.zero);
+        if (Companion != null)
+        {
+            Companion.UpdateAnimation(Vector2.zero);
+        }
         Moving = false;
     }
 
@@ -104,6 +111,7 @@ public class CompanionMovement : MonoBehaviour {
     */
 
     //Move towards next point in current path
+    //Nullable optinal Vector2 = black magic.
     public void MoveAlongPath()
     {
         //If current path is empty, stop moving
@@ -126,10 +134,14 @@ public class CompanionMovement : MonoBehaviour {
             targetPosition = WorldGen.NodeMapToPixel(pathNode);
             initialPosition = Companion.transform.position;
 
+
             //Debug.Log("Next node. Moving from " + initialPosition + " to " + targetPosition);
 
             //Start movement animation in the direction of the current target node
-            Companion.UpdateAnimation(targetPosition - initialPosition);
+            if (Companion != null)
+            {
+                Companion.UpdateAnimation(targetPosition - initialPosition);
+            }
         }
 
         //Increase interpolation.

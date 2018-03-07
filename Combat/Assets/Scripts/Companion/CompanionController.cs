@@ -81,7 +81,8 @@ public class CompanionController : StatefulEntity
         else if (heading.x < 0)
         {
             companionRenderer.flipX = true;
-        } else if (companionRenderer.flipX)
+        }
+        else if (companionRenderer.flipX)
         {
             companionRenderer.flipX = false;
         }
