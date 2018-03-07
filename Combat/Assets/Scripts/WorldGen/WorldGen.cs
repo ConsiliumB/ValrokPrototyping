@@ -33,6 +33,8 @@ public class WorldGen : MonoBehaviour {
     public NodeMap World { get; private set; }
     public NodeMap nodeMap;
     private Chunk[] chunks;
+    private GameObject cliffContainer;
+    private GameObject seaContainer;
 
 
     public enum Tiles
@@ -40,13 +42,15 @@ public class WorldGen : MonoBehaviour {
         blank_tile = -1,
         black_tile = 0,
         frost_tile = 1,
-        grass_tile = 2,
+        collision_tile = 2,
         road_tile = 3,
         flower_tile = 4,
         tree_tile = 5,
         tree_tile_dead = 6,
         corruption_spawn = 7,
-
+        cliff_se = 8,
+        cliff_sw = 9,
+        water = 10,
     }
 
     private void Awake()
@@ -68,8 +72,73 @@ public class WorldGen : MonoBehaviour {
     void Start()
     {
         //Create gamobjects etc.
+        DrawWater();
+        DrawCliffs();
         InstantiateMap();
         SpawnFoilage();
+    }
+
+    private void DrawWater()
+    {
+        seaContainer = new GameObject("Water");
+        seaContainer.transform.parent = transform;
+
+        foreach (Chunk chunk in chunks)
+        {
+            AddSea(chunk);
+        }
+    }
+
+    private void AddSea(Chunk chunk)
+    {
+        Coordinate potentialPosition;
+        Coordinate Position = new Coordinate(chunk.xPos, chunk.yPos);
+        int distance = 10;
+        for (int i = -distance; i < chunk.chunkWidth + distance; i++)
+        {
+            for (int j = -distance; j < chunk.chunkHeight + distance; j++)
+            {
+                potentialPosition = Position + new Coordinate(i, j);
+                if (!World.WithinBounds(potentialPosition))
+                {
+                    SpawnObject(GetMapTile((int)Tiles.water), MapToPixel(potentialPosition), transform);
+                }
+            }
+            //potentialPosition = Position + new Coordinate(i, distance - i);
+            //if (!World.WithinBounds(potentialPosition))
+            //{
+            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
+            //}
+
+            //potentialPosition = Position + new Coordinate(i * -1, distance - i);
+            //if (!World.WithinBounds(potentialPosition))
+            //{
+            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
+            //}
+
+            //potentialPosition = Position - new Coordinate(i, distance - i);
+            //if (!World.WithinBounds(potentialPosition))
+            //{
+            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
+            //}
+
+            //potentialPosition = Position - new Coordinate(i * -1, distance - i);
+            //if (!World.WithinBounds(potentialPosition))
+            //{
+            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
+            //}
+        }
+    }
+
+    private void DrawCliffs()
+    {
+        cliffContainer = new GameObject("Cliffs");
+        cliffContainer.transform.parent = transform;
+
+        foreach (Chunk chunk in chunks)
+        {
+            AddCliffsides(chunk);
+        }
     }
 
     private void SpawnFoilage()
@@ -123,7 +192,7 @@ public class WorldGen : MonoBehaviour {
             AddWorldChunk(chunk);
         }
 
-        //Add border to each room without overwriting. Add within previous loop to see room edges
+        //Add collision around edge of map
         foreach (Chunk chunk in chunks)
         {
             AddWorldChunkBorder(chunk);
@@ -164,26 +233,58 @@ public class WorldGen : MonoBehaviour {
         int y_max = chunk.yPos + chunk.chunkHeight;
         int x_max = chunk.xPos + chunk.chunkWidth;
 
-        //Run AddNodeGrid(position) on all 4 directions if border is traversable
-
 
         Coordinate position;
         for (int y = chunk.yPos - 1; y <= y_max; y++)
         {
             position = new Coordinate(x_max, y);
-            World.AddNode(position, 2);
+            if (!World.WithinBounds(position))
+            {
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+            }
 
             position = new Coordinate(chunk.xPos - 1, y);
-            World.AddNode(position, 2);
+            if (!World.WithinBounds(position))
+            {
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+            }
         }
 
         for (int x = chunk.xPos - 1; x <= x_max; x++)
         {
             position = new Coordinate(x, y_max);
-            World.AddNode(position, 2);
+            if (!World.WithinBounds(position))
+            {
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+            }
 
             position = new Coordinate(x, chunk.yPos - 1);
-            World.AddNode(position, 2);
+            if (!World.WithinBounds(position))
+            {
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+            }
+        }
+    }
+
+    private void AddCliffsides(Chunk chunk)
+    {
+        int y_max = chunk.yPos + chunk.chunkHeight - 1;
+        int x_max = chunk.xPos + chunk.chunkWidth - 1;
+
+
+        Coordinate position;
+        for (int y = chunk.yPos - 1; y < y_max; y++)
+        {
+            position = new Coordinate(chunk.xPos - 1, y);
+            //World.AddNode(position, (int)Tiles.cliff_sw);
+            SpawnObject(GetMapTile((int)Tiles.cliff_sw), MapToPixel(position), cliffContainer.transform);
+        }
+
+        for (int x = chunk.xPos - 1; x < x_max; x++)
+        {
+            position = new Coordinate(x, chunk.yPos - 1);
+            //World.AddNode(position, (int)Tiles.cliff_se);
+            SpawnObject(GetMapTile((int)Tiles.cliff_se), MapToPixel(position), cliffContainer.transform);
         }
     }
 
