@@ -3,12 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : StatefulEntity {
+public class PlayerController : StatefulEntity
+{
     public int speed;
     public GameObject projectile;
 
     public int currentHealth;
+    [Header("Lock movement. Currently Debug")]
+    public bool lockMovement = false;
+
     private new Rigidbody2D rigidbody;
+    private SpriteRenderer spriteRend;
     private Animator animator;
     private bool isDead;
     private float vmov;
@@ -17,14 +22,15 @@ public class PlayerController : StatefulEntity {
     private float prevDirX;
     private float prevDirY;
 
-    private void Awake()
+    void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRend = GetComponent<SpriteRenderer>();
         Pathfinding.Player = this;
     }
 
-    private void Update()
+    void Update()
     {
         if (currentHealth < 1)
         {
@@ -32,24 +38,33 @@ public class PlayerController : StatefulEntity {
             return;
         }
 
-        vmov = Input.GetAxis("Vertical");
-        hmov = Input.GetAxis("Horizontal");
+        if (!lockMovement)
+        {
+            vmov = Input.GetAxis("Vertical");
+            hmov = Input.GetAxis("Horizontal");
 
-        if (rigidbody.velocity.x > 0)
-        {
-            transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
-        }
-        else if (rigidbody.velocity.x < 0)
-        {
-            transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+
+
+            if (rigidbody.velocity.x > 0)
+            {
+                spriteRend.flipX = false;
+                //transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
+            }
+            else if (rigidbody.velocity.x < 0)
+            {
+                spriteRend.flipX = true;
+                //transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
+            } else
+            {
+                spriteRend.flipX = false;
+            }
         }
         UpdateAnimation(rigidbody.velocity.normalized);
-        
 
         if (Input.GetButtonDown("Jump"))
         {
-            ShootLeft();
-            ShootRight();
+            //ShootLeft();
+            //ShootRight();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -59,9 +74,19 @@ public class PlayerController : StatefulEntity {
         {
             CastSpell("E");
         }
+
+        if (isDead)
+        {
+            rigidbody.velocity *= 0;
+            rigidbody.rotation = 180;
+            return;
+        }
+
+        rigidbody.velocity = new Vector2(hmov, vmov) * speed;
+        // transform.Translate(new Vector2(hmov,vmov) * speed);
     }
 
-    private void UpdateAnimation(Vector2 heading)
+    void UpdateAnimation(Vector2 heading)
     {
         if (heading.x == 0f && heading.y == 0f)
         {
@@ -84,7 +109,8 @@ public class PlayerController : StatefulEntity {
 
     private void CastSpell(string v)
     {
-        switch(v) {
+        switch (v)
+        {
             case "E":
                 break;
             case "Q":
@@ -92,19 +118,6 @@ public class PlayerController : StatefulEntity {
             default:
                 break;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (isDead)
-        {
-            rigidbody.velocity *= 0;
-            rigidbody.rotation = 180;
-            return;
-        }
-
-        rigidbody.velocity = new Vector2(hmov,vmov) * speed;
-        // transform.Translate(new Vector2(hmov,vmov) * speed);
     }
 
     private void ShootLeft()
@@ -123,6 +136,7 @@ public class PlayerController : StatefulEntity {
         Destroy(bullet, 2.0f);
     }
 
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("EnemyProjectile"))
@@ -130,4 +144,5 @@ public class PlayerController : StatefulEntity {
             currentHealth -= 1;
         }
     }
+    */
 }

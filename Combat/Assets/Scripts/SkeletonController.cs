@@ -7,7 +7,7 @@ public class SkeletonController : MonoBehaviour {
 
 	public GameObject player;
 	private Animator animator;
-	private Rigidbody2D rigidbody2D;
+	//private Rigidbody2D rigidbody;
 	private State state;
 	private int currentHealth;
 
@@ -20,7 +20,7 @@ public class SkeletonController : MonoBehaviour {
 	void Start () {
 		currentHealth = 2;
 		animator = GetComponent<Animator>();
-		rigidbody2D = GetComponent<Rigidbody2D>();
+		//rigidbody2D = GetComponent<Rigidbody2D>();
 		state = State.Patrol;
 	}
 	

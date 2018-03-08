@@ -21,7 +21,8 @@ internal class CompanionFollowState : State
             if (Coordinate.DistanceSquared(Player.Position, Companion.Position) < Coordinate.DistanceSquared(Companion.Position, Companion.Movement.Destination))
             {
                 Companion.Movement.AddWaypoint(Player.Position, true);
-            } else
+            }
+            else
             {
                 Companion.Movement.AddWaypoint(Player.Position);
             }
@@ -33,5 +34,30 @@ internal class CompanionFollowState : State
         //Find path to player, and start moving
         Companion.Movement.AddWaypoint(Player.Position, true);
         Companion.Movement.StartMoving();
+    }
+}
+
+/***
+ * Take over state of the companion.
+ * Controlls the companion movement with keyboard input
+ */
+internal class CompanionTakeOverState : State
+{
+    //private PlayerController Player;
+    //private CompanionController compController;
+    private GameObject companion;
+
+    public CompanionTakeOverState(GameObject from)
+    {
+        companion = from;
+        //compController = companion.GetComponent<CompanionController>();
+    }
+
+
+    public override void Execute()
+    {
+        var takeOver = companion.GetComponent<TakeControll>();
+        if (takeOver == null) { throw new MissingComponentException(); }
+        takeOver.RunExecute();
     }
 }

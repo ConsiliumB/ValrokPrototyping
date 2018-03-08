@@ -253,6 +253,11 @@ public class WorldGen : MonoBehaviour {
         return new Coordinate(x, y);
     }
 
+    public static Coordinate PixelToNodeMap(Vector2 innPosition)
+    {
+        return PixelToNodeMap(innPosition.x, innPosition.y);
+    }
+
     public static Coordinate PixelToNodeMap(float sx, float sy)
     {
         int y = (int)((sy / tileHeight - sx / tileWidth) * 2);
