@@ -94,8 +94,8 @@ public class CorruptionSpawner : StatefulEntity {
             spawnEnemies = true;
 
             var player = collision.gameObject;
-            player.GetComponent<PlayerController>().StopMoving();
-            Pathfinding.Companion.GetComponent<CompanionController>().takeOver = true;
+            PlayerController.Instance.StopMoving();
+            CompanionController.Instance.takeOver = true;
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {

@@ -171,8 +171,8 @@ public class PlayerController : StatefulEntity
             vmov = 0;
             hmov = 0;
             UpdateAnimation(Vector2.down + Vector2.right);
-            gameObject.GetComponent<PlayerController>().lockMovement = true;
-            Pathfinding.Companion.GetComponent<CompanionController>().takeOver = true;
+            lockMovement = true;
+            CompanionController.Instance.takeOver = true;
         }
     }
     
