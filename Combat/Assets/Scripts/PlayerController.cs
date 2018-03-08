@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerController : StatefulEntity
 {
+    public static PlayerController Instance { get; private set; }
+
     public int speed;
     public GameObject projectile;
 
@@ -24,10 +26,11 @@ public class PlayerController : StatefulEntity
 
     void Awake()
     {
+        Instance = this;
+
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRend = GetComponent<SpriteRenderer>();
-        Pathfinding.Player = this;
     }
 
     void Update()
