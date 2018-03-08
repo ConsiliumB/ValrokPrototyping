@@ -6,6 +6,7 @@ using UnityEngine;
 public class CorruptionSpawner : StatefulEntity {
 
     bool spawnMode;
+    
     List<Coordinate> SpawnPoints { get; set; }
     public GameObject enemy;
 
@@ -13,10 +14,10 @@ public class CorruptionSpawner : StatefulEntity {
     private float spawnCounter = 0;
     bool spawnEnemies = false;
 
+    private bool restartOnce = false;
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         SpawnPoints = new List<Coordinate>();
         FindSpawnpoints();
 	}
@@ -32,6 +33,14 @@ public class CorruptionSpawner : StatefulEntity {
                 StartSpawn();
                 spawnEnemies = false;
             }
+        }
+    }
+
+    private void ReachedCenter()
+    {
+        if (!restartOnce) { 
+            GameDirector.Restart();
+            restartOnce = true;
         }
     }
 
@@ -87,6 +96,10 @@ public class CorruptionSpawner : StatefulEntity {
             var player = collision.gameObject;
             player.GetComponent<PlayerController>().StopMoving();
             Pathfinding.Companion.GetComponent<CompanionController>().takeOver = true;
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ReachedCenter();
         }
     }
 }

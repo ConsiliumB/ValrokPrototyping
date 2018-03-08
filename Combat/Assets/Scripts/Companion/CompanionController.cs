@@ -54,6 +54,12 @@ public class CompanionController : StatefulEntity
         currentState.Execute();
     }
 
+    private void RestartCompanion()
+    {
+        ChangeState(new CompanionFollowState(this));
+        takeOver = false;
+    }
+
 
     public void UpdateAnimation(Vector2 heading)
     {
