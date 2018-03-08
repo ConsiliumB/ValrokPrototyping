@@ -6,14 +6,25 @@ using UnityEngine;
 public class CorruptionSpawner : StatefulEntity {
 
     bool spawnMode;
+    
     List<Coordinate> SpawnPoints { get; set; }
     public GameObject enemy;
 
-	// Use this for initialization
-	void Start () {
+    private bool restartOnce = false;
+
+    // Use this for initialization
+    void Start () {
         SpawnPoints = new List<Coordinate>();
         FindSpawnpoints();
 	}
+
+    private void ReachedCenter()
+    {
+        if (!restartOnce) { 
+            GameDirector.Restart();
+            restartOnce = true;
+        }
+    }
 
     private void FindSpawnpoints()
     {
@@ -57,6 +68,10 @@ public class CorruptionSpawner : StatefulEntity {
                 spawnPoint = SpawnPoints[UnityEngine.Random.Range(0, SpawnPoints.Count)];
                 Instantiate(enemy, WorldGen.NodeMapToPixel(spawnPoint), Quaternion.identity).transform.parent = transform;
             }
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ReachedCenter();
         }
     }
 }

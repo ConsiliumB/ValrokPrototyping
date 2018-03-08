@@ -86,6 +86,14 @@ public class PlayerController : StatefulEntity
         // transform.Translate(new Vector2(hmov,vmov) * speed);
     }
 
+    //If the player changes anything from start of game reset it here.
+    private void RestartPlayer()
+    {
+        vmov = 0;
+        hmov = 0;
+        lockMovement = false;
+    }
+
     void UpdateAnimation(Vector2 heading)
     {
         if (heading.x == 0f && heading.y == 0f)
@@ -136,13 +144,17 @@ public class PlayerController : StatefulEntity
         Destroy(bullet, 2.0f);
     }
 
-    /*
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("EnemyProjectile"))
+        if (collision.gameObject.CompareTag("CorruptionSpawner"))
         {
-            currentHealth -= 1;
+            vmov = 0;
+            hmov = 0;
+            UpdateAnimation(Vector2.down + Vector2.right);
+            gameObject.GetComponent<PlayerController>().lockMovement = true;
+            Pathfinding.Companion.GetComponent<CompanionController>().takeOver = true;
         }
     }
-    */
+    
 }

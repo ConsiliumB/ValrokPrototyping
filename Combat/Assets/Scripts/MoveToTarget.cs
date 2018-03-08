@@ -9,8 +9,8 @@ public class MoveToTarget : MonoBehaviour
     public List<Coordinate> path;
     //private CompanionMovement moveScript = new CompanionMovement();
     private bool done = false;
-    private float counter = 0;
-    private float delay = 0.1f;
+    //private float counter = 0;
+    //private float delay = 0.1f;
 
     //##CompanionMovement copy
     private Coordinate pathNode;
@@ -41,9 +41,14 @@ public class MoveToTarget : MonoBehaviour
                 counter += Time.deltaTime;
             } else { */
                 MoveAlongPath();
-                counter = 0;
+                //counter = 0;
             //}
         }
+    }
+
+    bool FinishedPath()
+    {
+        return done;
     }
 
     // Hacky method to make MoveAlngPath work when called without CompanionController
@@ -53,7 +58,7 @@ public class MoveToTarget : MonoBehaviour
         if (path == null || path.Count <= 1)
         {
             done = true;
-            Debug.Log("Done");
+            FinishedPath();
             return;
         }
         

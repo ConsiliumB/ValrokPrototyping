@@ -6,6 +6,9 @@ TagManager:
   tags:
   - UtilContainer
   - FloorContainer
+  - Enemy
+  - Test
+  - CorruptionSpawner
   layers:
   - Default
   - TransparentFX
