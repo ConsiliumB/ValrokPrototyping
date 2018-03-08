@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class CompanionController : StatefulEntity
 {
-
-    public GameObject player;
+    public static CompanionController Instance { get; private set; }
 
     public int proximityLimit;
     public int distanceLimit;
@@ -28,10 +27,12 @@ public class CompanionController : StatefulEntity
     private float prevDirX;
     private float prevDirY;
 
+
+
     public void Awake()
     {
         animator = GetComponent<Animator>();
-        Pathfinding.Companion = this;
+        Instance = this;
     }
 
     void Start()

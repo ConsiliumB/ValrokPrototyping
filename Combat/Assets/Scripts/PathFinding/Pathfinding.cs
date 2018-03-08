@@ -5,9 +5,6 @@ using UnityEngine;
 public static class Pathfinding
 {
     public static NodeMap Graph { get; internal set; }
-    public static PlayerController Player { get; internal set; }
-    public static CompanionController Companion { get; internal set; }
-
 
     public static List<Coordinate> GetPath(Map map, Coordinate start, Coordinate destination)
     {

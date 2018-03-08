@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 internal class CompanionFollowState : State
 {
-    private PlayerController Player { get; set; }
+    private PlayerController Player { get { return PlayerController.Instance; } }
     private CompanionController Companion { get; set; }
 
     public CompanionFollowState(CompanionController companion)
     {
-        Player = Pathfinding.Player;
         Companion = companion;
     }
 

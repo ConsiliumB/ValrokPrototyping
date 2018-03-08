@@ -25,7 +25,7 @@ public class MoveToTarget : MonoBehaviour
     // Or set player when we instansiate enemies ? 
     void Start()
     {
-        target = GameObject.FindGameObjectsWithTag("Player")[0];
+        target = PlayerController.Instance.gameObject;
 
         var destination = WorldGen.PixelToNodeMap(target.transform.position);
         var from = WorldGen.PixelToNodeMap(transform.position);
