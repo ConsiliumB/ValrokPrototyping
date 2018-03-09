@@ -5,16 +5,19 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private StatefulEntity Entity { get; set; }
-    public List<Coordinate> Path { get; set; }
+    //Subscribe to this in controller if you want to act based on movement/direction
+    public delegate void MovementUpdatedHandler(Vector2 direction);
+    public event MovementUpdatedHandler MovementUpdated;
 
-    Coordinate pathNode;
-    Vector2 targetPosition;
-    Vector2 initialPosition;
-    Vector2 interpolatedMovement;
-    float Interpolation { get; set; }
-    public NodeMap WorldMap { get; set; }
-    public bool Moving { get; private set; }
+    private List<Coordinate> Path = new List<Coordinate>();
+    private bool moving = false;
+
+    //Variables used for interpolated movement
+    private Coordinate pathNode;
+    private Vector2 targetPosition;
+    private Vector2 initialPosition;
+    private Vector2 interpolatedMovement;
+    private float interpolation;
 
     public Coordinate Destination
     {
@@ -22,25 +25,13 @@ public class Movement : MonoBehaviour
         {
             if (Path.Count < 1)
             {
-                return Entity.Position;
+                return null;
             }
             else
             {
                 return Path[Path.Count - 1];
             }
         }
-    }
-
-    private void Awake()
-    {
-        Moving = false;
-        Path = new List<Coordinate>();
-    }
-
-    public void Start()
-    {
-        Entity = GetComponent<StatefulEntity>();
-        WorldMap = Pathfinding.Graph;
     }
 
     //Add waypoint to path. If overwrite is true, will clear the current path
@@ -70,7 +61,7 @@ public class Movement : MonoBehaviour
     {
         if (Path.Count > 0)
         {
-            if (Interpolation > 0)
+            if (interpolation > 0)
             {
                 Path.RemoveRange(1, Path.Count - 1);
             }
@@ -83,7 +74,7 @@ public class Movement : MonoBehaviour
 
     public void Update()
     {
-        if (Moving)
+        if (moving)
         {
             MoveAlongPath();
         }
@@ -92,17 +83,19 @@ public class Movement : MonoBehaviour
     //Enables movement
     public void StartMoving()
     {
-        Moving = true;
+        moving = true;
     }
 
     //Disables movement
     public void StopMoving()
     {
-        if (Entity != null)
-        {
-            Entity.UpdateAnimation(Vector2.zero);
-        }
-        Moving = false;
+        MovementUpdated(Vector2.zero);
+        moving = false;
+    }
+
+    public bool IsMoving()
+    {
+        return moving;
     }
 
     /***
@@ -128,28 +121,25 @@ public class Movement : MonoBehaviour
         {
             pathNode = Path[0];
             //Reset interpolation 
-            Interpolation = 0;
+            interpolation = 0;
 
             //Set target/initial positions to use when interpolating/lerping
             targetPosition = WorldGen.NodeMapToPixel(pathNode);
-            initialPosition = Entity.transform.position;
+            initialPosition = transform.position;
 
 
             //Debug.Log("Next node. Moving from " + initialPosition + " to " + targetPosition);
 
             //Start movement animation in the direction of the current target node
-            if (Entity != null)
-            {
-                Entity.UpdateAnimation(targetPosition - initialPosition);
-            }
+            MovementUpdated(targetPosition - initialPosition);
         }
 
         //Increase interpolation.
         //Divide to regulate speed, currently 0.1f, should be public variable
-        Interpolation += Time.smoothDeltaTime / 0.1f;
+        interpolation += Time.smoothDeltaTime / 0.1f;
 
         //Find next destination
-        interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, Interpolation);
+        interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, interpolation);
         //Debug.Log("Moving to " + interpolatedMovement);
 
         //Move to the next destination
@@ -157,9 +147,9 @@ public class Movement : MonoBehaviour
         transform.position = interpolatedMovement;
 
         //If we've reached our destination, reset interpolation and remove the path we just reached
-        if (Interpolation >= 1)
+        if (interpolation >= 1)
         {
-            Interpolation = 0;
+            interpolation = 0;
             Path.Remove(pathNode);
         }
     }
