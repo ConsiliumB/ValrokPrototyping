@@ -89,10 +89,6 @@ public class CompanionController : StatefulEntity
         {
             companionRenderer.flipX = true;
         }
-        else if (companionRenderer.flipX)
-        {
-            companionRenderer.flipX = false;
-        }
 
         animator.SetFloat("DirX", heading.x);
         animator.SetFloat("DirY", heading.y);

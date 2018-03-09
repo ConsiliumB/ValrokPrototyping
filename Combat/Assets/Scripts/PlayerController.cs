@@ -8,9 +8,8 @@ public class PlayerController : StatefulEntity
     public static PlayerController Instance { get; private set; }
 
     public int speed;
-    public GameObject projectile;
 
-    public int currentHealth;
+    //public int currentHealth;
     [Header("Lock movement. Currently Debug")]
     public bool lockMovement = false;
 
@@ -33,51 +32,12 @@ public class PlayerController : StatefulEntity
         spriteRend = GetComponent<SpriteRenderer>();
     }
 
+    //Kept the E key press for player world interaction
     void Update()
     {
-        if (currentHealth < 1)
-        {
-            isDead = true;
-            return;
-        }
 
-        if (!lockMovement)
-        {
-            vmov = Input.GetAxis("Vertical");
-            hmov = Input.GetAxis("Horizontal");
+        NextMove();
 
-
-
-            if (rigidbody.velocity.x > 0)
-            {
-                spriteRend.flipX = false;
-                //transform.localScale = Vector3.forward + Vector3.up + Vector3.right;
-            }
-            else if (rigidbody.velocity.x < 0)
-            {
-                spriteRend.flipX = true;
-                //transform.localScale = Vector3.forward + Vector3.up + Vector3.left;
-            } else
-            {
-                spriteRend.flipX = false;
-            }
-            UpdateAnimation(rigidbody.velocity.normalized);
-        }
-        else
-        {
-            UpdateAnimation(Vector2.zero);
-        }
-        
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            //ShootLeft();
-            //ShootRight();
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CastSpell("Q");
-        }
         if (Input.GetKeyDown(KeyCode.E))
         {
             CastSpell("E");
@@ -89,9 +49,42 @@ public class PlayerController : StatefulEntity
             rigidbody.rotation = 180;
             return;
         }
+    }
 
-        rigidbody.velocity = new Vector2(hmov, vmov) * speed;
-        // transform.Translate(new Vector2(hmov,vmov) * speed);
+    //Moves the player in a new direction
+    private void NextMove()
+    {
+        if (lockMovement)
+        {
+            StopMovement();
+        }
+        else
+        {
+            vmov = Input.GetAxis("Vertical");
+            hmov = Input.GetAxis("Horizontal");
+            Vector2 nextDirection = new Vector2(hmov, vmov);
+
+            Vector2 nextPosition = (Vector2)transform.position + (nextDirection * speed * Time.deltaTime);
+            //TODO Check if next position crashes or not
+
+            rigidbody.MovePosition(nextPosition);
+
+            if (nextDirection.x > 0)
+            {
+                spriteRend.flipX = false;
+            }
+            else if (nextDirection.x < 0)
+            {
+                spriteRend.flipX = true;
+            }
+
+            UpdateAnimation(nextDirection.normalized);
+        }
+    }
+
+    private void StopMovement()
+    {
+        UpdateAnimation(Vector2.zero);
     }
 
     //If the player changes anything from start of game reset it here.
@@ -147,7 +140,8 @@ public class PlayerController : StatefulEntity
         }
     }
 
-    private void ShootLeft()
+    //Currently no need for shooting projectiles
+    /*private void ShootLeft()
     {
         var bullet = (GameObject)Instantiate(projectile, transform.position, transform.rotation);
         bullet.GetComponent<Rigidbody2D>().velocity = transform.right * -1 * 10;
@@ -161,9 +155,9 @@ public class PlayerController : StatefulEntity
         bullet.GetComponent<Rigidbody2D>().velocity = transform.right * 10;
 
         Destroy(bullet, 2.0f);
-    }
+    }*/
 
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("CorruptionSpawner"))
@@ -175,5 +169,5 @@ public class PlayerController : StatefulEntity
             CompanionController.Instance.takeOver = true;
         }
     }
-    
+
 }

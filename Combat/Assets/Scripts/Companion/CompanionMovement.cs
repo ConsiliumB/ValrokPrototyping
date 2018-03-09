@@ -12,6 +12,7 @@ public class CompanionMovement : MonoBehaviour
     Vector2 targetPosition;
     Vector2 initialPosition;
     Vector2 interpolatedMovement;
+    Rigidbody2D companionRigidbody;
     float Interpolation { get; set; }
     public NodeMap WorldMap { get; set; }
     public bool Moving { get; private set; }
@@ -40,6 +41,7 @@ public class CompanionMovement : MonoBehaviour
     public void Start()
     {
         Companion = GetComponent<CompanionController>();
+        companionRigidbody = GetComponent<Rigidbody2D>();
         WorldMap = Pathfinding.Graph;
     }
 
@@ -154,7 +156,7 @@ public class CompanionMovement : MonoBehaviour
 
         //Move to the next destination
         //Companion.rigidbody.MovePosition(interpolatedMovement);
-        transform.position = interpolatedMovement;
+        companionRigidbody.MovePosition(interpolatedMovement);
 
         //If we've reached our destination, reset interpolation and remove the path we just reached
         if (Interpolation >= 1)
