@@ -12,6 +12,7 @@ public class TakeControll : MonoBehaviour
     private bool clawAttack = false;
     private float attackTimeHolde = 0;
 
+    private Rigidbody2D companionRigidbody;
     private CompanionController companionController;
 
 
@@ -19,30 +20,37 @@ public class TakeControll : MonoBehaviour
     void Start()
     {
         companionController = GetComponent<CompanionController>();
+        companionRigidbody = GetComponent<Rigidbody2D>();
         clawGameObject = transform.GetChild(0).gameObject;
     }
 
-    //WIth a lack of better name. Run() sounds like a thread.
+    //With a lack of better name. Run() sounds like a thread.
     public void RunExecute()
     {
         MoveByAxis();
         Combat();
     }
 
-    /***
-     * This seems so redundant
-     * Update() -> CompanionTakeOverState() -> Execute() -> InputMovement()
-    */
+    public void UndoTakeover()
+    {
+        clawGameObject.SetActive(false);
+        attackTimeHolde = 0;
+        clawAttack = false;
+    }
+
+    //Move function for the companion
     public void MoveByAxis()
     {
-        Vector3 vmov = Vector3.up * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
-        Vector3 hmov = Vector3.right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
+        float vmov = Input.GetAxis("Vertical");
+        float hmov = Input.GetAxis("Horizontal");
 
-        Vector3 heading = (vmov + hmov).normalized;
+        Vector2 heading = new Vector2(hmov, vmov);
 
-        transform.position += (vmov + hmov);
+        Vector2 nextPosition = (Vector2)transform.position + (heading * moveSpeed * Time.deltaTime);
+        //Do we need a check?
+        companionRigidbody.MovePosition(nextPosition);
 
-        companionController.UpdateAnimation(heading);
+        companionController.UpdateAnimation(heading.normalized);
     }
 
 

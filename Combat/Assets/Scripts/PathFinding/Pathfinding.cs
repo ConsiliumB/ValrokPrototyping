@@ -6,6 +6,8 @@ public static class Pathfinding
 {
     public static NodeMap Graph { get; internal set; }
 
+    //Find shortest path on a Map
+    //Use GetNodePath this is 80% Obsolete
     public static List<Coordinate> GetPath(Map map, Coordinate start, Coordinate destination)
     {
         var checkedCoordinates = new Dictionary<Coordinate, Node>();
@@ -71,6 +73,10 @@ public static class Pathfinding
     }
 
 
+    /// Finds a path in the NodeMap(map) from start to destination
+    /// Uses optimized Astar algorithem
+    /// returns a empty list if start is blocked, end is blocked or start == end.
+    /// Retruns a full list with each nodegrid to target on success
     public static List<Coordinate> GetNodePath(NodeMap map, Coordinate start, Coordinate destination)
     {
         var checkedCoordinates = new Dictionary<Coordinate, Node>();
@@ -123,11 +129,12 @@ public static class Pathfinding
                 {
                     continue;
                 }
-                
+
                 if (IsDiagonalDirection(neighbour.Position - current.position))
                 {
                     cost = 1.4f;
-                } else
+                }
+                else
                 {
                     cost = 1f;
                 }
@@ -152,6 +159,7 @@ public static class Pathfinding
     }
 }
 
+//The connection between tiles in the map/grid
 public class Node : IComparable<Node>
 {
     public Node parent;
@@ -178,6 +186,7 @@ public class Node : IComparable<Node>
     }
 }
 
+//Promiselist is created to calcualte shortes path in Astar
 public class NodePromiseList : List<Node>
 {
     /* Temporary!
@@ -210,11 +219,10 @@ public class NodePromiseList : List<Node>
      * inserting cheapest nodes at the end is better? Thats where most operations
      * will take place. (add, remove)
      */
-     public void AddSorted(Node node)
+    public void AddSorted(Node node)
     {
         var index = BinarySearch(node);
         if (index < 0) index = ~index;
         Insert(index, node);
     }
 }
- 

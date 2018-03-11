@@ -16,6 +16,7 @@ internal class CompanionFollowState : State
         //If current destination is not player position AND players distance to our current destination is larger than our proximitylimit, add waypoint
         if (Companion.Movement.Destination != Player.Position && Coordinate.DistanceSquared(Player.Position, Companion.Movement.Destination) > Companion.proximityLimit * Companion.proximityLimit)
         {
+            
             //If player is closer than current destination, find new path. Else, append path from destination to player
             if (Coordinate.DistanceSquared(Player.Position, Companion.Position) < Coordinate.DistanceSquared(Companion.Position, Companion.Movement.Destination))
             {
@@ -33,6 +34,11 @@ internal class CompanionFollowState : State
         //Find path to player, and start moving
         Companion.Movement.AddWaypoint(Player.Position, true);
         Companion.Movement.StartMoving();
+    }
+
+    public override void FinishState()
+    {
+        Companion.Movement.StopMoving();
     }
 }
 

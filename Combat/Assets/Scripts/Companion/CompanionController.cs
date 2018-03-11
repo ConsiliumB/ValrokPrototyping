@@ -17,10 +17,7 @@ public class CompanionController : StatefulEntity
     private Vector2 directionToPlayer;
     //public bool Moving { get; set; }
 
-    [Header("TakeOver Controll of the Companion")]
-    public bool takeOver = false;
-    //[Space]
-    //public new Rigidbody2D rigidbody;
+    private bool takeOver = false;
     public CompanionMovement Movement;
 
     private Animator animator;
@@ -35,10 +32,7 @@ public class CompanionController : StatefulEntity
         Instance = this;
     }
 
-    void Start()
-    {
-
-    }
+    void Start() { }
 
     // Update is called once per frame
     void Update()
@@ -47,20 +41,28 @@ public class CompanionController : StatefulEntity
         {
             ChangeState(new CompanionFollowState(this));
         }
-        if (takeOver)
-        {
-            ChangeState(new CompanionTakeOverState(gameObject));
-        }
 
         currentState.Execute();
     }
 
-    private void RestartCompanion()
+    public void ChangeToTakeover()
     {
-        ChangeState(new CompanionFollowState(this));
-        takeOver = false;
+        takeOver = true;
+        ChangeState(new CompanionTakeOverState(gameObject));
     }
 
+    public void RestartCompanion()
+    {
+        ChangeState(new CompanionFollowState(this));
+
+        var takeoverScript = gameObject.GetComponent<TakeControll>();
+        if (takeoverScript)
+        {
+            takeoverScript.UndoTakeover();
+        }
+        takeOver = false;
+
+    }
 
     public void UpdateAnimation(Vector2 heading)
     {

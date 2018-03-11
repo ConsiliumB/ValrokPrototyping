@@ -54,11 +54,7 @@ public class PlayerController : StatefulEntity
     //Moves the player in a new direction
     private void NextMove()
     {
-        if (lockMovement)
-        {
-            StopMovement();
-        }
-        else
+        if (!lockMovement)
         {
             vmov = Input.GetAxis("Vertical");
             hmov = Input.GetAxis("Horizontal");
@@ -80,11 +76,6 @@ public class PlayerController : StatefulEntity
 
             UpdateAnimation(nextDirection.normalized);
         }
-    }
-
-    private void StopMovement()
-    {
-        UpdateAnimation(Vector2.zero);
     }
 
     //If the player changes anything from start of game reset it here.
@@ -116,8 +107,8 @@ public class PlayerController : StatefulEntity
         animator.SetFloat("DirY", heading.y);
     }
 
-    //
-    public void StopMoving()
+    //lock play in place when touching the corruption
+    public void LockPlayer()
     {
         lockMovement = true;
         rigidbody.velocity *= 0;
@@ -125,6 +116,11 @@ public class PlayerController : StatefulEntity
         vmov = 0;
         //Walk down one frame to make it idle down next frame
         UpdateAnimation(Vector2.down + Vector2.left);
+    }
+
+    public void UnlockPlayer()
+    {
+        lockMovement = false;
     }
 
     private void CastSpell(string v)
@@ -140,25 +136,8 @@ public class PlayerController : StatefulEntity
         }
     }
 
-    //Currently no need for shooting projectiles
-    /*private void ShootLeft()
-    {
-        var bullet = (GameObject)Instantiate(projectile, transform.position, transform.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = transform.right * -1 * 10;
-
-        Destroy(bullet, 2.0f);
-    }
-
-    private void ShootRight()
-    {
-        var bullet = (GameObject)Instantiate(projectile, transform.position, transform.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = transform.right * 10;
-
-        Destroy(bullet, 2.0f);
-    }*/
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    //Currently on the corruption spawner object
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("CorruptionSpawner"))
         {
@@ -166,8 +145,7 @@ public class PlayerController : StatefulEntity
             hmov = 0;
             UpdateAnimation(Vector2.down + Vector2.right);
             lockMovement = true;
-            CompanionController.Instance.takeOver = true;
         }
-    }
+    }*/
 
 }

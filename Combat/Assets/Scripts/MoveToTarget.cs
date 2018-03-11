@@ -40,8 +40,8 @@ public class MoveToTarget : MonoBehaviour
             /*if (counter < delay) {
                 counter += Time.deltaTime;
             } else { */
-                MoveAlongPath();
-                //counter = 0;
+            MoveAlongPath();
+            //counter = 0;
             //}
         }
     }
@@ -61,7 +61,7 @@ public class MoveToTarget : MonoBehaviour
             FinishedPath();
             return;
         }
-        
+
         if (pathNode != path[0])
         {
             pathNode = path[0];
@@ -70,7 +70,7 @@ public class MoveToTarget : MonoBehaviour
             targetPosition = WorldGen.NodeMapToPixel(pathNode);
             initialPosition = transform.position;
         }
-        Interpolation += Time.smoothDeltaTime / 0.1f;
+        Interpolation += Time.smoothDeltaTime / 0.5f;
 
         //Find next destination
         interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, Interpolation);

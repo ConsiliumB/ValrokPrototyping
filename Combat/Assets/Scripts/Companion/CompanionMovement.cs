@@ -15,7 +15,9 @@ public class CompanionMovement : MonoBehaviour
     Rigidbody2D companionRigidbody;
     float Interpolation { get; set; }
     public NodeMap WorldMap { get; set; }
-    public bool Moving { get; private set; }
+    public bool IsMoving { get; private set; }
+    private bool blockMovement = false;
+
 
     public Coordinate Destination
     {
@@ -34,7 +36,7 @@ public class CompanionMovement : MonoBehaviour
 
     private void Awake()
     {
-        Moving = false;
+        IsMoving = false;
         Path = new List<Coordinate>();
     }
 
@@ -63,8 +65,10 @@ public class CompanionMovement : MonoBehaviour
             }
             Path.AddRange(newPath);
         }
-
-        StartMoving();
+        /*if (Moving == false)
+        {
+            StartMoving();
+        }*/
     }
 
     //Clears the current path. Will leave one node if currently moving to it
@@ -85,7 +89,7 @@ public class CompanionMovement : MonoBehaviour
 
     public void Update()
     {
-        if (Moving)
+        if (!blockMovement)
         {
             MoveAlongPath();
         }
@@ -94,17 +98,16 @@ public class CompanionMovement : MonoBehaviour
     //Enables movement
     public void StartMoving()
     {
-        Moving = true;
+        blockMovement = false;
+        initialPosition = transform.position;
+        targetPosition = PlayerController.Instance.gameObject.transform.position;
     }
 
     //Disables movement
     public void StopMoving()
     {
-        if (Companion != null)
-        {
-            Companion.UpdateAnimation(Vector2.zero);
-        }
-        Moving = false;
+        Companion.UpdateAnimation(Vector2.zero);
+        blockMovement = true;
     }
 
     /***
@@ -119,9 +122,13 @@ public class CompanionMovement : MonoBehaviour
         //If current path is empty, stop moving
         if (Path == null || Path.Count < 1)
         {
-            StopMoving();
+            IsMoving = false;
             //Debug.Log("Destination reached.");
             return;
+        }
+        else if (IsMoving == false)
+        {
+            IsMoving = true;
         }
 
 
@@ -136,14 +143,10 @@ public class CompanionMovement : MonoBehaviour
             targetPosition = WorldGen.NodeMapToPixel(pathNode);
             initialPosition = Companion.transform.position;
 
-
             //Debug.Log("Next node. Moving from " + initialPosition + " to " + targetPosition);
 
             //Start movement animation in the direction of the current target node
-            if (Companion != null)
-            {
-                Companion.UpdateAnimation(targetPosition - initialPosition);
-            }
+            Companion.UpdateAnimation(targetPosition - initialPosition);
         }
 
         //Increase interpolation.

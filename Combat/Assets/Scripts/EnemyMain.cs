@@ -27,13 +27,25 @@ public class EnemyMain : MonoBehaviour {
         if (lives <= 0)
         {
             //RunDeathAnimation
-            Destroy(gameObject, 1);
+            Destroy(gameObject, 0.1f);
         }
     }
 
+    private void OnDestroy()
+    {
+        transform.parent.gameObject.GetComponent<CorruptionSpawner>().EnemyDied();
+    }
+
+    //On collision with other gameobjects 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "CompanionAttack")
+        //
+    }
+
+    //When a trigger is entered
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("CompanionAttack"))
         {
             TakeDamage();
         }
