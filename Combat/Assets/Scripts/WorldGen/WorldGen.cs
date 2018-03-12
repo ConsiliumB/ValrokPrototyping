@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class WorldGen : MonoBehaviour {
     public List<GameObject> tiles;
+    public List<GameObject> foilage;
+    public List<GameObject> trees;
 
     [System.Serializable]
     public struct Util
@@ -150,7 +152,7 @@ public class WorldGen : MonoBehaviour {
         foreach (Coordinate position in nodeMap.Map.Keys)
         {
             random = UnityEngine.Random.Range(0, 100);
-            if (random > 98)
+            if (random > 93)
             {
                 FoilagePositions.Add(position);
             }
@@ -166,10 +168,19 @@ public class WorldGen : MonoBehaviour {
     {
         var foilageContainer = new GameObject("Foilage");
         foilageContainer.transform.parent = this.gameObject.transform;
+        int random;
 
         foreach (Coordinate position in FoilagePositions)
         {
-            SpawnObject(GetMapTile((int)Tiles.tree_tile), NodeMapToPixel(position), foilageContainer.transform);
+            random = UnityEngine.Random.Range(0, 100);
+            if (random > 70)
+            {
+                SpawnObject(trees[UnityEngine.Random.Range(0, trees.Count)], NodeMapToPixel(position), foilageContainer.transform);
+            }
+            else
+            {
+                SpawnObject(foilage[UnityEngine.Random.Range(0, foilage.Count)], NodeMapToPixel(position), foilageContainer.transform);
+            }
         }
     }
 

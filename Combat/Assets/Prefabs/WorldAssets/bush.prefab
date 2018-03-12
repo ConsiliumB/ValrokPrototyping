@@ -9,33 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1478847848206522}
+  m_RootGameObject: {fileID: 1863038469614912}
   m_IsPrefabParent: 1
---- !u!1 &1478847848206522
+--- !u!1 &1863038469614912
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4101999411705762}
-  - component: {fileID: 114739364417036608}
-  - component: {fileID: 58839128732696538}
-  - component: {fileID: 212150541218767228}
-  - component: {fileID: 114333631012497824}
+  - component: {fileID: 4283135640935044}
+  - component: {fileID: 212823662564940006}
+  - component: {fileID: 114215830552175386}
   m_Layer: 0
-  m_Name: corruption_spawnpoint
-  m_TagString: CorruptionSpawner
+  m_Name: bush
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4101999411705762
+--- !u!4 &4283135640935044
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1478847848206522}
+  m_GameObject: {fileID: 1863038469614912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -43,53 +41,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &58839128732696538
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1478847848206522}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.4647193, y: -5.3599815}
-  serializedVersion: 2
-  m_Radius: 1.615912
---- !u!114 &114333631012497824
+--- !u!114 &114215830552175386
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1478847848206522}
+  m_GameObject: {fileID: 1863038469614912}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2194bae83db62eb40ab50d98887fe3eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   offsetToActualBase: 0
---- !u!114 &114739364417036608
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1478847848206522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cede65e3cf265cc49a03228b1675e708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1843138022566562, guid: 0234828871fc7fd4ba212487e9e7136c,
-    type: 2}
-  amountSpawned: 1
---- !u!212 &212150541218767228
+--- !u!212 &212823662564940006
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1478847848206522}
+  m_GameObject: {fileID: 1863038469614912}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -115,15 +84,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 417188187
-  m_SortingLayer: 5
+  m_SortingLayerID: 1471235441
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58e4e1f6a4048af48b094638460f2452, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 74fda313e7863ae4ba65a3c08c487c6c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 14.88, y: 12.12}
+  m_Size: {x: 6, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
