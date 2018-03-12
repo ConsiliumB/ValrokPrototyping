@@ -116,6 +116,7 @@ public class PlayerController : StatefulEntity
         vmov = 0;
         //Walk down one frame to make it idle down next frame
         UpdateAnimation(Vector2.down + Vector2.left);
+        UpdateAnimation(Vector2.zero);
     }
 
     public void UnlockPlayer()

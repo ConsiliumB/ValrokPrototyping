@@ -122,8 +122,9 @@ public class CompanionMovement : MonoBehaviour
         //If current path is empty, stop moving
         if (Path == null || Path.Count < 1)
         {
-            IsMoving = false;
             //Debug.Log("Destination reached.");
+            IsMoving = false;
+            Companion.UpdateAnimation(Vector2.zero);
             return;
         }
         else if (IsMoving == false)
