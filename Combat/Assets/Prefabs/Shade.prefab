@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4945668452777012}
   - component: {fileID: 212168727316464724}
-  - component: {fileID: 114209215548745412}
-  - component: {fileID: 114039087987226526}
   - component: {fileID: 70120648326422806}
   - component: {fileID: 50857429119045076}
+  - component: {fileID: 95122452002992074}
+  - component: {fileID: 114744889640658474}
+  - component: {fileID: 114968326063077458}
   m_Layer: 0
   m_Name: Shade
   m_TagString: Enemy
@@ -79,7 +80,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.3}
   m_Size: {x: 1.6039566, y: 1.009895}
   m_Direction: 1
---- !u!114 &114039087987226526
+--- !u!95 &95122452002992074
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1826877778015732}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: a9d22998ccfd14840bdb46a23cdd6e63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114744889640658474
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -87,12 +105,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1826877778015732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17ca2c2fc4b0706439fc13eb3c87f639, type: 3}
+  m_Script: {fileID: 11500000, guid: 963be6b5070ed9142bc34f7f5d1cf9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 0
-  hitDelay: 0
---- !u!114 &114209215548745412
+--- !u!114 &114968326063077458
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -100,7 +116,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1826877778015732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee5a2805ed9f6c4196b12628ddce7f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a216c17a0ac7d14db8b16c5cc0c8926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212168727316464724

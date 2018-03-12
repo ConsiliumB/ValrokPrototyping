@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour
         {
             if (Path.Count < 1)
             {
-                return null;
+                return WorldGen.PixelToNodeMap(transform.position);
             }
             else
             {
@@ -89,7 +89,10 @@ public class Movement : MonoBehaviour
     //Disables movement
     public void StopMoving()
     {
-        MovementUpdated(Vector2.zero);
+        if(MovementUpdated != null)
+        {
+            MovementUpdated(Vector2.zero);
+        }
         moving = false;
     }
 
@@ -131,7 +134,10 @@ public class Movement : MonoBehaviour
             //Debug.Log("Next node. Moving from " + initialPosition + " to " + targetPosition);
 
             //Start movement animation in the direction of the current target node
-            MovementUpdated(targetPosition - initialPosition);
+            if (MovementUpdated != null)
+            {
+                MovementUpdated(targetPosition - initialPosition);
+            }
         }
 
         //Increase interpolation.
