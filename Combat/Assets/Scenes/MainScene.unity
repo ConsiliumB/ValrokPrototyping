@@ -182,11 +182,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4018427779684856, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.31
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4018427779684856, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 9.93
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4018427779684856, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
       propertyPath: m_LocalPosition.z
@@ -415,8 +415,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 1788802199263806, guid: a95b1ae21bf79934f8b639c6423c238c, type: 2}
-  - {fileID: 1341116330873206, guid: 5c30d260c82cebf4d9de3e7e5990c41d, type: 2}
-  - {fileID: 1327848167678196, guid: 7875d882f4bab7240ab8f9309bbf5789, type: 2}
+  - {fileID: 1535048567923704, guid: 8e7c6436adcf74449a86911ea27b7f2c, type: 2}
+  - {fileID: 1134818023480112, guid: 79c547160a7ab5f40bb25f1ac3e4e487, type: 2}
   - {fileID: 1290611810430360, guid: 41aced566353a6d41ad8e047ff50761b, type: 2}
   - {fileID: 1448778683549406, guid: 3d894a20919c59d4085575936f263314, type: 2}
   - {fileID: 1790953290771880, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
@@ -496,3 +496,15 @@ GameObject:
   m_PrefabParentObject: {fileID: 1882924236460444, guid: 826dbfcc42f9a4d49abafba0215c8d41,
     type: 2}
   m_PrefabInternal: {fileID: 1610626351}
+--- !u!114 &1987622062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1987622055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51dbfaa2a21737469d348eeeed2bd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetToActualBase: -1.45
