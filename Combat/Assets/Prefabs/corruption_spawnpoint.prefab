@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4101999411705762}
   - component: {fileID: 114739364417036608}
-  - component: {fileID: 58839128732696538}
   - component: {fileID: 212150541218767228}
   - component: {fileID: 114333631012497824}
+  - component: {fileID: 70636656550540852}
   m_Layer: 0
   m_Name: corruption_spawnpoint
   m_TagString: CorruptionSpawner
@@ -43,8 +43,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &58839128732696538
-CircleCollider2D:
+--- !u!70 &70636656550540852
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -55,9 +55,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.4647193, y: -5.3599815}
-  serializedVersion: 2
-  m_Radius: 1.615912
+  m_Offset: {x: 0.029066574, y: 0.07190717}
+  m_Size: {x: 2.649981, y: 0.71298}
+  m_Direction: 1
 --- !u!114 &114333631012497824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,10 +115,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 417188187
-  m_SortingLayer: 5
+  m_SortingLayerID: 1471235441
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 58e4e1f6a4048af48b094638460f2452, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2a78f4263c8fd9f41adfae5237f7a1ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
