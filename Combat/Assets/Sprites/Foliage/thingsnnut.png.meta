@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 183351aef9055f845bfc06ad5f823d6d
-timeCreated: 1520869427
+timeCreated: 1521031377
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -91,8 +91,8 @@ TextureImporter:
         y: 135
         width: 22
         height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5423227, y: 0.446489}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -105,8 +105,8 @@ TextureImporter:
         y: 132
         width: 43
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4783467, y: 0.5000005}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -119,8 +119,8 @@ TextureImporter:
         y: 123
         width: 49
         height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.46199596, y: 0.1089386}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -133,8 +133,8 @@ TextureImporter:
         y: 43
         width: 30
         height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.52069116, y: 0.30136582}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,8 +147,8 @@ TextureImporter:
         y: 39
         width: 39
         height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.49204195, y: 0.3735545}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -161,8 +161,8 @@ TextureImporter:
         y: 19
         width: 54
         height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4310297, y: 0.07725995}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
