@@ -32,6 +32,11 @@ public class PlayerController : StatefulEntity
         spriteRend = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        StartCoroutine("CheckPositionChange");
+    }
+
     //Kept the E key press for player world interaction
     void Update()
     {

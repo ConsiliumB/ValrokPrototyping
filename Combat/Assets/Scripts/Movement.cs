@@ -5,19 +5,21 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public float movementSpeed;
+    public float movementAccuracy;
+
     //Subscribe to this in controller if you want to act based on movement/direction
-    public delegate void MovementUpdatedHandler(Vector2 direction);
-    public event MovementUpdatedHandler MovementUpdated;
+    public delegate void MovementUpdateHandler(Vector2 direction);
+    public event MovementUpdateHandler MovementUpdate;
 
     private List<Coordinate> Path = new List<Coordinate>();
     private bool moving = false;
 
-    //Variables used for interpolated movement
+    //Variables used for path movement
     private Coordinate pathNode;
     private Vector2 targetPosition;
     private Vector2 initialPosition;
     private Vector2 interpolatedMovement;
-    private float interpolation;
 
     public Coordinate Destination
     {
@@ -37,6 +39,11 @@ public class Movement : MonoBehaviour
     //Add waypoint to path. If overwrite is true, will clear the current path
     public void AddWaypoint(Coordinate newDestination, bool overwrite = false)
     {
+        if (Destination == newDestination)
+        {
+            return;
+        }
+
         if (overwrite)
         {
             ClearPath();
@@ -52,7 +59,6 @@ public class Movement : MonoBehaviour
             }
             Path.AddRange(newPath);
         }
-
         StartMoving();
     }
 
@@ -61,14 +67,7 @@ public class Movement : MonoBehaviour
     {
         if (Path.Count > 0)
         {
-            if (interpolation > 0)
-            {
-                Path.RemoveRange(1, Path.Count - 1);
-            }
-            else
-            {
-                Path.Clear();
-            }
+            Path.Clear();
         }
     }
 
@@ -89,9 +88,9 @@ public class Movement : MonoBehaviour
     //Disables movement
     public void StopMoving()
     {
-        if(MovementUpdated != null)
+        if(MovementUpdate != null)
         {
-            MovementUpdated(Vector2.zero);
+            MovementUpdate(Vector2.zero);
         }
         moving = false;
     }
@@ -101,13 +100,7 @@ public class Movement : MonoBehaviour
         return moving;
     }
 
-    /***
-     * A lot of comments
-     * Just comment inside a method if you use black magic
-    */
-
     //Move towards next point in current path
-    //Nullable optinal Vector2 = black magic.
     public void MoveAlongPath()
     {
         //If current path is empty, stop moving
@@ -123,39 +116,28 @@ public class Movement : MonoBehaviour
         if (pathNode != Path[0])
         {
             pathNode = Path[0];
-            //Reset interpolation 
-            interpolation = 0;
 
-            //Set target/initial positions to use when interpolating/lerping
+            //Set target/initial positions and calculate normalized vector
             targetPosition = WorldGen.NodeMapToPixel(pathNode);
             initialPosition = transform.position;
-
+            interpolatedMovement = (targetPosition - initialPosition).normalized;
 
             //Debug.Log("Next node. Moving from " + initialPosition + " to " + targetPosition);
 
             //Start movement animation in the direction of the current target node
-            if (MovementUpdated != null)
+            if (MovementUpdate != null)
             {
-                MovementUpdated(targetPosition - initialPosition);
+                MovementUpdate(interpolatedMovement);
             }
         }
 
-        //Increase interpolation.
-        //Divide to regulate speed, currently 0.1f, should be public variable
-        interpolation += Time.smoothDeltaTime / 0.1f;
-
-        //Find next destination
-        interpolatedMovement = Vector2.Lerp(initialPosition, targetPosition, interpolation);
-        //Debug.Log("Moving to " + interpolatedMovement);
-
         //Move to the next destination
         //Entity.rigidbody.MovePosition(interpolatedMovement);
-        transform.position = interpolatedMovement;
+        transform.Translate(interpolatedMovement * Time.deltaTime * movementSpeed);
 
-        //If we've reached our destination, reset interpolation and remove the path we just reached
-        if (interpolation >= 1)
+        //If we've reached our current destination, remove the path node we just reached
+        if ((targetPosition - (Vector2)transform.position).magnitude < movementAccuracy )
         {
-            interpolation = 0;
             Path.Remove(pathNode);
         }
     }

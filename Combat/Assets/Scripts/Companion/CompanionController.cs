@@ -32,7 +32,10 @@ public class CompanionController : StatefulEntity
         Instance = this;
     }
 
-    void Start() { }
+    void Start()
+    {
+        StartCoroutine("CheckPositionChange");
+    }
 
     // Update is called once per frame
     void Update()
@@ -43,6 +46,7 @@ public class CompanionController : StatefulEntity
         }
 
         currentState.Execute();
+
     }
 
     public void ChangeToTakeover()

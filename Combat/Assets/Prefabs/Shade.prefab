@@ -74,7 +74,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.3}
@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a216c17a0ac7d14db8b16c5cc0c8926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 2
+  movementAccuracy: 1.16
 --- !u!212 &212168727316464724
 SpriteRenderer:
   m_ObjectHideFlags: 1

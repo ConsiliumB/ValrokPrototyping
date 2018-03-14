@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public class ChaseNearestState : State
     private CompanionController Companion;
     private PlayerController Player;
     private ShadeController Shade;
+    private StatefulEntity Nearest;
     private Movement Movement;
 
     private Vector2 playerHeading;
@@ -38,29 +40,56 @@ public class ChaseNearestState : State
         Movement = Shade.GetComponent<Movement>();
         Player = PlayerController.Instance;
         Companion = CompanionController.Instance;
+
+        Player.PositionUpdate += delegate ()
+        {
+            Debug.Log("Player moved");
+            UpdateNearest();
+
+            if (Nearest == Player)
+            {
+                FindPathToNearest();
+            }
+        };
+
+        Companion.PositionUpdate += delegate ()
+        {
+            Debug.Log("Companion moved");
+            UpdateNearest();
+
+            if (Nearest == Companion)
+            {
+                FindPathToNearest();
+            }
+        };
     }
 
     public override void Execute()
     {
-        timer += Time.deltaTime;
-        if (timer > 0.5f)
-        {
-            Debug.Log("1s elapsed");
-            Debug.Log(Player.Position + " and " + Companion.Position);
+        //timer += Time.deltaTime;
+        //if (timer > 0.5f)
+        //{
+        //    UpdateNearest();
+        //    timer = 0;
+        //}
+    }
 
-            //This comparison should only happen when player or companion moves.. Delegates anyone!?(YES)
-            companionHeading = Companion.transform.position - Shade.transform.position;
-            playerHeading = Player.transform.position - Shade.transform.position;
-            if (companionHeading.sqrMagnitude < playerHeading.sqrMagnitude)
-            {
-                Movement.AddWaypoint(Companion.Position, true);
-            }
-            else
-            {
-                Movement.AddWaypoint(Player.Position, true);
-            }
-            Movement.StartMoving();
-            timer = 0;
+    private void FindPathToNearest()
+    {
+        Movement.AddWaypoint(Nearest.Position, true);
+    }
+
+    private void UpdateNearest()
+    {
+        companionHeading = Companion.transform.position - Shade.transform.position;
+        playerHeading = Player.transform.position - Shade.transform.position;
+        if (companionHeading.sqrMagnitude < playerHeading.sqrMagnitude)
+        {
+            Nearest = Companion;
+        }
+        else
+        {
+            Nearest = Player;
         }
     }
 
