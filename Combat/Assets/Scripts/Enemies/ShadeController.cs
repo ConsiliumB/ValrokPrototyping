@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ShadeController : StatefulEntity {
 
+    public GameObject projectile;
+    public float projectileSpeed;
+
     // Use this for initialization
     void Start () {
         ChangeState(new ChaseNearestState(this));
@@ -14,6 +17,17 @@ public class ShadeController : StatefulEntity {
 	void Update () {
         currentState.Execute();
 	}
+
+    public void Shoot(Vector3 heading)
+    {
+        Debug.Log(heading);
+        Debug.Log(heading.normalized);
+        var bullet = Instantiate(projectile, transform.position + heading.normalized, transform.rotation);
+        bullet.transform.right = heading.normalized;
+        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
+
+        Destroy(bullet, 5.0f);
+    }
 }
 
 public class ChaseNearestState : State
@@ -41,12 +55,16 @@ public class ChaseNearestState : State
         Player = PlayerController.Instance;
         Companion = CompanionController.Instance;
 
+        Nearest = FindNearest();
+        FindPathToNearest();
+
+
         Player.PositionUpdate += delegate ()
         {
             Debug.Log("Player moved");
-            UpdateNearest();
-
-            if (Nearest == Player)
+            var previousNearest = Nearest;
+            Nearest = FindNearest();
+            if (Nearest != previousNearest || Nearest == Player)
             {
                 FindPathToNearest();
             }
@@ -55,9 +73,9 @@ public class ChaseNearestState : State
         Companion.PositionUpdate += delegate ()
         {
             Debug.Log("Companion moved");
-            UpdateNearest();
-
-            if (Nearest == Companion)
+            var previousNearest = Nearest;
+            Nearest = FindNearest();
+            if (Nearest != previousNearest || Nearest == Companion)
             {
                 FindPathToNearest();
             }
@@ -66,12 +84,21 @@ public class ChaseNearestState : State
 
     public override void Execute()
     {
-        //timer += Time.deltaTime;
-        //if (timer > 0.5f)
-        //{
-        //    UpdateNearest();
-        //    timer = 0;
-        //}
+        timer += Time.deltaTime;
+        if (timer > 0.5f)
+        {
+            var nearestDistance = Nearest.transform.position - Shade.transform.position;
+
+            if (nearestDistance.magnitude < 10)
+            {
+                Attack();
+                timer = -2;
+            }
+            else
+            {
+                timer = 0;
+            }
+        }
     }
 
     private void FindPathToNearest()
@@ -79,22 +106,23 @@ public class ChaseNearestState : State
         Movement.AddWaypoint(Nearest.Position, true);
     }
 
-    private void UpdateNearest()
+    private StatefulEntity FindNearest()
     {
         companionHeading = Companion.transform.position - Shade.transform.position;
         playerHeading = Player.transform.position - Shade.transform.position;
         if (companionHeading.sqrMagnitude < playerHeading.sqrMagnitude)
         {
-            Nearest = Companion;
+            return Companion;
         }
         else
         {
-            Nearest = Player;
+            return Player;
         }
     }
-
-    public override void FinishState()
+    private void Attack()
     {
-        base.FinishState();
+        var direction = Nearest.transform.position - Shade.transform.position;
+
+        Shade.Shoot(direction);
     }
 }
