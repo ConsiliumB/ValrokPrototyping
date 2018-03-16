@@ -37,6 +37,7 @@ public class WorldGen : MonoBehaviour {
     private Chunk[] chunks;
     private GameObject cliffContainer;
     private GameObject seaContainer;
+    private GameObject collisionContainer;
     private List<Coordinate> FoilagePositions = new List<Coordinate>();
 
 
@@ -58,8 +59,9 @@ public class WorldGen : MonoBehaviour {
 
     private void Awake()
     {
-
-        UnityEngine.Random.InitState(42);
+        //var seed = UnityEngine.Random.Range(0, 100);
+        UnityEngine.Random.InitState(4);
+        //Debug.Log("Seed = " + seed);
 
         GenerateMap();
         GenerateChunks();
@@ -76,7 +78,7 @@ public class WorldGen : MonoBehaviour {
     void Start()
     {
         //Create gamobjects etc.
-        DrawWater();
+        //DrawWater();
         DrawCliffs();
         InstantiateMap();
         SpawnFoilage();
@@ -108,29 +110,6 @@ public class WorldGen : MonoBehaviour {
                     SpawnObject(GetMapTile((int)Tiles.water), MapToPixel(potentialPosition), transform);
                 }
             }
-            //potentialPosition = Position + new Coordinate(i, distance - i);
-            //if (!World.WithinBounds(potentialPosition))
-            //{
-            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
-            //}
-
-            //potentialPosition = Position + new Coordinate(i * -1, distance - i);
-            //if (!World.WithinBounds(potentialPosition))
-            //{
-            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
-            //}
-
-            //potentialPosition = Position - new Coordinate(i, distance - i);
-            //if (!World.WithinBounds(potentialPosition))
-            //{
-            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
-            //}
-
-            //potentialPosition = Position - new Coordinate(i * -1, distance - i);
-            //if (!World.WithinBounds(potentialPosition))
-            //{
-            //    SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(potentialPosition), transform);
-            //}
         }
     }
 
@@ -152,7 +131,7 @@ public class WorldGen : MonoBehaviour {
         foreach (Coordinate position in nodeMap.Map.Keys)
         {
             random = UnityEngine.Random.Range(0, 100);
-            if (random > 93)
+            if (random > 92)
             {
                 FoilagePositions.Add(position);
             }
@@ -173,7 +152,7 @@ public class WorldGen : MonoBehaviour {
         foreach (Coordinate position in FoilagePositions)
         {
             random = UnityEngine.Random.Range(0, 100);
-            if (random > 70)
+            if (random > 90)
             {
                 SpawnObject(trees[UnityEngine.Random.Range(0, trees.Count)], NodeMapToPixel(position), foilageContainer.transform);
             }
@@ -218,6 +197,9 @@ public class WorldGen : MonoBehaviour {
         {
             AddWorldChunk(chunk);
         }
+
+        collisionContainer = new GameObject("Cliff Collision");
+        collisionContainer.transform.parent = transform;
 
         //Add collision around edge of map
         foreach (Chunk chunk in chunks)
@@ -267,13 +249,13 @@ public class WorldGen : MonoBehaviour {
             position = new Coordinate(x_max, y);
             if (!World.WithinBounds(position))
             {
-                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), collisionContainer.transform);
             }
 
             position = new Coordinate(chunk.xPos - 1, y);
             if (!World.WithinBounds(position))
             {
-                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), collisionContainer.transform);
             }
         }
 
@@ -282,13 +264,13 @@ public class WorldGen : MonoBehaviour {
             position = new Coordinate(x, y_max);
             if (!World.WithinBounds(position))
             {
-                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), collisionContainer.transform);
             }
 
             position = new Coordinate(x, chunk.yPos - 1);
             if (!World.WithinBounds(position))
             {
-                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), transform);
+                SpawnObject(GetMapTile((int)Tiles.collision_tile), MapToPixel(position), collisionContainer.transform);
             }
         }
     }
@@ -303,15 +285,19 @@ public class WorldGen : MonoBehaviour {
         for (int y = chunk.yPos - 1; y < y_max; y++)
         {
             position = new Coordinate(chunk.xPos - 1, y);
-            //World.AddNode(position, (int)Tiles.cliff_sw);
-            SpawnObject(GetMapTile((int)Tiles.cliff_sw), MapToPixel(position), cliffContainer.transform);
+            if (!World.WithinBounds(position + Coordinate.North))
+            {
+                SpawnObject(GetMapTile((int)Tiles.cliff_sw), MapToPixel(position), cliffContainer.transform);
+            }
         }
 
         for (int x = chunk.xPos - 1; x < x_max; x++)
         {
             position = new Coordinate(x, chunk.yPos - 1);
-            //World.AddNode(position, (int)Tiles.cliff_se);
-            SpawnObject(GetMapTile((int)Tiles.cliff_se), MapToPixel(position), cliffContainer.transform);
+            if (!World.WithinBounds(position + Coordinate.East))
+            {
+                SpawnObject(GetMapTile((int)Tiles.cliff_se), MapToPixel(position), cliffContainer.transform);
+            }
         }
     }
 
@@ -330,11 +316,21 @@ public class WorldGen : MonoBehaviour {
         Vector2 position;
         GameObject tileObject;
 
+        //int actualTile;
+
         foreach (var node in World.Map.Values)
         {
             if (node.Tile > 0)
             {
+                //if (node.Tile == 1)
+                //{
+                //    actualTile = UnityEngine.Random.Range(11, 13);
+
+                //    tileObject = GetMapTile(actualTile);
+
+                //}
                 tileObject = GetMapTile(node.Tile);
+
                 position = MapToPixel(node.Position.X, node.Position.Y);
 
                 SpawnObject(tileObject, position, floorContainer.transform);
