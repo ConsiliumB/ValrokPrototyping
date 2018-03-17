@@ -9,6 +9,11 @@ public class WorldGen : MonoBehaviour {
     public List<GameObject> foilage;
     public List<GameObject> trees;
 
+    public AnimationCurve tileMovement;
+
+    public static WorldGen Instance { get; private set; }
+
+
     [System.Serializable]
     public struct Util
     {
@@ -59,6 +64,7 @@ public class WorldGen : MonoBehaviour {
 
     private void Awake()
     {
+        Instance = this;
         //var seed = UnityEngine.Random.Range(0, 100);
         UnityEngine.Random.InitState(1);
         //Debug.Log("Seed = " + seed);
@@ -79,9 +85,10 @@ public class WorldGen : MonoBehaviour {
     {
         //Create gamobjects etc.
         //DrawWater();
-        DrawCliffs();
-        InstantiateMap();
-        SpawnFoilage();
+        //DrawCliffs();
+        //InstantiateMap();
+        StartCoroutine("InstantiateMapStepByStep");
+        //SpawnFoilage();
     }
 
     private void DrawWater()
@@ -335,6 +342,35 @@ public class WorldGen : MonoBehaviour {
 
                 SpawnObject(tileObject, position, floorContainer.transform);
             }
+        }
+    }
+    private IEnumerator InstantiateMapStepByStep()
+    {
+        var floorContainer = new GameObject("Floor");
+        floorContainer.transform.parent = this.gameObject.transform;
+        Vector2 position;
+        GameObject tileObject;
+
+        //int actualTile;
+
+        foreach (var node in World.Map.Values)
+        {
+            if (node.Tile > 0)
+            {
+                //if (node.Tile == 1)
+                //{
+                //    actualTile = UnityEngine.Random.Range(11, 13);
+
+                //    tileObject = GetMapTile(actualTile);
+
+                //}
+                tileObject = GetMapTile(node.Tile);
+
+                position = MapToPixel(node.Position.X, node.Position.Y);
+
+                SpawnObject(tileObject, position, floorContainer.transform);
+            }
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

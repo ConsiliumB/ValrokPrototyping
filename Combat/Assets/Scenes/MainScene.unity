@@ -417,7 +417,25 @@ MonoBehaviour:
   - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
   - {fileID: 1500655647313700, guid: d67129581156986448dbe1a788ad43d2, type: 2}
   - {fileID: 1558391442782862, guid: 15619ad222068f0499a57081b00cb914, type: 2}
-  numberOfRooms: 100
+  tileMovement:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  numberOfRooms: 10
 --- !u!4 &1647013281
 Transform:
   m_ObjectHideFlags: 0
