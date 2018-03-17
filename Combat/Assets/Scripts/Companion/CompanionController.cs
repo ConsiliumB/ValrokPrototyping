@@ -37,12 +37,10 @@ public class CompanionController : StatefulEntity
     // Update is called once per frame
     void Update()
     {
-        if (currentState == null)
+        if (currentState != null)
         {
-            ChangeState(new CompanionFollowState(this));
+            currentState.Execute();
         }
-
-        currentState.Execute();
     }
 
     public void ChangeToTakeover()

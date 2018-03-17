@@ -139,11 +139,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4895843282865454, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 4895843282865454, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4895843282865454, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
       propertyPath: m_LocalPosition.z
@@ -243,7 +243,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 50
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -292,11 +292,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4645087062646914, guid: 826dbfcc42f9a4d49abafba0215c8d41, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4645087062646914, guid: 826dbfcc42f9a4d49abafba0215c8d41, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4645087062646914, guid: 826dbfcc42f9a4d49abafba0215c8d41, type: 2}
       propertyPath: m_LocalPosition.z
@@ -415,6 +415,8 @@ MonoBehaviour:
   trees:
   - {fileID: 1790953290771880, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
   - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
+  - {fileID: 1500655647313700, guid: d67129581156986448dbe1a788ad43d2, type: 2}
+  - {fileID: 1558391442782862, guid: 15619ad222068f0499a57081b00cb914, type: 2}
   numberOfRooms: 100
 --- !u!4 &1647013281
 Transform:
