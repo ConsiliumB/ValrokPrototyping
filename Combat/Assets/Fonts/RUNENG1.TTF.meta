@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 31b41bb149e2e2e4fb81da139864248b
+timeCreated: 1521473270
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: RUNEnglish 1
+  fontNames:
+  - RUNEnglish 1
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
