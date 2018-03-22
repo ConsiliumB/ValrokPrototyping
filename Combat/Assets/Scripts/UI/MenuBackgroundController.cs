@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class MenuBackgroundController : MonoBehaviour {
 
-    public GameObject tile;
+    public static MenuBackgroundController Instance;
+
+    public List<GameObject> tiles = new List<GameObject>();
+    public AnimationCurve easeInCurve;
+
     private List<Coordinate> coordinates = new List<Coordinate>();
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Use this for initialization
     void Start () {
@@ -133,10 +141,19 @@ public class MenuBackgroundController : MonoBehaviour {
 
     IEnumerator InstantiateBackground()
     {
+        GameObject tile;
         foreach (Coordinate item in coordinates)
         {
+            //if (Random.Range(0, 100) > 95)
+            //{
+            //    tile = tiles[1];
+            //} else
+            //{
+                tile = tiles[0];
+            //}
+
             Instantiate(tile, WorldGen.MapToPixel(item), Quaternion.identity, transform);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }

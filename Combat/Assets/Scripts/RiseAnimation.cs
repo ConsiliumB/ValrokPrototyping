@@ -39,7 +39,7 @@ public class RiseAnimation : MonoBehaviour {
             timer += Time.smoothDeltaTime;
 
             var progress = timer / 4f;
-            var value = WorldGen.Instance.tileMovement.Evaluate(progress);
+            var value = MenuBackgroundController.Instance.easeInCurve.Evaluate(progress);
             var transparency = value * 10f;
             fadeInColor = new Color(transparency, transparency, transparency, transparency);
 
@@ -52,11 +52,11 @@ public class RiseAnimation : MonoBehaviour {
             transform.position = Vector2.Lerp(transform.position, targetPos, value);
             yield return null;
         }
-        renderer.sortingLayerName = "Floor";
-        foreach (var item in children)
-        {
-            item.sortingLayerName = "Floor";
-        }
+        //renderer.sortingLayerName = "Floor";
+        //foreach (var item in children)
+        //{
+        //    item.sortingLayerName = "Floor";
+        //}
         transform.position = targetPos;
     }
 }

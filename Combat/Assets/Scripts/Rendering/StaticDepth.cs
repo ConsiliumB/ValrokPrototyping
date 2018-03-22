@@ -12,5 +12,11 @@ public class StaticDepth : MonoBehaviour
     {
         Renderer = GetComponent<SpriteRenderer>();
         Renderer.sortingOrder = (int)((transform.position.y + offsetToActualBase) * -100f);
+
+        var childRenderers = GetComponentsInChildren<SpriteRenderer>();
+        foreach (var item in childRenderers)
+        {
+            item.sortingOrder = (int)((transform.position.y + offsetToActualBase) * -100f);
+        }
     }
 }
