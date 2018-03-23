@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuBackgroundController : MonoBehaviour {
+public class MenuBackgroundController : MonoBehaviour
+{
 
     public static MenuBackgroundController Instance;
 
@@ -17,14 +18,17 @@ public class MenuBackgroundController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
+        //GameObject tile = new GameObject("Tiles");
         StartCoroutine("GenerateBackground");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     IEnumerator GenerateBackground()
     {
@@ -81,7 +85,8 @@ public class MenuBackgroundController : MonoBehaviour {
                     coordinates.Add(curr + Coordinate.North);
                 }
 
-            } else
+            }
+            else
             {
                 coordinates.Add(curr);
             }
@@ -129,7 +134,8 @@ public class MenuBackgroundController : MonoBehaviour {
                     coordinates.Add(curr + Coordinate.North * 2);
                 }
 
-            } else
+            }
+            else
             {
                 coordinates.Add(curr);
             }
@@ -144,15 +150,17 @@ public class MenuBackgroundController : MonoBehaviour {
         GameObject tile;
         foreach (Coordinate item in coordinates)
         {
-            //if (Random.Range(0, 100) > 95)
-            //{
-            //    tile = tiles[1];
-            //} else
-            //{
+            /*if (Random.Range(0, 5) <= 1f)
+            {
+                tile = tiles[1];
+            }
+            else
+            {*/
+                //Test allways 1
                 tile = tiles[0];
             //}
 
-            Instantiate(tile, WorldGen.MapToPixel(item), Quaternion.identity, transform);
+            Instantiate(tile, WorldGen.MapToPixel(item), Quaternion.identity);
             yield return new WaitForSeconds(0.1f);
         }
     }
