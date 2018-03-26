@@ -22,7 +22,7 @@ public class ShadeController : StatefulEntity {
     {
         Debug.Log(heading);
         Debug.Log(heading.normalized);
-        var bullet = Instantiate(projectile, transform.position + heading.normalized, transform.rotation);
+        var bullet = Instantiate(projectile, transform.position + new Vector3(0, 1.2f, 0) + heading.normalized, transform.rotation);
         bullet.transform.right = heading.normalized;
         bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
 
@@ -92,6 +92,7 @@ public class ChaseNearestState : State
             if (nearestDistance.magnitude < 10)
             {
                 Attack();
+                Movement.StopMoving();
                 timer = -2;
             }
             else
@@ -103,7 +104,10 @@ public class ChaseNearestState : State
 
     private void FindPathToNearest()
     {
-        Movement.AddWaypoint(Nearest.Position, true);
+        var nearestDistance = Nearest.transform.position - Shade.transform.position;
+
+        if (nearestDistance.magnitude > 10)
+            Movement.AddWaypoint(Nearest.Position, true);
     }
 
     private StatefulEntity FindNearest()
