@@ -139,7 +139,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4895843282865454, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -20
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 4895843282865454, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
       propertyPath: m_LocalPosition.y
@@ -413,10 +413,10 @@ MonoBehaviour:
   - {fileID: 1636004869398494, guid: f0dd6af6af041a44db6509a61fdab732, type: 2}
   - {fileID: 1208967395581454, guid: 9aa0adb8f0396f444b6ae224be0988cc, type: 2}
   trees:
-  - {fileID: 1790953290771880, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
-  - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
   - {fileID: 1500655647313700, guid: d67129581156986448dbe1a788ad43d2, type: 2}
+  - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
   - {fileID: 1558391442782862, guid: 15619ad222068f0499a57081b00cb914, type: 2}
+  - {fileID: 1790953290771880, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
   numberOfRooms: 100
 --- !u!4 &1647013281
 Transform:

@@ -70,7 +70,7 @@ public class WorldGen : MonoBehaviour {
 
         GenerateFoilage();
 
-        //nodeMap.GenerateNodeMap();
+        nodeMap.GenerateNodeMap();
         Pathfinding.Graph = nodeMap;
     }
 
@@ -176,16 +176,16 @@ public class WorldGen : MonoBehaviour {
         {
             currentChunk = currentChunk.AppendChunk(UnityEngine.Random.Range(4, 10), UnityEngine.Random.Range(4, 10), (Chunk.Direction)UnityEngine.Random.Range(0,4));
 
-            //if (currentChunk.chunkWidth > 8 && currentChunk.chunkWidth > 8)
-            //{
-            //    if (Mathf.Abs(currentChunk.xPos - lastCorruptionSpawned.xPos) > 20 && Mathf.Abs(currentChunk.yPos - lastCorruptionSpawned.yPos) > 20)
-            //    {
-            //        var node = MapToNodeMap(new Coordinate(currentChunk.xPos, currentChunk.yPos)) + new Coordinate(4, 4);
-            //        SpawnObject(GetMapTile((int)Tiles.corruption_spawn), NodeMapToPixel(node), gameObject.transform);
-            //        lastCorruptionSpawned = currentChunk;
-            //    }
+            if (currentChunk.chunkWidth > 8 && currentChunk.chunkWidth > 8)
+            {
+                if (Mathf.Abs(currentChunk.xPos - lastCorruptionSpawned.xPos) > 20 && Mathf.Abs(currentChunk.yPos - lastCorruptionSpawned.yPos) > 20)
+                {
+                    var node = MapToNodeMap(new Coordinate(currentChunk.xPos, currentChunk.yPos)) + new Coordinate(4, 4);
+                    SpawnObject(GetMapTile((int)Tiles.corruption_spawn), NodeMapToPixel(node), gameObject.transform);
+                    lastCorruptionSpawned = currentChunk;
+                }
 
-            //}
+            }
 
             chunks[i] = currentChunk;
         }
