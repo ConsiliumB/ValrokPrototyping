@@ -7,6 +7,9 @@ public abstract class StatefulEntity : MonoBehaviour
     public delegate void PositionUpdateHandler();
     public event PositionUpdateHandler PositionUpdate;
 
+    public delegate void DeathUpdateHandler();
+    public event DeathUpdateHandler DeathUpdate;
+
     public State currentState;
     public Coordinate PreviousPosition;
     public Coordinate Position
@@ -50,6 +53,14 @@ public abstract class StatefulEntity : MonoBehaviour
         if (currentState != null)
         {
             currentState.PrepareState();
+        }
+    }
+
+    public void Die()
+    {
+        if (DeathUpdate != null)
+        {
+            DeathUpdate();
         }
     }
 }

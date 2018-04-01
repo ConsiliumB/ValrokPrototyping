@@ -67,7 +67,7 @@ public class Movement : MonoBehaviour
     {
         if (Path.Count > 0)
         {
-            Path.Clear();
+            Path.RemoveRange(1,Path.Count - 1);
         }
     }
 

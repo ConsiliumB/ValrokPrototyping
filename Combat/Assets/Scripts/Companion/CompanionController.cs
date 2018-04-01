@@ -13,40 +13,57 @@ public class CompanionController : StatefulEntity
     public GameObject world;
     public Map worldMap;
     [Space]
-    public Vector2 headingToPlayer;
-    private Vector2 directionToPlayer;
-    //public bool Moving { get; set; }
 
     private bool takeOver = false;
-    public CompanionMovement Movement;
 
+    public Movement Movement;
     private Animator animator;
     private float prevDirX;
     private float prevDirY;
 
-
-
     public void Awake()
     {
         animator = GetComponent<Animator>();
+        Movement = GetComponent<Movement>();
         Instance = this;
     }
 
     void Start()
     {
+        Movement.MovementUpdate += UpdateAnimation;
         StartCoroutine("CheckPositionChange");
+        ChangeState(new CompanionFollowState());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (currentState == null)
+        if (currentState != null)
         {
-            ChangeState(new CompanionFollowState(this));
+            currentState.Execute();
         }
 
-        currentState.Execute();
+        if (Input.GetMouseButtonDown(0))
+        {
 
+            Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            RaycastHit2D scan = Physics2D.Raycast(position, Vector2.zero);
+
+            if(scan)
+            {
+                StatefulEntity target = scan.transform.gameObject.GetComponent<StatefulEntity>();
+                if(target)
+                {
+                    Debug.Log(target.gameObject.name);
+                    ChangeState(new ChaseAndAttackState(target.transform.gameObject.GetComponent<StatefulEntity>()));
+                }
+            }
+        } else if (Input.GetMouseButtonDown(1))
+        {
+            Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            ChangeState(new MoveCommandState(position)); //add target location
+        }
     }
 
     public void ChangeToTakeover()
@@ -57,7 +74,7 @@ public class CompanionController : StatefulEntity
 
     public void RestartCompanion()
     {
-        ChangeState(new CompanionFollowState(this));
+        ChangeState(new CompanionFollowState());
 
         var takeoverScript = gameObject.GetComponent<TakeControll>();
         if (takeoverScript)

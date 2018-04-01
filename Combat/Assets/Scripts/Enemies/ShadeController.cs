@@ -10,11 +10,12 @@ public class ShadeController : StatefulEntity {
 
     // Use this for initialization
     void Start () {
+        StartCoroutine("CheckPositionChange");
         ChangeState(new ChaseNearestState(this));
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
         currentState.Execute();
 	}
 
@@ -27,6 +28,14 @@ public class ShadeController : StatefulEntity {
         bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
 
         Destroy(bullet, 5.0f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("CompanionAttack"))
+        {
+            TakeDamage();
+        }
     }
 }
 
@@ -61,7 +70,6 @@ public class ChaseNearestState : State
 
         Player.PositionUpdate += delegate ()
         {
-            Debug.Log("Player moved");
             var previousNearest = Nearest;
             Nearest = FindNearest();
             if (Nearest != previousNearest || Nearest == Player)
@@ -72,7 +80,6 @@ public class ChaseNearestState : State
 
         Companion.PositionUpdate += delegate ()
         {
-            Debug.Log("Companion moved");
             var previousNearest = Nearest;
             Nearest = FindNearest();
             if (Nearest != previousNearest || Nearest == Companion)
