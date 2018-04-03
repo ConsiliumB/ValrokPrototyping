@@ -6,7 +6,6 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public float movementSpeed;
-    public float movementAccuracy;
 
     //Subscribe to this in controller if you want to act based on movement/direction
     public delegate void MovementUpdateHandler(Vector2 direction);
@@ -133,10 +132,11 @@ public class Movement : MonoBehaviour
 
         //Move to the next destination
         //Entity.rigidbody.MovePosition(interpolatedMovement);
-        transform.Translate(interpolatedMovement * Time.deltaTime * movementSpeed);
+        transform.Translate(interpolatedMovement * Time.smoothDeltaTime * movementSpeed);
+
 
         //If we've reached our current destination, remove the path node we just reached
-        if ((targetPosition - (Vector2)transform.position).magnitude < movementAccuracy )
+        if ((targetPosition - (Vector2)transform.position).magnitude < Time.smoothDeltaTime * movementSpeed * 1.3)
         {
             Path.Remove(pathNode);
         }

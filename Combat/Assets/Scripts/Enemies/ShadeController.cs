@@ -21,21 +21,11 @@ public class ShadeController : StatefulEntity {
 
     public void Shoot(Vector3 heading)
     {
-        Debug.Log(heading);
-        Debug.Log(heading.normalized);
         var bullet = Instantiate(projectile, transform.position + new Vector3(0, 1.2f, 0) + heading.normalized, transform.rotation);
         bullet.transform.right = heading.normalized;
         bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
 
         Destroy(bullet, 5.0f);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("CompanionAttack"))
-        {
-            TakeDamage();
-        }
     }
 }
 
