@@ -192,6 +192,11 @@ Prefab:
       propertyPath: moveSpeed
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 212699724316076418, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bf8ccd96fcc6b2f46bf65804aa46e2a4, type: 2}
   m_IsPrefabParent: 0
@@ -360,6 +365,11 @@ Prefab:
     - target: {fileID: 212766309082011954, guid: 826dbfcc42f9a4d49abafba0215c8d41,
         type: 2}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 60828492939813246, guid: 826dbfcc42f9a4d49abafba0215c8d41,
+        type: 2}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:

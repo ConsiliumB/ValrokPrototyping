@@ -23,9 +23,12 @@ public class ShadeController : StatefulEntity {
     {
         var bullet = Instantiate(projectile, transform.position + new Vector3(0, 1.2f, 0) + heading.normalized, transform.rotation);
         bullet.transform.right = heading.normalized;
-        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
 
-        Destroy(bullet, 5.0f);
+        Attack attack = bullet.GetComponent<Attack>();
+        attack.attacker = gameObject;
+        attack.friendlyFire = true;
+
+        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
     }
 }
 

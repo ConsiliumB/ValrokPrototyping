@@ -7,15 +7,6 @@ public class CompanionController : StatefulEntity
 {
     public static CompanionController Instance { get; private set; }
 
-    public int proximityLimit;
-    public int distanceLimit;
-
-    public GameObject world;
-    public Map worldMap;
-    [Space]
-
-    private bool takeOver = false;
-
     public Movement Movement;
     private Animator animator;
     private float prevDirX;
@@ -56,19 +47,18 @@ public class CompanionController : StatefulEntity
                 if(target)
                 {
                     Debug.Log(target.gameObject.name);
-                    ChangeState(new ChaseAndAttackState(target.transform.gameObject.GetComponent<StatefulEntity>()));
+                    ChangeState(new ChaseAndAttackState(target));
                 }
             }
         } else if (Input.GetMouseButtonDown(1))
         {
             Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ChangeState(new MoveCommandState(position)); //add target location
+            ChangeState(new MoveCommandState(position));
         }
     }
 
     public void ChangeToTakeover()
     {
-        takeOver = true;
         ChangeState(new CompanionTakeOverState(gameObject));
     }
 
@@ -81,8 +71,6 @@ public class CompanionController : StatefulEntity
         {
             takeoverScript.UndoTakeover();
         }
-        takeOver = false;
-
     }
 
     public void UpdateAnimation(Vector2 heading)

@@ -136,7 +136,7 @@ public class Movement : MonoBehaviour
 
 
         //If we've reached our current destination, remove the path node we just reached
-        if ((targetPosition - (Vector2)transform.position).magnitude < Time.smoothDeltaTime * movementSpeed * 1.3)
+        if ((targetPosition - (Vector2)transform.position).magnitude < Time.smoothDeltaTime * movementSpeed * 2)
         {
             Path.Remove(pathNode);
         }

@@ -10,6 +10,8 @@ public abstract class StatefulEntity : MonoBehaviour
     public delegate void DeathUpdateHandler();
     public event DeathUpdateHandler DeathUpdate;
 
+    public bool mortal = true;
+
     public State currentState;
     public Coordinate PreviousPosition;
     public Coordinate Position
@@ -58,6 +60,7 @@ public abstract class StatefulEntity : MonoBehaviour
 
     public void Die()
     {
+        Debug.Log(gameObject.name + " died.");
         if (DeathUpdate != null)
         {
             DeathUpdate();

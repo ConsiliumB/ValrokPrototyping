@@ -20,13 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4945668452777012}
   - component: {fileID: 212168727316464724}
-  - component: {fileID: 70120648326422806}
   - component: {fileID: 50857429119045076}
   - component: {fileID: 95122452002992074}
   - component: {fileID: 114744889640658474}
   - component: {fileID: 114968326063077458}
   - component: {fileID: 114210281743020378}
-  m_Layer: 0
+  - component: {fileID: 58559208735806342}
+  m_Layer: 9
   m_Name: Shade
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -66,8 +66,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &70120648326422806
-CapsuleCollider2D:
+--- !u!58 &58559208735806342
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -78,9 +78,9 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.3}
-  m_Size: {x: 1.6039566, y: 1.009895}
-  m_Direction: 1
+  m_Offset: {x: -0.022684932, y: 1.3352461}
+  serializedVersion: 2
+  m_Radius: 0.59036505
 --- !u!95 &95122452002992074
 Animator:
   serializedVersion: 3
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963be6b5070ed9142bc34f7f5d1cf9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mortal: 1
   projectile: {fileID: 1221635476539286, guid: e06c2a8484a83b24da54d1d67113151d, type: 2}
   projectileSpeed: 10
 --- !u!114 &114968326063077458
@@ -134,8 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a216c17a0ac7d14db8b16c5cc0c8926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 2
-  movementAccuracy: 1.16
+  movementSpeed: 5
 --- !u!212 &212168727316464724
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -175,7 +175,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3, y: 3}
+  m_Size: {x: 10, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
