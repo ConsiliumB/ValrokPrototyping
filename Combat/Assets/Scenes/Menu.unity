@@ -264,7 +264,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &94400106
 Transform:
@@ -486,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 1453624025056772, guid: 4cbbfca4208b6474cacca436e351e1b6, type: 2}
+  - {fileID: 1196294840341830, guid: 38d2b0d578d6fb3498100be055fdb4f3, type: 2}
   easeInCurve:
     serializedVersion: 2
     m_Curve:

@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetToActualBase: 0
+  appendToChildren: 1
 --- !u!212 &212305261021535874
 SpriteRenderer:
   m_ObjectHideFlags: 1

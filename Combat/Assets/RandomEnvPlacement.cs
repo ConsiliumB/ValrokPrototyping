@@ -2,37 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomEnvPlacement : MonoBehaviour {
+public class RandomEnvPlacement : MonoBehaviour
+{
 
-    public GameObject[] foliage;
+    public List<GameObject> trees = new List<GameObject>();
+    public List<GameObject> bushes = new List<GameObject>();
+    public List<GameObject> tinyfoilage = new List<GameObject>();
 
-    //List of all spawn rates should
-    public float[] spawnRate;
-    //public float otherSpawnRate;
 
-    private void Awake()
+    void Start()
     {
-        if (foliage.Length != spawnRate.Length)
+        if (Mathf.PerlinNoise(transform.position.x / 12f, transform.position.y / 6f) > 0.7 || Mathf.PerlinNoise(transform.position.x / 12f + 60f, transform.position.y / 6f + 30f) > 0.7)
         {
-            throw new System.Exception("Need spawn rate for each prefab");
+            Vector2 position = (Vector2)transform.position + new Vector2(Random.Range(0.3f, 1.2f), Random.Range(0.3f, 2.7f));
+            Instantiate(trees[Random.Range(0, trees.Count)], position, Quaternion.identity, transform);
         }
-    }
 
-    // Use this for initialization
-    void Start () {
-        for (int i =0; i<foliage.Length; i++) { 
-            float lottery = Random.Range(0, 10);
-            if (lottery < spawnRate[i])
-            {
-                //Need to add a semi random placement for each folliage
-                Instantiate(foliage[i], transform);
-            }
-        
-        }
+        GetComponent<MenuAnimationDepth>().SetDepth();
+        GetComponent<RiseAnimation>().SpawnBlock();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        
-	}
 }
