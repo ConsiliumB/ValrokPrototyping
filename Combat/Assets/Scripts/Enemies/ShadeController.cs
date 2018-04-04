@@ -8,6 +8,7 @@ public class ShadeController : StatefulEntity {
     public GameObject projectile;
     public float projectileSpeed;
     public float attackRadius;
+    public float attackSpeed;
 
 
     // Use this for initialization
@@ -96,7 +97,7 @@ public class ChaseNearestState : State
         if (nearestDistance.magnitude < Shade.attackRadius)
         {
             Movement.StopMoving();
-            if (timer > 1.5f)
+            if (timer > Shade.attackSpeed)
             {
                 Attack();
                 timer = 0;

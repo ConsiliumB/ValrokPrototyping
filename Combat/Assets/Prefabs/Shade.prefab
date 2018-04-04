@@ -125,6 +125,7 @@ MonoBehaviour:
   projectile: {fileID: 1221635476539286, guid: e06c2a8484a83b24da54d1d67113151d, type: 2}
   projectileSpeed: 10
   attackRadius: 10
+  attackSpeed: 2
 --- !u!114 &114968326063077458
 MonoBehaviour:
   m_ObjectHideFlags: 1

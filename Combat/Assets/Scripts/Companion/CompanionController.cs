@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CompanionController : StatefulEntity
 {
+    public float attackSpeed;
+    public float attackRadius;
+
     public static CompanionController Instance { get; private set; }
 
     public Movement Movement;

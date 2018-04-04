@@ -67,8 +67,7 @@ public class ChaseAndAttackState : State
     private StatefulEntity Target;
     private Movement Movement;
 
-    //DEBUG
-    public float timer;
+    private float timer = 0;
 
     public ChaseAndAttackState(StatefulEntity target)
     {
@@ -92,37 +91,34 @@ public class ChaseAndAttackState : State
 
     public override void Execute()
     {
+        var nearestDistance = Target.transform.position - Companion.transform.position;
         timer += Time.deltaTime;
-        if (timer > 0.2f)
-        {
-            var targetDistance = Target.gameObject.transform.position - Companion.transform.position;
 
-            if (targetDistance.magnitude <= 1)
+        if (nearestDistance.magnitude < Companion.attackRadius)
+        {
+            Movement.StopMoving();
+            if (timer > Companion.attackSpeed)
             {
                 Attack();
-                Movement.StopMoving();
-                timer = -2;
-            }
-            else
-            {
                 timer = 0;
             }
+        }
+        else if (!Movement.IsMoving())
+        {
+            FindPathToTarget();
+            Movement.StartMoving();
         }
     }
 
     private void FindPathToTarget()
     {
-        var targetDistance = Target.transform.position - Companion.transform.position;
-
-        if (targetDistance.magnitude > 1)
-            Movement.AddWaypoint(Target.Position, true);
+        Movement.AddWaypoint(Target.Position, true);
     }
 
     private void Attack()
     {
         var direction = Target.transform.position - Companion.transform.position;
         Debug.Log("Attack!");
-        Movement.StartMoving();
 
         //Companion.Shoot(direction);
     }
