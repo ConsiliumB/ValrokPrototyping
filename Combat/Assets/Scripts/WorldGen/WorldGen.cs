@@ -60,7 +60,7 @@ public class WorldGen : MonoBehaviour {
     private void Awake()
     {
         //var seed = UnityEngine.Random.Range(0, 100);
-        UnityEngine.Random.InitState(1);
+        UnityEngine.Random.InitState(4);
         //Debug.Log("Seed = " + seed);
 
         GenerateMap();

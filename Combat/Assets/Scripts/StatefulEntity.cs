@@ -61,6 +61,7 @@ public abstract class StatefulEntity : MonoBehaviour
     public void Die()
     {
         Debug.Log(gameObject.name + " died.");
+        gameObject.GetComponent<SpriteRenderer>().flipY = true;
         if (DeathUpdate != null)
         {
             DeathUpdate();

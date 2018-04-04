@@ -79,7 +79,9 @@ public class ChaseNearestState : State
     void TargetMoved(StatefulEntity target)
     {
         var previousNearest = Nearest;
-        Nearest = FindNearest();
+
+        FindNearest();
+
         if (Movement.IsMoving())
         {
             if (Nearest != previousNearest || Nearest == target)
@@ -114,17 +116,17 @@ public class ChaseNearestState : State
         Movement.AddWaypoint(Nearest.Position, true);
     }
 
-    private StatefulEntity FindNearest()
+    private void FindNearest()
     {
         companionHeading = Companion.transform.position - Shade.transform.position;
         playerHeading = Player.transform.position - Shade.transform.position;
         if (companionHeading.sqrMagnitude < playerHeading.sqrMagnitude)
         {
-            return Companion;
+            Nearest = Companion;
         }
         else
         {
-            return Player;
+            Nearest = Player;
         }
     }
     private void Attack()
