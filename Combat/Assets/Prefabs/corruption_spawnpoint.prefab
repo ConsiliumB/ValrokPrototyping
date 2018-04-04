@@ -68,10 +68,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cede65e3cf265cc49a03228b1675e708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mortal: 1
+  mortal: 0
   enemyPrefab: {fileID: 1826877778015732, guid: 306bd01b651ccf44ea95efa981c829e0,
     type: 2}
-  amountSpawned: 2
+  amountSpawned: 3
 --- !u!212 &212150541218767228
 SpriteRenderer:
   m_ObjectHideFlags: 1
