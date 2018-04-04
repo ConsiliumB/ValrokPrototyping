@@ -3,43 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 internal class CompanionFollowState : State
 {
-    private PlayerController Player { get { return PlayerController.Instance; } }
-    private CompanionController Companion { get; set; }
-
-    public CompanionFollowState(CompanionController companion)
-    {
-        Companion = companion;
-    }
-
-    public override void Execute()
-    {
-        //Prettify this using shade controller logic..
-        //If current destination is not player position AND players distance to our current destination is larger than our proximitylimit, add waypoint
-        //if (Companion.Movement.Destination != Player.Position && Coordinate.DistanceSquared(Player.Position, Companion.Movement.Destination) > Companion.proximityLimit * Companion.proximityLimit)
-        //{
-
-        //    //If player is closer than current destination, find new path. Else, append path from destination to player
-        //    if (Coordinate.DistanceSquared(Player.Position, Companion.Position) < Coordinate.DistanceSquared(Companion.Position, Companion.Movement.Destination))
-        //    {
-        //        Companion.Movement.AddWaypoint(Player.Position, true);
-        //    }
-        //    else
-        //    {
-        //        Companion.Movement.AddWaypoint(Player.Position);
-        //    }
-        //}
-    }
+    //private PlayerController Player { get { return PlayerController.Instance; } }
+    private Movement Movement;
+    private CompanionController Companion;
+    private PlayerController Player;
 
     public override void PrepareState()
     {
-        //Find path to player, and start moving
-        Companion.Movement.AddWaypoint(Player.Position, true);
-        Companion.Movement.StartMoving();
+        Companion = CompanionController.Instance;
+        Player = PlayerController.Instance;
+        Movement = Companion.GetComponent<Movement>();
+
+        FindPathToPlayer();
+
+        Player.PositionUpdate += FindPathToPlayer;
     }
 
     public override void FinishState()
     {
-        Companion.Movement.StopMoving();
+        Player.PositionUpdate -= FindPathToPlayer;
+
+        Movement.ClearPath();
+        Movement.StopMoving();
+    }
+
+    private void FindPathToPlayer()
+    {
+        var playerDistance = Player.transform.position - Companion.transform.position;
+
+        if (playerDistance.magnitude > 2)
+            Movement.AddWaypoint(Player.Position, true);
     }
 }
 
@@ -65,5 +58,76 @@ internal class CompanionTakeOverState : State
         var takeOver = companion.GetComponent<TakeControll>();
         if (takeOver == null) { throw new MissingComponentException(); }
         takeOver.RunExecute();
+    }
+}
+
+public class ChaseAndAttackState : State
+{
+    private CompanionController Companion;
+    private StatefulEntity Target;
+    private Movement Movement;
+
+    private float timer = 0;
+
+    public ChaseAndAttackState(StatefulEntity target)
+    {
+        Target = target;
+    }
+
+    public override void PrepareState()
+    {
+        Companion = CompanionController.Instance;
+        Movement = Companion.GetComponent<Movement>();
+
+        Target.PositionUpdate += FindPathToTarget;
+
+        //Listen for death!?
+    }
+
+    public override void FinishState()
+    {
+        Target.PositionUpdate -= FindPathToTarget;
+    }
+
+    public override void Execute()
+    {
+        var nearestDistance = Target.transform.position - Companion.transform.position;
+        timer += Time.deltaTime;
+
+        if (nearestDistance.magnitude < Companion.attackRadius)
+        {
+            Movement.StopMoving();
+            if (timer > Companion.attackSpeed)
+            {
+                Attack();
+                timer = 0;
+            }
+        }
+        else if (!Movement.IsMoving())
+        {
+            FindPathToTarget();
+            Movement.StartMoving();
+        }
+    }
+
+    private void FindPathToTarget()
+    {
+        Movement.AddWaypoint(Target.Position, true);
+    }
+
+    private void Attack()
+    {
+        var direction = Target.transform.position - Companion.transform.position;
+        Debug.Log("Attack!");
+
+        //Companion.Shoot(direction);
+    }
+}
+
+public class MoveCommandState : State
+{
+    public MoveCommandState(Vector2 targetPosition)
+    {
+        CompanionController.Instance.Movement.AddWaypoint(WorldGen.PixelToNodeMap(targetPosition), true);
     }
 }

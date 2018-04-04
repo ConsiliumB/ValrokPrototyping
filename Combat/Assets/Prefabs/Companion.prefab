@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 50879822427466358}
   - component: {fileID: 95157215603696724}
   - component: {fileID: 114384021438387002}
-  - component: {fileID: 114222935317453014}
+  - component: {fileID: 114397892528963398}
   - component: {fileID: 114030242180119212}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Companion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,17 +152,6 @@ MonoBehaviour:
   moveSpeed: 5
   clawDistance: 2.5
   clawAttackTime: 0.2
---- !u!114 &114222935317453014
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1312743176295808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd14d02d6e59374bbea945c1dd9c716, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114384021438387002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,11 +163,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8f9a2649a3eac4b9c60da46ef52733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mortal: 1
+  attackSpeed: 1
+  attackRadius: 1
+  Movement: {fileID: 0}
+--- !u!114 &114397892528963398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1312743176295808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a216c17a0ac7d14db8b16c5cc0c8926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   proximityLimit: 2
   distanceLimit: 5
   world: {fileID: 0}
   headingToPlayer: {x: 0, y: 0}
   Movement: {fileID: 114222935317453014}
+  movementSpeed: 5
 --- !u!212 &212530895755576552
 SpriteRenderer:
   m_ObjectHideFlags: 1
