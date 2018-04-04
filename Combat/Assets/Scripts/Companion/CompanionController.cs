@@ -29,6 +29,7 @@ public class CompanionController : StatefulEntity
     public void Awake()
     {
         animator = GetComponent<Animator>();
+        Movement = GetComponent<CompanionMovement>();
         Instance = this;
     }
 
