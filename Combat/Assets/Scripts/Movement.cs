@@ -52,10 +52,7 @@ public class Movement : MonoBehaviour
 
         if (newPath.Count > 0)
         {
-            if (Path.Count > 0)
-            {
-                newPath.RemoveAt(0);
-            }
+            newPath.RemoveAt(0);
             Path.AddRange(newPath);
         }
         StartMoving();
@@ -149,6 +146,10 @@ public class Movement : MonoBehaviour
         if ((targetPosition - (Vector2)transform.position).magnitude < Time.smoothDeltaTime * movementSpeed * 2)
         {
             Path.Remove(pathNode);
+            if(Path.Count < 1)
+            {
+                StopMoving();
+            }
         }
     }
 }

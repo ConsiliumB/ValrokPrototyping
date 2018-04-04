@@ -31,7 +31,7 @@ public class ShadeController : StatefulEntity {
         attack.attacker = gameObject;
         attack.friendlyFire = true;
 
-        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
+        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)(heading - new Vector3(0, 1.2f, 0)).normalized * projectileSpeed;
     }
 }
 
@@ -64,6 +64,12 @@ public class ChaseNearestState : State
 
         Player.PositionUpdate += PlayerMoved;
         Companion.PositionUpdate += CompanionMoved;
+    }
+
+    public override void FinishState()
+    {
+        Player.PositionUpdate -= PlayerMoved;
+        Companion.PositionUpdate -= CompanionMoved;
     }
 
     private void CompanionMoved()
