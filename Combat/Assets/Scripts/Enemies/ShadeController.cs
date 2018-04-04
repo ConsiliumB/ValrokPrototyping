@@ -7,6 +7,8 @@ public class ShadeController : StatefulEntity {
 
     public GameObject projectile;
     public float projectileSpeed;
+    public float attackRadius;
+
 
     // Use this for initialization
     void Start () {
@@ -57,57 +59,58 @@ public class ChaseNearestState : State
         Player = PlayerController.Instance;
         Companion = CompanionController.Instance;
 
+        FindNearest();
+
+        Player.PositionUpdate += PlayerMoved;
+        Companion.PositionUpdate += CompanionMoved;
+    }
+
+    private void CompanionMoved()
+    {
+        TargetMoved(Companion);
+    }
+
+    private void PlayerMoved()
+    {
+        TargetMoved(Player);
+    }
+
+    void TargetMoved(StatefulEntity target)
+    {
+        var previousNearest = Nearest;
         Nearest = FindNearest();
-        FindPathToNearest();
-
-
-        Player.PositionUpdate += delegate ()
+        if (Movement.IsMoving())
         {
-            var previousNearest = Nearest;
-            Nearest = FindNearest();
-            if (Nearest != previousNearest || Nearest == Player)
+            if (Nearest != previousNearest || Nearest == target)
             {
                 FindPathToNearest();
             }
-        };
-
-        Companion.PositionUpdate += delegate ()
-        {
-            var previousNearest = Nearest;
-            Nearest = FindNearest();
-            if (Nearest != previousNearest || Nearest == Companion)
-            {
-                FindPathToNearest();
-            }
-        };
+        }
     }
 
     public override void Execute()
     {
+        var nearestDistance = Nearest.transform.position - Shade.transform.position;
         timer += Time.deltaTime;
-        if (timer > 0.5f)
-        {
-            var nearestDistance = Nearest.transform.position - Shade.transform.position;
 
-            if (nearestDistance.magnitude < 10)
+        if (nearestDistance.magnitude < Shade.attackRadius)
+        {
+            Movement.StopMoving();
+            if (timer > 1.5f)
             {
                 Attack();
-                Movement.StopMoving();
-                timer = -2;
-            }
-            else
-            {
                 timer = 0;
             }
+        } else if (!Movement.IsMoving())
+        {
+            FindPathToNearest();
+            Movement.StartMoving();
         }
     }
 
     private void FindPathToNearest()
     {
-        var nearestDistance = Nearest.transform.position - Shade.transform.position;
-
-        if (nearestDistance.magnitude > 10)
-            Movement.AddWaypoint(Nearest.Position, true);
+        Movement.AddWaypoint(Nearest.Position, true);
     }
 
     private StatefulEntity FindNearest()

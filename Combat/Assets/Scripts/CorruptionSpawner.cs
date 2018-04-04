@@ -22,7 +22,6 @@ public class CorruptionSpawner : StatefulEntity {
 
     // Use this for initialization
     void Start () {
-        mortal = false;
         SpawnPoints = new List<Coordinate>();
         FindSpawnpoints();
 	}

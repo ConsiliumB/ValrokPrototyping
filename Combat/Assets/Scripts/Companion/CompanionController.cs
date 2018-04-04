@@ -36,17 +36,14 @@ public class CompanionController : StatefulEntity
 
         if (Input.GetMouseButtonDown(0))
         {
-
             Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
             RaycastHit2D scan = Physics2D.Raycast(position, Vector2.zero);
 
             if(scan)
             {
                 StatefulEntity target = scan.transform.gameObject.GetComponent<StatefulEntity>();
-                if(target)
+                if(target && target != PlayerController.Instance)
                 {
-                    Debug.Log(target.gameObject.name);
                     ChangeState(new ChaseAndAttackState(target));
                 }
             }

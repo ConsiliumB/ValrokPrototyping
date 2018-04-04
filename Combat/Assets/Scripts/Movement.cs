@@ -134,6 +134,16 @@ public class Movement : MonoBehaviour
         //Entity.rigidbody.MovePosition(interpolatedMovement);
         transform.Translate(interpolatedMovement * Time.smoothDeltaTime * movementSpeed);
 
+        /*
+         * This could give increased precision and no risk of just walking past the target position
+        Vector2 nextPosition = (Vector2)transform.position + interpolatedMovement * Time.smoothDeltaTime * movementSpeed;
+
+        //Check if next position would go past target position
+        if (Vector2.Dot((targetPosition - nextPosition), interpolatedMovement) < 0)
+        {
+            Path.Remove(pathNode);
+        }
+        */
 
         //If we've reached our current destination, remove the path node we just reached
         if ((targetPosition - (Vector2)transform.position).magnitude < Time.smoothDeltaTime * movementSpeed * 2)
