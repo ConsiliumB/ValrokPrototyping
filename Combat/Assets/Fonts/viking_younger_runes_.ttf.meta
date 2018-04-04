@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: c0ff71e1f56d4e14a9ab881d0b10130c
+timeCreated: 1521473270
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: VIKING, YOUNGER Runes
+  fontNames:
+  - VIKING, YOUNGER Runes
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
