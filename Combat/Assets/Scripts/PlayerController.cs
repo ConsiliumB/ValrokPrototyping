@@ -135,7 +135,7 @@ public class PlayerController : StatefulEntity
         {
             case "E":
                 Debug.Log("Companion, come hither!");
-                CompanionController.Instance.ChangeState(new CompanionFollowState(CompanionController.Instance));
+                CompanionController.Instance.ChangeState(new CompanionFollowState());
                 break;
             case "Q":
                 break;
