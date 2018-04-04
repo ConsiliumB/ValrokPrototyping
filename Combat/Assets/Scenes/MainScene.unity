@@ -318,7 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 1788802199263806, guid: a95b1ae21bf79934f8b639c6423c238c, type: 2}
+  - {fileID: 0}
   - {fileID: 1453624025056772, guid: 4c9f7a3a4152da04ea65651366afb7cc, type: 2}
   - {fileID: 1134818023480112, guid: 79c547160a7ab5f40bb25f1ac3e4e487, type: 2}
   - {fileID: 1290611810430360, guid: 41aced566353a6d41ad8e047ff50761b, type: 2}
@@ -341,7 +341,6 @@ MonoBehaviour:
   bushes:
   - {fileID: 1863038469614912, guid: 7c9fa3d50fbd1b74d84866067804611d, type: 2}
   - {fileID: 1316928150116572, guid: d2e94e1bb320fb24f9baa0dcc9e91b27, type: 2}
-  - {fileID: 1458694804654692, guid: 1542b408fbd45b145a7e93ac73b7f48e, type: 2}
   trees:
   - {fileID: 1500655647313700, guid: d67129581156986448dbe1a788ad43d2, type: 2}
   - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
