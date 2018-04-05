@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 internal class CompanionFollowState : State
@@ -22,9 +23,7 @@ internal class CompanionFollowState : State
     public override void FinishState()
     {
         Player.PositionUpdate -= FindPathToPlayer;
-
         Movement.ClearPath();
-        Movement.StopMoving();
     }
 
     private void FindPathToPlayer()
@@ -42,22 +41,18 @@ internal class CompanionFollowState : State
  */
 internal class CompanionTakeOverState : State
 {
-    //private PlayerController Player;
-    //private CompanionController compController;
     private GameObject companion;
+    TakeControll takeOverScript;
 
     public CompanionTakeOverState(GameObject from)
     {
         companion = from;
-        //compController = companion.GetComponent<CompanionController>();
+        takeOverScript = companion.GetComponent<TakeControll>();
     }
-
 
     public override void Execute()
     {
-        var takeOver = companion.GetComponent<TakeControll>();
-        if (takeOver == null) { throw new MissingComponentException(); }
-        takeOver.RunExecute();
+        takeOverScript.RunExecute();
     }
 }
 
@@ -81,20 +76,30 @@ public class ChaseAndAttackState : State
 
         Target.PositionUpdate += FindPathToTarget;
 
+        FindPathToTarget();
+
+        Target.DeathUpdate += TargetDead;
+
         //Listen for death!?
+    }
+
+    private void TargetDead()
+    {
+        Companion.ChangeState(new CompanionFollowState());
     }
 
     public override void FinishState()
     {
         Target.PositionUpdate -= FindPathToTarget;
+        Target.DeathUpdate -= TargetDead;
     }
 
     public override void Execute()
     {
-        var nearestDistance = Target.transform.position - Companion.transform.position;
+        var targetDistance = Target.transform.position - Companion.transform.position;
         timer += Time.deltaTime;
 
-        if (nearestDistance.magnitude < Companion.attackRadius)
+        if (targetDistance.magnitude < Companion.attackRadius)
         {
             Movement.StopMoving();
             if (timer > Companion.attackSpeed)
@@ -105,8 +110,8 @@ public class ChaseAndAttackState : State
         }
         else if (!Movement.IsMoving())
         {
-            FindPathToTarget();
             Movement.StartMoving();
+            FindPathToTarget();
         }
     }
 
@@ -120,14 +125,20 @@ public class ChaseAndAttackState : State
         var direction = Target.transform.position - Companion.transform.position;
         Debug.Log("Attack!");
 
-        //Companion.Shoot(direction);
+        Companion.Attack(direction);
     }
 }
 
 public class MoveCommandState : State
 {
+    Vector2 target;
     public MoveCommandState(Vector2 targetPosition)
     {
-        CompanionController.Instance.Movement.AddWaypoint(WorldGen.PixelToNodeMap(targetPosition), true);
+        target = targetPosition;
+    }
+
+    public override void PrepareState()
+    {
+        CompanionController.Instance.Movement.AddWaypoint(WorldGen.PixelToNodeMap(target), true);
     }
 }

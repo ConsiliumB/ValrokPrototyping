@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour {
     public GameObject attacker;
+    public float duration;
     public bool friendlyFire;
 
     private void Start()
     {
-        Destroy(gameObject, 3.0f);
+        Destroy(gameObject, duration);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

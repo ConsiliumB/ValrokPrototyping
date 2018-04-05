@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class WorldGen : MonoBehaviour {
     public List<GameObject> tiles;
-    public List<GameObject> foilage;
+    public List<GameObject> tinyfoilage;
+    public List<GameObject> bushes;
     public List<GameObject> trees;
 
     [System.Serializable]
@@ -60,7 +61,7 @@ public class WorldGen : MonoBehaviour {
     private void Awake()
     {
         //var seed = UnityEngine.Random.Range(0, 100);
-        UnityEngine.Random.InitState(1);
+        UnityEngine.Random.InitState(4);
         //Debug.Log("Seed = " + seed);
 
         GenerateMap();
@@ -126,16 +127,22 @@ public class WorldGen : MonoBehaviour {
 
     public void GenerateFoilage()
     {
-        int random;
-
-        foreach (Coordinate position in nodeMap.Map.Keys)
+        foreach (Coordinate position in World.Map.Keys)
         {
-            random = UnityEngine.Random.Range(0, 100);
-            if (random > 92)
+            if (Mathf.PerlinNoise(position.X / 4f, position.Y / 4f) > 0.7 || Mathf.PerlinNoise(position.X / 4f + 20f, position.Y / 4f + 20f) > 0.7)
             {
-                FoilagePositions.Add(position);
+                FoilagePositions.Add(MapToNodeMap(position));
             }
         }
+
+        //foreach (Coordinate position in World.Map.Keys)
+        //{
+        //    random = UnityEngine.Random.Range(0, 100);
+        //    if (random > 90)
+        //    {
+        //        FoilagePositions.Add(MapToNodeMap(position));
+        //    }
+        //}
 
         foreach (Coordinate position in FoilagePositions)
         {
@@ -147,18 +154,25 @@ public class WorldGen : MonoBehaviour {
     {
         var foilageContainer = new GameObject("Foilage");
         foilageContainer.transform.parent = this.gameObject.transform;
-        int random;
 
         foreach (Coordinate position in FoilagePositions)
         {
-            random = UnityEngine.Random.Range(0, 100);
-            if (random > 90)
+            SpawnObject(trees[UnityEngine.Random.Range(0, trees.Count)], NodeMapToPixel(position), foilageContainer.transform);
+        }
+
+        foreach(Coordinate position in nodeMap.Map.Keys)
+        {
+            if (Mathf.PerlinNoise(position.X / 5f, position.Y / 5f) > 0.5)
             {
-                SpawnObject(trees[UnityEngine.Random.Range(0, trees.Count)], NodeMapToPixel(position), foilageContainer.transform);
+                SpawnObject(bushes[UnityEngine.Random.Range(0, bushes.Count)], NodeMapToPixel(position), foilageContainer.transform);
             }
-            else
+        }
+
+        foreach (Coordinate position in nodeMap.Map.Keys)
+        {
+            if (Mathf.PerlinNoise(position.X / 1.5f, position.Y / 2f) > 0.7)
             {
-                SpawnObject(foilage[UnityEngine.Random.Range(0, foilage.Count)], NodeMapToPixel(position), foilageContainer.transform);
+                SpawnObject(tinyfoilage[UnityEngine.Random.Range(0, tinyfoilage.Count)], NodeMapToPixel(position), foilageContainer.transform);
             }
         }
     }

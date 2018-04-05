@@ -7,6 +7,9 @@ public class CompanionController : StatefulEntity
 {
     public float attackSpeed;
     public float attackRadius;
+    public GameObject attackPrefab;
+    public float projectileSpeed;
+
 
     public static CompanionController Instance { get; private set; }
 
@@ -55,6 +58,18 @@ public class CompanionController : StatefulEntity
             Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             ChangeState(new MoveCommandState(position));
         }
+    }
+
+    public void Attack(Vector3 heading)
+    {
+        var skill = Instantiate(attackPrefab, transform.position + new Vector3(0, 1.2f, 0) + heading.normalized * 2, transform.rotation, transform);
+        skill.transform.right = heading.normalized;
+
+        Attack attack = skill.GetComponent<Attack>();
+        attack.attacker = gameObject;
+        attack.friendlyFire = false;
+
+        skill.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
     }
 
     public void ChangeToTakeover()

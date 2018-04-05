@@ -31,7 +31,7 @@ public class ShadeController : StatefulEntity {
         attack.attacker = gameObject;
         attack.friendlyFire = true;
 
-        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)heading.normalized * projectileSpeed;
+        bullet.GetComponent<Rigidbody2D>().velocity = (Vector2)(heading - new Vector3(0, 1.2f, 0)).normalized * projectileSpeed;
     }
 }
 
@@ -66,6 +66,12 @@ public class ChaseNearestState : State
         Companion.PositionUpdate += CompanionMoved;
     }
 
+    public override void FinishState()
+    {
+        Player.PositionUpdate -= PlayerMoved;
+        Companion.PositionUpdate -= CompanionMoved;
+    }
+
     private void CompanionMoved()
     {
         TargetMoved(Companion);
@@ -79,7 +85,9 @@ public class ChaseNearestState : State
     void TargetMoved(StatefulEntity target)
     {
         var previousNearest = Nearest;
-        Nearest = FindNearest();
+
+        FindNearest();
+
         if (Movement.IsMoving())
         {
             if (Nearest != previousNearest || Nearest == target)
@@ -114,17 +122,17 @@ public class ChaseNearestState : State
         Movement.AddWaypoint(Nearest.Position, true);
     }
 
-    private StatefulEntity FindNearest()
+    private void FindNearest()
     {
         companionHeading = Companion.transform.position - Shade.transform.position;
         playerHeading = Player.transform.position - Shade.transform.position;
         if (companionHeading.sqrMagnitude < playerHeading.sqrMagnitude)
         {
-            return Companion;
+            Nearest = Companion;
         }
         else
         {
-            return Player;
+            Nearest = Player;
         }
     }
     private void Attack()

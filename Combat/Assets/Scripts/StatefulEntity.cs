@@ -60,10 +60,21 @@ public abstract class StatefulEntity : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log(gameObject.name + " died.");
+        gameObject.GetComponent<SpriteRenderer>().flipY = true;
+
+        //Stop attacks/movement/etc while dying. Could switch to a state with a "dying" animation
+        ChangeState(new IdleState());
+
+        //Notify of death, if anyone is listening
         if (DeathUpdate != null)
         {
             DeathUpdate();
         }
+
+        Destroy(gameObject, 2f);
     }
+}
+
+internal class IdleState : State
+{
 }
