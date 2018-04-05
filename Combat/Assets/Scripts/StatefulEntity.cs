@@ -60,8 +60,6 @@ public abstract class StatefulEntity : MonoBehaviour
 
     public void Die()
     {
-        gameObject.GetComponent<SpriteRenderer>().flipY = true;
-
         //Stop attacks/movement/etc while dying. Could switch to a state with a "dying" animation
         ChangeState(new IdleState());
 
@@ -71,7 +69,7 @@ public abstract class StatefulEntity : MonoBehaviour
             DeathUpdate();
         }
 
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 1f);
     }
 }
 

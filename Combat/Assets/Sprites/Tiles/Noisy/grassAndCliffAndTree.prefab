@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4065222264994890}
   - component: {fileID: 212585626108279812}
-  - component: {fileID: 114757454377005926}
+  - component: {fileID: 114885541382969766}
   - component: {fileID: 114021721396678284}
+  - component: {fileID: 114486598872871282}
   m_Layer: 0
   m_Name: grassAndCliffAndTree
   m_TagString: Untagged
@@ -39,7 +40,6 @@ GameObject:
   - component: {fileID: 4862910911733850}
   - component: {fileID: 212669031174353680}
   - component: {fileID: 70098999905701384}
-  - component: {fileID: 114517227118798786}
   m_Layer: 0
   m_Name: TreePrefab
   m_TagString: Untagged
@@ -72,7 +72,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4355046543825590}
   - component: {fileID: 212880130796773720}
-  - component: {fileID: 114791334826529110}
   m_Layer: 0
   m_Name: bush
   m_TagString: Untagged
@@ -191,19 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ab633d31b2f304c8c3e14230e99063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114517227118798786
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1906690549704988}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2194bae83db62eb40ab50d98887fe3eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetToActualBase: 0
---- !u!114 &114757454377005926
+--- !u!114 &114486598872871282
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -211,22 +198,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 1453624025056772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2194bae83db62eb40ab50d98887fe3eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f5befbd56ed4b7439358600c420961b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetToActualBase: 0
---- !u!114 &114791334826529110
+  trees:
+  - {fileID: 1500655647313700, guid: d67129581156986448dbe1a788ad43d2, type: 2}
+  - {fileID: 1976458259729264, guid: c9d98756508176947ad0d7535bda30f5, type: 2}
+  - {fileID: 1558391442782862, guid: 15619ad222068f0499a57081b00cb914, type: 2}
+  - {fileID: 1790953290771880, guid: d1d8d0b3abd88f14c966fec663d9afbf, type: 2}
+  - {fileID: 1804836283024778, guid: ef44e04bd1cff6a47a269f058b2ca64c, type: 2}
+  bushes:
+  - {fileID: 1863038469614912, guid: 7c9fa3d50fbd1b74d84866067804611d, type: 2}
+  - {fileID: 1316928150116572, guid: d2e94e1bb320fb24f9baa0dcc9e91b27, type: 2}
+  - {fileID: 1458694804654692, guid: 1542b408fbd45b145a7e93ac73b7f48e, type: 2}
+  tinyfoilage:
+  - {fileID: 1820016935279714, guid: 5ffe6a77679a4114ba017abdf72a441b, type: 2}
+  - {fileID: 1550071878771944, guid: b4bf0fbb8aa9ff24b93c6d99858e6d55, type: 2}
+  - {fileID: 1830644815913390, guid: 4fa68c6ee408bdc48b538bc688d9b9fa, type: 2}
+  - {fileID: 1913144736853774, guid: 809ae96744ecd86448ac7f1c8b81ac7e, type: 2}
+  - {fileID: 1636004869398494, guid: f0dd6af6af041a44db6509a61fdab732, type: 2}
+  - {fileID: 1208967395581454, guid: 9aa0adb8f0396f444b6ae224be0988cc, type: 2}
+--- !u!114 &114885541382969766
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1957411316486906}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1453624025056772}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2194bae83db62eb40ab50d98887fe3eb, type: 3}
+  m_Script: {fileID: 11500000, guid: decc9bdef3ea3f1479ee11656d9fd124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   offsetToActualBase: 0
+  appendToChildren: 1
 --- !u!212 &212305261021535874
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -346,8 +350,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1471235441
-  m_SortingLayer: 3
+  m_SortingLayerID: 708945693
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d1466eb80e273394f814052e1e97721a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -434,8 +438,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1471235441
-  m_SortingLayer: 3
+  m_SortingLayerID: 708945693
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 74fda313e7863ae4ba65a3c08c487c6c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

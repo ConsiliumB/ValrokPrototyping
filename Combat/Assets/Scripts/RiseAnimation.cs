@@ -11,23 +11,18 @@ public class RiseAnimation : MonoBehaviour {
     private void Awake()
     {
         renderer = GetComponent<SpriteRenderer>();
-        children = GetComponentsInChildren<SpriteRenderer>();
-
-
         renderer.color = Color.clear;
-
-        foreach (var item in children)
-        {
-            item.sortingLayerName = "Background";
-        }
 
         targetPos = transform.position;
         transform.position = transform.position - new Vector3(0, 4);
     }
-    // Use this for initialization
-    void Start () {
-        StartCoroutine("Rise");
-	}
+
+    public void SpawnBlock()
+    {
+        children = GetComponentsInChildren<SpriteRenderer>();
+
+        StartCoroutine(Rise());
+    }
 
     IEnumerator Rise()
     {
