@@ -7,6 +7,16 @@ public class FoilageTransparency : MonoBehaviour {
     public float transparency;
 
     private int overlappingObjects = 0;
+    private new SpriteRenderer renderer;
+    private Color transparentColor;
+    private Color originalColor;
+
+    private void Start()
+    {
+        renderer = GetComponent<SpriteRenderer>();
+        transparentColor = new Color(renderer.color.r, renderer.color.g, renderer.color.b, transparency);
+        originalColor = renderer.color;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,7 +24,10 @@ public class FoilageTransparency : MonoBehaviour {
         {
             overlappingObjects++;
 
-            renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, transparency);
+            if (overlappingObjects == 1)
+            {
+                renderer.color = transparentColor;
+            }
         }
     }
 
@@ -26,8 +39,7 @@ public class FoilageTransparency : MonoBehaviour {
 
             if (overlappingObjects == 0)
             {
-                SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1f);
+                renderer.color = originalColor;
             }
         }
     }
