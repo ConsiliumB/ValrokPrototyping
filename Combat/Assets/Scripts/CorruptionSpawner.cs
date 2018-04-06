@@ -8,8 +8,8 @@ public class CorruptionSpawner : StatefulEntity {
 
     bool spawnMode;
     
-    List<Coordinate> SpawnPoints { get; set; }
-    public GameObject enemyPrefab;
+    List<Coordinate> SpawnPoints = new List<Coordinate>();
+    public List<GameObject> enemyPrefab = new List<GameObject>();
     public int amountSpawned;
     public readonly float spawnDelay;
 
@@ -22,7 +22,6 @@ public class CorruptionSpawner : StatefulEntity {
 
     // Use this for initialization
     void Start () {
-        SpawnPoints = new List<Coordinate>();
         FindSpawnpoints();
 	}
 
@@ -104,7 +103,7 @@ public class CorruptionSpawner : StatefulEntity {
         for (int i = 0; i < amountSpawned; i++)
         {
             spawnPoint = SpawnPoints[UnityEngine.Random.Range(0, SpawnPoints.Count)];
-            Instantiate(enemyPrefab, WorldGen.NodeMapToPixel(spawnPoint), Quaternion.identity, transform);
+            Instantiate(enemyPrefab[i % amountSpawned], WorldGen.NodeMapToPixel(spawnPoint), Quaternion.identity, transform);
             enemyCount++;
         }
     }
